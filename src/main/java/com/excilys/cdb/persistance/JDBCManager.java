@@ -61,7 +61,6 @@ public class JDBCManager {
 		String dir = System.getProperty("user.dir", ".");
 		String file = JDBCManager.class.getSimpleName() + ".properties.txt";
 		String separator = System.getProperty("file.separator", "/");
-
 		path = dir + separator + file;
 		return (path);
 	}

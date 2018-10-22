@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.exception.DateException;
 import com.excilys.cdb.exception.NoNextPageException;
 import com.excilys.cdb.exception.NoPreviousPageException;
@@ -17,8 +20,9 @@ import com.excilys.cdb.service.ComputerService;
 
 public class Main {
 
-	public static void main(String[] args){
+	public static void main(String[] args) {
 
+		Logger logger = LoggerFactory.getLogger(Main.class);
 		CompanyService cpaService;
 		ComputerService cpuService;
 
@@ -39,11 +43,11 @@ public class Main {
 		Date discontinued = null;
 
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Bienvenue sur CDB !");
+		logger.info("Bienvenue sur CDB !");
 		while (commande != 8) {
 			try {
 				for (Menu menu : Menu.values()) {
-					System.out.println(menu.getMessage());
+					logger.info(menu.getMessage());
 				}
 				commande = sc.nextInt();
 				sc.nextLine();
@@ -53,7 +57,7 @@ public class Main {
 
 					cpuService = ComputerService.getInstance();
 
-					System.out.println("\n LISTE DES COMPUTERS");
+					logger.info("\n LISTE DES COMPUTERS");
 					Page.setPage(1);
 
 					int i;
@@ -63,13 +67,13 @@ public class Main {
 							i = 0;
 
 							while (i < subListComputer.size()) {
-								System.out.print("\t" + subListComputer.get(i).getId() + "\t |");
-								System.out.print("\t" + subListComputer.get(i).getName() + "\t");
-								System.out.println("\n---------------------------------");
+								logger.info("\t" + subListComputer.get(i).getId() + "\t |");
+								logger.info("\t" + subListComputer.get(i).getName() + "\t");
+								logger.info("\n---------------------------------");
 								i++;
 							}
-							System.out.println("Previous page (p) 	Quit(q) 		Next page(n)");
-							System.out.print("Que voulez vous faire ? :");
+							logger.info("Previous page (p) 	Quit(q) 		Next page(n)");
+							logger.info("Que voulez vous faire ? :");
 
 							subCommand = sc.nextLine();
 							if (subCommand.equals("n")) {
@@ -81,13 +85,13 @@ public class Main {
 							} else if (subCommand.equals("q")) {
 								break;
 							} else {
-								System.out.println("Je ne comprend pas la commande");
+								logger.warn("Je ne comprend pas la commande");
 							}
 						} catch (NoPreviousPageException nppe) {
-							System.out.println(nppe.getMessage());
+							logger.error(nppe.getMessage());
 							Page.setPage(Page.getPage() + 1);
 						} catch (NoNextPageException nnpe) {
-							System.out.println(nnpe.getMessage());
+							logger.error(nnpe.getMessage());
 							Page.setPage(Page.getPage() - 1);
 						}
 
@@ -99,7 +103,7 @@ public class Main {
 
 					cpaService = CompanyService.getInstance();
 
-					System.out.println("\n LISTE DES COMPANIES");
+					logger.info("\n LISTE DES COMPANIES");
 					Page.setPage(1);
 
 					int j;
@@ -108,13 +112,13 @@ public class Main {
 							List<Company> subListCompany = cpaService.findAll();
 							j = 0;
 							while (j < subListCompany.size()) {
-								System.out.print(subListCompany.get(j).toString());
-								System.out.println("\n---------------------------------");
+								logger.info(subListCompany.get(j).toString());
+								logger.info("\n---------------------------------");
 								j++;
 							}
 
-							System.out.println("Previous page (p) 	Quit(q) 		Next page(n)");
-							System.out.print("Que voulez vous faire ? :");
+							logger.info("Previous page (p) 	Quit(q) 		Next page(n)");
+							logger.info("Que voulez vous faire ? :");
 
 							subCommand = sc.nextLine();
 							if (subCommand.equals("n")) {
@@ -126,13 +130,13 @@ public class Main {
 							} else if (subCommand.equals("q")) {
 								break;
 							} else {
-								System.out.println("Je ne comprend pas la commande");
+								logger.warn("Je ne comprend pas la commande");
 							}
 						} catch (NoPreviousPageException nppe) {
-							System.out.println(nppe.getMessage());
+							logger.error(nppe.getMessage());
 							Page.setPage(Page.getPage() + 1);
 						} catch (NoNextPageException nnpe) {
-							System.out.println(nnpe.getMessage());
+							logger.error(nnpe.getMessage());
 							Page.setPage(Page.getPage() - 1);
 						}
 
@@ -143,40 +147,40 @@ public class Main {
 				case 3: { // Montrer les details d'un ordinateur par son id
 					cpuService = ComputerService.getInstance();
 
-					System.out.print("Veuillez entrer l'id de l'ordinateur: ");
+					logger.info("Veuillez entrer l'id de l'ordinateur: ");
 					id = sc.nextInt();
 
 					computerToDisplay = cpuService.find(id);
-					System.out.println("\n---------------------------------");
-					System.out.println(computerToDisplay.toString());
-					System.out.println("\n---------------------------------");
+					logger.info("\n---------------------------------");
+					logger.info(computerToDisplay.toString());
+					logger.info("\n---------------------------------");
 					break;
 				}
 				case 4: { // Montrer les details d'un ordinateur par son nom
 					cpuService = ComputerService.getInstance();
 
-					System.out.print("Veuillez entrer le nom de l'ordinateur: ");
+					logger.info("Veuillez entrer le nom de l'ordinateur: ");
 					name = sc.nextLine();
 
 					computerToDisplay = cpuService.find(name);
 
-					System.out.println("\n---------------------------------");
-					System.out.println(computerToDisplay.toString());
-					System.out.println("\n---------------------------------");
+					logger.info("\n---------------------------------");
+					logger.info(computerToDisplay.toString());
+					logger.info("\n---------------------------------");
 
 					break;
 				}
 				case 5: { // Créer un PC
 					cpuService = ComputerService.getInstance();
 
-					System.out.print("Veuillez entrer le nom de l'ordinateur: ");
+					logger.info("Veuillez entrer le nom de l'ordinateur: ");
 					computerName = sc.nextLine();
-					System.out.print("Veuillez entrer la date de début: ");
+					logger.info("Veuillez entrer la date de début: ");
 					dateIntroduced = sc.nextLine();
-					System.out.print("Veuillez entrer la date de fin: ");
+					logger.info("Veuillez entrer la date de fin: ");
 					dateDiscontinued = sc.nextLine();
 
-					System.out.print(
+					logger.info(
 							"Veuillez entrer le numéro du fabricant de l'ordinateur (0 pour passer cette étape): ");
 					companyId = sc.nextInt();
 
@@ -196,13 +200,13 @@ public class Main {
 					try {
 						response = cpuService.create(newComputer);
 						if (response == true) {
-							System.out.println("Ordinateur créé avec succès !! ");
+							logger.info("Ordinateur créé avec succès !! ");
 						} else {
-							System.out.println("Echec de la création !! ");
+							logger.info("Echec de la création !! ");
 						}
 						response = false;
 					} catch (DateException de) {
-						System.out.println(de.getMessage());
+						logger.error(de.getMessage());
 					}
 					introduced = null;
 					discontinued = null;
@@ -211,16 +215,16 @@ public class Main {
 				case 6: { // Mettre à jour un PC
 					cpuService = ComputerService.getInstance();
 
-					System.out.print("Veuillez entrer l'id de l'ordinateur à mettre à jour: ");
+					logger.info("Veuillez entrer l'id de l'ordinateur à mettre à jour: ");
 					computerId = sc.nextInt();
-					System.out.print("Veuillez entrer le nouveau nom de l'ordinateur: ");
+					logger.info("Veuillez entrer le nouveau nom de l'ordinateur: ");
 					sc.nextLine();
 					computerName = sc.nextLine();
-					System.out.print("Veuillez entrer la nouvelle date de début: ");
+					logger.info("Veuillez entrer la nouvelle date de début: ");
 					dateIntroduced = sc.nextLine();
-					System.out.print("Veuillez entrer la nouvelle date de fin: ");
+					logger.info("Veuillez entrer la nouvelle date de fin: ");
 					dateDiscontinued = sc.nextLine();
-					System.out.print(
+					logger.info(
 							"Veuillez entrer le nouveau numéro du fabricant de l'ordinateur (0 pour passer cette étape): ");
 					companyId = sc.nextInt();
 
@@ -241,13 +245,13 @@ public class Main {
 					try {
 						response = cpuService.update(updatedComputers);
 						if (response == true) {
-							System.out.println("Ordinateur mis à jour avec succès !! ");
+							logger.info("Ordinateur mis à jour avec succès !! ");
 						} else {
-							System.out.println("Echec de la mise à jour !! ");
+							logger.warn("Echec de la mise à jour !! ");
 						}
 						response = false;
 					} catch (DateException de) {
-						System.out.println(de.getMessage());
+						logger.error(de.getMessage());
 					}
 					break;
 
@@ -255,15 +259,15 @@ public class Main {
 				case 7: { // Supprimer un PC
 					cpuService = ComputerService.getInstance();
 
-					System.out.print("Veuillez entrer l'id de l'ordinateur à supprimer: ");
+					logger.info("Veuillez entrer l'id de l'ordinateur à supprimer: ");
 					id = sc.nextInt();
 
 					response = cpuService.delete(id);
 
 					if (response == true) {
-						System.out.println("Ordinateur supprimé avec succès !! ");
+						logger.info("Ordinateur supprimé avec succès !! ");
 					} else {
-						System.out.println("Echec de la suppression !! ");
+						logger.warn("Echec de la suppression !! ");
 					}
 					response = false;
 					break;
@@ -271,8 +275,8 @@ public class Main {
 				case 8: { // Quitter
 					sc.close();
 
-					System.out.println("Deconnexion to DB");
-					System.out.print("A bientot !");
+					logger.info("Deconnexion to DB");
+					logger.info("A bientot !");
 					System.exit(0);
 					break;
 				}
@@ -282,11 +286,11 @@ public class Main {
 				}
 				commande = 0;
 			} catch (SQLException ex) {
-				System.out.println("SQLException: " + ex.getMessage());
-				System.out.println("SQLState: " + ex.getSQLState());
-				System.out.println("VendorError: " + ex.getErrorCode());
+				logger.error("SQLException: " + ex.getMessage());
+				logger.error("SQLState: " + ex.getSQLState());
+				logger.error("VendorError: " + ex.getErrorCode());
 			} catch (OutOfCommandeScopeException outEx) {
-				System.out.println(outEx.getMessage());
+				logger.error(outEx.getMessage());
 			}
 		}
 	}

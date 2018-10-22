@@ -12,7 +12,11 @@ public class Computer {
 	private Company company;
 
 	// Construteur
-
+	
+	public Computer() {
+		super();
+	}
+	
 	/**
 	 * 
 	 * @param name
