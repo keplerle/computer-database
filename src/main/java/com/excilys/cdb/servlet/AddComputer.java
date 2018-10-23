@@ -10,5 +10,4 @@ public class AddComputer extends HttpServlet{
 		this.getServletContext().getRequestDispatcher( "/WEB-INF/views/addComputer.jsp" ).forward( request, response );
 	}
 	
-
 }
