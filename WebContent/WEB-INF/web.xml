@@ -10,7 +10,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>AddComputer</servlet-name>
-		<url-pattern>/computer/add</url-pattern>
+		<url-pattern>/add</url-pattern>
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>EditComputer</servlet-name>
@@ -18,7 +18,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>EditComputer</servlet-name>
-		<url-pattern>/computer/edit</url-pattern>
+		<url-pattern>/edit</url-pattern>
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>Dashboard</servlet-name>
@@ -28,14 +28,12 @@
 		<servlet-name>Dashboard</servlet-name>
 		<url-pattern>/dashboard</url-pattern>
 	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>Test</servlet-name>
-		<servlet-class>com.excilys.cdb.servlet.Test</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Test</servlet-name>
-		<url-pattern>/test</url-pattern>
-	</servlet-mapping>
-
+	
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <include-prelude>/WEB-INF/taglibs.jsp</include-prelude>
+        </jsp-property-group>
+    </jsp-config>
+    
 </web-app>

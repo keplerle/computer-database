@@ -104,11 +104,8 @@ public class Main {
 					cpaService = CompanyService.getInstance();
 
 					logger.info("\n LISTE DES COMPANIES");
-					Page.setPage(1);
-
-					int j;
-					do {
-						try {
+				
+					int j;		
 							List<Company> subListCompany = cpaService.findAll();
 							j = 0;
 							while (j < subListCompany.size()) {
@@ -116,32 +113,6 @@ public class Main {
 								logger.info("\n---------------------------------");
 								j++;
 							}
-
-							logger.info("Previous page (p) 	Quit(q) 		Next page(n)");
-							logger.info("Que voulez vous faire ? :");
-
-							subCommand = sc.nextLine();
-							if (subCommand.equals("n")) {
-								Page.setPage(Page.getPage() + 1);
-
-							} else if (subCommand.equals("p")) {
-								Page.setPage(Page.getPage() - 1);
-
-							} else if (subCommand.equals("q")) {
-								break;
-							} else {
-								logger.warn("Je ne comprend pas la commande");
-							}
-						} catch (NoPreviousPageException nppe) {
-							logger.error(nppe.getMessage());
-							Page.setPage(Page.getPage() + 1);
-						} catch (NoNextPageException nnpe) {
-							logger.error(nnpe.getMessage());
-							Page.setPage(Page.getPage() - 1);
-						}
-
-					} while (!subCommand.equals("q"));
-
 					break;
 				}
 				case 3: { // Montrer les details d'un ordinateur par son id
