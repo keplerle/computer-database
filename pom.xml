@@ -6,7 +6,7 @@
 	<groupId>com.excilys.cdb.ui</groupId>
 	<artifactId>Main</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>app</name>
 	<url>http://maven.apache.org</url>
@@ -30,12 +30,12 @@
 			<version>8.0.13</version>
 		</dependency>
 
-		<dependency>
+<!-- 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>2.23.0</version>
 		</dependency>
-
+ -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -79,6 +79,13 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
+			</plugin>
+			<plugin>            
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-war-plugin</artifactId>
+			  <configuration>
+			    <webXml>WebContent/WEB-INF/web.xml</webXml>        
+			  </configuration>
 			</plugin>
 		</plugins>
 	</build>
