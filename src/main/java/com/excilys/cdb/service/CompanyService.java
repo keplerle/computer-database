@@ -1,14 +1,15 @@
 package com.excilys.cdb.service;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-
+import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.persistance.CompanyDAO;
 
 public class CompanyService {
-	private static CompanyService cs = null;
+	private static CompanyService companyService = null;
 	CompanyDAO dc;
 
 	private CompanyService() {
@@ -16,13 +17,13 @@ public class CompanyService {
 	}
 
 	public static CompanyService getInstance() {
-		if (cs == null) {
-			cs = new CompanyService();
+		if (companyService == null) {
+			companyService = new CompanyService();
 		}
-		return cs;
+		return companyService;
 	}
 
-	public <T> List<Company> findAll() throws SQLException {
+	public <T> List<Company> findAll() throws SQLException, FileNotFoundException, IOException {
 		return dc.findAll();
 	}
 

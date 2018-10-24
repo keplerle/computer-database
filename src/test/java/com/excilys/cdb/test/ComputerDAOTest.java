@@ -6,9 +6,9 @@ import java.time.LocalDate;
 import java.util.List;
 import org.junit.*;
 
+import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.persistance.ComputerDAO;
 
 public class ComputerDAOTest {
 private ComputerDAO computerDao;

@@ -1,5 +1,7 @@
-package com.excilys.cdb.persistance;
+package com.excilys.cdb.dao;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -33,7 +35,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public boolean create(Computer computer) throws SQLException, DateException {
+	public boolean create(Computer computer) throws SQLException, DateException,FileNotFoundException, IOException {
 
 		ComputerDAO.connect = JDBCManager.connectionDB();
 
@@ -71,7 +73,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public boolean update(Computer computer) throws SQLException, DateException {
+	public boolean update(Computer computer) throws SQLException, DateException ,FileNotFoundException, IOException{
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_UPDATE);) {
 			preparedStatement.setString(1, computer.getName());
@@ -107,7 +109,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public boolean delete(int id) throws SQLException {
+	public boolean delete(int id) throws SQLException ,FileNotFoundException, IOException{
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_DELETE);) {
 			preparedStatement.setLong(1, id);
@@ -118,7 +120,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public Computer find(int id) throws SQLException {
+	public Computer find(int id) throws SQLException ,FileNotFoundException, IOException{
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		Computer computer = null;
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_SELECT_BY_ID)) {
@@ -146,7 +148,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public Computer find(String name) throws SQLException {
+	public Computer find(String name) throws SQLException,FileNotFoundException, IOException {
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		Computer computer = null;
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_SELECT_BY_NAME)) {
@@ -174,7 +176,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public ArrayList<Computer> findAll() throws SQLException {
+	public ArrayList<Computer> findAll() throws SQLException,FileNotFoundException, IOException {
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		ArrayList<Computer> list = new ArrayList<>();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_SELECT_ALL);

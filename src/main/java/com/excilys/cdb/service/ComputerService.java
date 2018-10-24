@@ -1,52 +1,52 @@
 package com.excilys.cdb.service;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.exception.DateException;
-import com.excilys.cdb.exception.NoNextPageException;
-import com.excilys.cdb.exception.NoPreviousPageException;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.model.Page;
-import com.excilys.cdb.persistance.ComputerDAO;
+
 
 public class ComputerService {
 
-	private static ComputerService cs = null;
-	ComputerDAO dc;
+	private static ComputerService computerService = null;
+	ComputerDAO computerDao;
 
 	private ComputerService() {
-		dc = ComputerDAO.getInstance();
+		computerDao = ComputerDAO.getInstance();
 	}
 
 	public static ComputerService getInstance() {
-		if (cs == null) {
-			cs = new ComputerService();
+		if (computerService == null) {
+			computerService = new ComputerService();
 		}
-		return cs;
+		return computerService;
 	}
 
-	public Computer find(int id) throws SQLException {
-		return dc.find(id);
+	public Computer find(int id) throws SQLException, FileNotFoundException, IOException {
+		return computerDao.find(id);
 	}
 
-	public Computer find(String name) throws SQLException {
-		return dc.find(name);
+	public Computer find(String name) throws SQLException, FileNotFoundException, IOException {
+		return computerDao.find(name);
 	}
 
-	public boolean create(Computer computer) throws DateException, SQLException {
-		return dc.create(computer);
+	public boolean create(Computer computer) throws DateException, SQLException, FileNotFoundException, IOException {
+		return computerDao.create(computer);
 	}
 
-	public boolean update(Computer computer) throws DateException, SQLException {
-		return dc.update(computer);
+	public boolean update(Computer computer) throws DateException, SQLException, FileNotFoundException, IOException {
+		return computerDao.update(computer);
 	}
 
-	public boolean delete(int id) throws SQLException {
-		return dc.delete(id);
+	public boolean delete(int id) throws SQLException, FileNotFoundException, IOException {
+		return computerDao.delete(id);
 	}
 
-	public <T> List<Computer> findAll() throws SQLException, NoNextPageException, NoPreviousPageException {
-		return Page.pagination(dc.findAll(), Page.getPage(), Page.getPageSize());
+	public <T> List<Computer> findAll() throws SQLException, FileNotFoundException, IOException {
+		return computerDao.findAll();
 	}
 }

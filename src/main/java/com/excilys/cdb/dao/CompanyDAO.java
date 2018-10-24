@@ -1,5 +1,7 @@
-package com.excilys.cdb.persistance;
+package com.excilys.cdb.dao;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +26,7 @@ public class CompanyDAO implements CompanyDAOInterface<Company> {
 	}
 
 	@Override
-	public ArrayList<Company> findAll() throws SQLException {
+	public ArrayList<Company> findAll() throws SQLException ,FileNotFoundException, IOException{
 		CompanyDAO.connect = JDBCManager.connectionDB();
 		ArrayList<Company> list = new ArrayList<>();
 		try (PreparedStatement preparedStatement = CompanyDAO.connect.prepareStatement(QUERY_SELECT_ALL);

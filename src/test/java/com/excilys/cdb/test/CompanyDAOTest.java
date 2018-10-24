@@ -3,8 +3,9 @@ package com.excilys.cdb.test;
 import static org.junit.Assert.*;
 import java.util.List;
 import org.junit.*;
+
+import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.persistance.CompanyDAO;
 
 public class CompanyDAOTest {
 	

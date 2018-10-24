@@ -16,19 +16,23 @@ import com.excilys.cdb.service.CompanyService;
 
 public class AddComputer extends HttpServlet{
 	
-	Logger logger = LoggerFactory.getLogger(Dashboard.class);
+	Logger logger = LoggerFactory.getLogger(AddComputer.class);
 	CompanyService cpaService;
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
-		cpaService = CompanyService.getInstance();
-		try {	
-			List<Company> listCompany = cpaService.findAll();
-			request.setAttribute("companies",listCompany);
+		try {
+			List<Company> companies = cpaService.findAll();
+			request.setAttribute( "companies", companies );
 		} catch (SQLException ex) {
 			logger.error("SQLException: " + ex.getMessage());
 			logger.error("SQLState: " + ex.getSQLState());
 			logger.error("VendorError: " + ex.getErrorCode());
-		}
+		}	
+		
 		this.getServletContext().getRequestDispatcher( "/WEB-INF/views/addComputer.jsp" ).forward( request, response );
+	}
+	
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+		this.getServletContext().getRequestDispatcher( "/WEB-INF/views/dashboard.jsp" ).forward( request, response );
 	}
 }

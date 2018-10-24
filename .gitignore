@@ -10,7 +10,7 @@ tmp/
 *.bak
 *.swp
 *~.nib
-JDBCManager.properties.txt
+db.properties
 local.properties
 .settings/
 .loadpath

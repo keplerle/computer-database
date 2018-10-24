@@ -1,5 +1,7 @@
 package com.excilys.cdb.ui;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
@@ -9,12 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.exception.DateException;
-import com.excilys.cdb.exception.NoNextPageException;
-import com.excilys.cdb.exception.NoPreviousPageException;
 import com.excilys.cdb.exception.OutOfCommandeScopeException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.model.Page;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
@@ -38,7 +37,6 @@ public class Main {
 		String computerName = "";
 		String dateIntroduced = "";
 		String dateDiscontinued = "";
-		String subCommand = "";
 		Date introduced = null;
 		Date discontinued = null;
 
@@ -58,45 +56,15 @@ public class Main {
 					cpuService = ComputerService.getInstance();
 
 					logger.info("\n LISTE DES COMPUTERS");
-					Page.setPage(1);
-
 					int i;
-					do {
-						try {
-							List<Computer> subListComputer = cpuService.findAll();
+						List<Computer> subListComputer = cpuService.findAll();
 							i = 0;
-
 							while (i < subListComputer.size()) {
 								logger.info("\t" + subListComputer.get(i).getId() + "\t |");
 								logger.info("\t" + subListComputer.get(i).getName() + "\t");
 								logger.info("\n---------------------------------");
 								i++;
 							}
-							logger.info("Previous page (p) 	Quit(q) 		Next page(n)");
-							logger.info("Que voulez vous faire ? :");
-
-							subCommand = sc.nextLine();
-							if (subCommand.equals("n")) {
-								Page.setPage(Page.getPage() + 1);
-
-							} else if (subCommand.equals("p")) {
-								Page.setPage(Page.getPage() - 1);
-
-							} else if (subCommand.equals("q")) {
-								break;
-							} else {
-								logger.warn("Je ne comprend pas la commande");
-							}
-						} catch (NoPreviousPageException nppe) {
-							logger.error(nppe.getMessage());
-							Page.setPage(Page.getPage() + 1);
-						} catch (NoNextPageException nnpe) {
-							logger.error(nnpe.getMessage());
-							Page.setPage(Page.getPage() - 1);
-						}
-
-					} while (!subCommand.equals("q"));
-
 					break;
 				}
 				case 2: { // Lister les entreprises
@@ -262,6 +230,10 @@ public class Main {
 				logger.error("VendorError: " + ex.getErrorCode());
 			} catch (OutOfCommandeScopeException outEx) {
 				logger.error(outEx.getMessage());
+			}catch (FileNotFoundException fnfEx) {
+				logger.error(fnfEx.getMessage());
+			}catch (IOException ioEx) {
+				logger.error(ioEx.getMessage());
 			}
 		}
 	}
