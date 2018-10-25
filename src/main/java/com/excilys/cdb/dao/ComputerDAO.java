@@ -36,9 +36,10 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 
 	@Override
 	public boolean create(Computer computer) throws SQLException, DateException,FileNotFoundException, IOException {
-
+		if(computer.getName().equals("")||computer.getName().equals(null)) {
+			return false;
+		}
 		ComputerDAO.connect = JDBCManager.connectionDB();
-
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_INSERT);) {
 			preparedStatement.setString(1, computer.getName());
 
@@ -64,18 +65,24 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 					&& computer.getDiscontinued().isBefore(computer.getIntroduced())) {
 				throw new DateException();
 			}
-			preparedStatement.executeUpdate();
-
+			int result = preparedStatement.executeUpdate();
+			if(result==1) {
+				return true;
+			}
 		}
-
 		ComputerDAO.connect.close();
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean update(Computer computer) throws SQLException, DateException ,FileNotFoundException, IOException{
+		
+		if(computer.getName().equals("")) {
+			return false;
+		}
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_UPDATE);) {
+			
 			preparedStatement.setString(1, computer.getName());
 			if (computer.getIntroduced() == null) {
 				preparedStatement.setDate(2, null);
@@ -101,22 +108,31 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 				throw new DateException();
 			}
 
-			preparedStatement.executeUpdate();
+			int result = preparedStatement.executeUpdate();
+			if(result==1) {
+				return true;
+			}
 		}
 
 		ComputerDAO.connect.close();
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean delete(int id) throws SQLException ,FileNotFoundException, IOException{
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_DELETE);) {
+			
 			preparedStatement.setLong(1, id);
-			preparedStatement.executeUpdate();
+			int result = preparedStatement.executeUpdate();
+			if(result==1) {
+				return true;
+			}
+			
 		}
 		ComputerDAO.connect.close();
-		return true;
+		
+		return false;
 	}
 
 	@Override

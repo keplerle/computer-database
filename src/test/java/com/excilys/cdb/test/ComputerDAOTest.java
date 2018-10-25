@@ -2,6 +2,9 @@ package com.excilys.cdb.test;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.*;
@@ -58,6 +61,7 @@ private ComputerDAO computerDao;
 	}
 	
 	@Test
+	@Ignore
 	public void testUpdateComputer() {
 		try {
 			
@@ -76,9 +80,10 @@ private ComputerDAO computerDao;
 	}
 	
 	@Test
+	@Ignore
 	public void testDeleteComputer() {
 		try {	
-			assertTrue(computerDao.delete(600));	
+			assertTrue(computerDao.delete(650));	
 		}catch(Exception e) {
 			fail("Exception inattendue");
 		}		
@@ -98,4 +103,72 @@ private ComputerDAO computerDao;
 		}		
 	}
 	
+	@Test
+	public void testFindByIdOutofBoundComputer() throws FileNotFoundException,IOException{
+		Computer computer = null;
+		try {	
+			computer = computerDao.find(0);
+		}catch(SQLException e) {
+			assertNull(computer);
+		}
+	}
+	
+	@Test
+	public void testCreateComputerWithoutName() {
+		try {
+			Computer computer = new Computer();
+			Company company = new Company();
+			computer.setCompany(company);
+			assertFalse(computerDao.create(computer));
+		}catch(Exception e) {
+			e.printStackTrace();
+			
+			
+		}		
+	}
+	
+	@Test
+	public void testUpdateOutOfBoundComputer() {
+		try {
+			
+			Computer computer = new Computer(0,"UnitTestUpdate");
+			Company company = new Company(5);
+			
+			computer.setIntroduced(LocalDate.of(2000, 01, 01));
+			computer.setDiscontinued(LocalDate.of(2010, 01, 01));
+			computer.setCompany(company);
+
+			assertFalse(computerDao.update(computer));
+			
+		}catch(Exception e) {
+			fail("Exception inattendue");
+		}		
+	}
+	
+	@Test
+	public void testUpdateComputerWithoutName() {
+		try {
+			
+			Computer computer = new Computer(600,"");
+			Company company = new Company(5);
+			
+			computer.setIntroduced(LocalDate.of(2000, 01, 01));
+			computer.setDiscontinued(LocalDate.of(2010, 01, 01));
+			computer.setCompany(company);
+
+			assertFalse(computerDao.update(computer));
+			
+		}catch(Exception e) {
+			fail("Exception inattendue");
+		}		
+	}
+	
+	@Test
+	public void testDeleteOutOfBoundComputer() {
+		try {	
+			assertFalse(computerDao.delete(0));	
+		}catch(Exception e) {
+			fail("Exception inattendue");
+		}		
+	}
 }

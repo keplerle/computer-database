@@ -23,16 +23,16 @@ public class Dashboard extends HttpServlet {
 	ComputerService cpuService;
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		
-//		try {
+		try {
 			cpuService= ComputerService.getInstance();
-			//List<Computer> computers = cpuService.findAll();		
-			//request.setAttribute( "computers", computers );
-			//request.setAttribute( "counter", computers.size());
-//		} catch (SQLException ex) {
-//			logger.error("SQLException: " + ex.getMessage());
-//			logger.error("SQLState: " + ex.getSQLState());
-//			logger.error("VendorError: " + ex.getErrorCode());
-//		}
+			List<Computer> computers = cpuService.findAll();		
+			request.setAttribute( "computers", computers );
+			request.setAttribute( "counter", computers.size());
+		} catch (SQLException ex) {
+			logger.error("SQLException: " + ex.getMessage());
+			logger.error("SQLState: " + ex.getSQLState());
+			logger.error("VendorError: " + ex.getErrorCode());
+		}
 	
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 		

@@ -200,9 +200,9 @@ public class Main {
 
 					logger.info("Veuillez entrer l'id de l'ordinateur à supprimer: ");
 					id = sc.nextInt();
-
+					
 					response = cpuService.delete(id);
-
+					
 					if (response == true) {
 						logger.info("Ordinateur supprimé avec succès !! ");
 					} else {

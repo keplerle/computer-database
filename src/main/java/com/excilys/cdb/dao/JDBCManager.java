@@ -23,7 +23,6 @@ public class JDBCManager {
         FileInputStream in = new FileInputStream("/home/excilys/eclipse-workspace/computer-database/src/main/resources/db.properties");
         props.load(in);
         in.close();
-    
         String url = props.getProperty("jdbc.url");
         String username = props.getProperty("jdbc.username");
         String password= props.getProperty("jdbc.password");
