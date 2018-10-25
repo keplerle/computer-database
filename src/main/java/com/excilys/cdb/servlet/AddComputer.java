@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
 
 public class AddComputer extends HttpServlet{
 	
@@ -21,6 +22,7 @@ public class AddComputer extends HttpServlet{
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		try {
+			cpaService= CompanyService.getInstance();
 			List<Company> companies = cpaService.findAll();
 			request.setAttribute( "companies", companies );
 		} catch (SQLException ex) {

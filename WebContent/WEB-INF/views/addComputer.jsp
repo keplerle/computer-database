@@ -44,7 +44,9 @@
 									class="form-control" id="companyId">
 
 									<option value="0">--</option>
-
+                					<c:forEach var="company" items="${companies}">
+  									<option value="${company.id }">${company.name }</option>
+									</c:forEach>
 								</select>
 							</div>
 						</fieldset>

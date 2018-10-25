@@ -23,6 +23,13 @@ public class JDBCManager {
         FileInputStream in = new FileInputStream("/home/excilys/eclipse-workspace/computer-database/src/main/resources/db.properties");
         props.load(in);
         in.close();
+        
+        try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+        
         String url = props.getProperty("jdbc.url");
         String username = props.getProperty("jdbc.username");
         String password= props.getProperty("jdbc.password");
