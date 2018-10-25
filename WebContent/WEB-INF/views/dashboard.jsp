@@ -37,8 +37,10 @@
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer" href="add">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="edit"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+						Computer</a> 
+						
+						   <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Delete</a>
+					
 				</div>
 			</div>
 		</div>
@@ -72,14 +74,14 @@
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<c:forEach var="computer" items="${computers}">
+					<c:forEach items="${computers}"  var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="0"></td>
-							<td><a href="edit" onclick="">${computer.name}</a></td>
-							<td>${computer.introduced}</td>
-							<td>${computer.discontinued}</td>
-							<td>${computer.company.name}</td>
+							<td><a href="edit" onclick=""><c:out value="${computer.getName()}"/></a></td>
+							<td><c:out value="${computer.getIntroduced()}"/></td>
+							<td><c:out value="${computer.getDiscontinued()}"/></td>
+							<td><c:out value="${computer.getCompany().getName()}"/></td>
 						</tr>
 					</c:forEach>
 				</tbody>

@@ -20,7 +20,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	private final static String QUERY_DELETE = "DELETE FROM computer WHERE id= ?";
 	private final static String QUERY_SELECT_BY_NAME = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE cpu.name = ?";
 	private final static String QUERY_SELECT_BY_ID = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE cpu.id = ?";
-	private final static String QUERY_SELECT_ALL = "SELECT id,name FROM computer";
+	private final static String QUERY_SELECT_ALL = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id";
 
 	private static ComputerDAO computerDAO = new ComputerDAO();
 	private static Connection connect;
@@ -199,6 +199,17 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 				ResultSet result = preparedStatement.executeQuery()) {
 			while (result.next()) {
 				Computer computer = new Computer(result.getInt("id"), result.getString("name"));
+				if (result.getDate("introduced") != null) {
+					computer.setIntroduced(result.getDate("introduced").toLocalDate());
+				}
+				if (result.getDate("discontinued") != null) {
+					computer.setDiscontinued(result.getDate("discontinued").toLocalDate());
+				}
+				computer.setCompany(new Company());
+				if (result.getInt("company_id") != 0) {
+					computer.getCompany().setId(result.getInt("company_id"));
+					computer.getCompany().setName(result.getString("cpa.name"));
+				}
 				list.add(computer);
 			}
 		}
