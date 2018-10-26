@@ -22,7 +22,6 @@ public class Dashboard extends HttpServlet {
 	Logger logger = LoggerFactory.getLogger(Dashboard.class);
 	ComputerService cpuService;
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
-		
 		try {
 			cpuService= ComputerService.getInstance();
 			List<Computer> computers = cpuService.findAll();		
@@ -33,8 +32,27 @@ public class Dashboard extends HttpServlet {
 			logger.error("SQLState: " + ex.getSQLState());
 			logger.error("VendorError: " + ex.getErrorCode());
 		}
-	
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
+	}
+	
+	
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		cpuService= ComputerService.getInstance();
 		
+		String[] checkedIds = request.getParameterValues("selection");
+		String[] idTab=checkedIds[0].split(",");
+		
+		for(int i = 0;i<idTab.length;i++) {
+	
+			try {
+				cpuService.delete(Integer.parseInt(idTab[i]));
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		response.sendRedirect("dashboard");
 	}
 }
