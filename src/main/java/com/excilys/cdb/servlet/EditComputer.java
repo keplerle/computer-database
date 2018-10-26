@@ -28,12 +28,18 @@ public class EditComputer extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {	
-			request.setAttribute( "computerId", request.getParameter("computerId"));
-			request.setAttribute( "computerName", request.getParameter("computerName"));
-			request.setAttribute( "companyId", request.getParameter("companyId"));
-			request.setAttribute( "introduced", request.getParameter("introduced"));
-			request.setAttribute( "discontinued", request.getParameter("discontinued"));
+			
+			cpuService = ComputerService.getInstance();
+			Computer computer=cpuService.find(Integer.parseInt(request.getParameter("computerId")));
+			
+			request.setAttribute( "computerId",  computer.getId());
+			request.setAttribute( "computerName", computer.getName());
+			request.setAttribute( "companyId", computer.getCompany().getId());
+			request.setAttribute( "introduced", computer.getIntroduced());
+			request.setAttribute( "discontinued", computer.getDiscontinued());
+			
 			cpaService= CompanyService.getInstance();
+			
 			List<Company> companies = cpaService.findAll();
 			request.setAttribute( "companies", companies );
 		} catch (SQLException ex) {
