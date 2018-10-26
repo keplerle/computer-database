@@ -20,35 +20,50 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
-					<div class="label label-default pull-right">id: 0</div>
+					<div class="label label-default pull-right">id: ${computerId}</div>
 					<h1>Edit Computer</h1>
 
-					<form action="editComputer" method="POST">
-						<input type="hidden" value="0" id="id" />
-						<!-- TODO: Change this value with the computer id -->
+					<form action="edit" method="POST">
+						<input type="hidden" value="${computerId}" id="id" name="id" />
+
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName"
+									name="computerName" value="${computerName}"
 									placeholder="Computer name">
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
-									type="date" class="form-control" id="introduced"
-									placeholder="Introduced date">
+									type="date" value="${introduced}" class="form-control" id="introduced"
+									name="introduced" placeholder="Introduced date">
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
-									type="date" class="form-control" id="discontinued"
-									placeholder="Discontinued date">
+									type="date" value="${discontinued}" class="form-control" id="discontinued"
+									name="discontinued" placeholder="Discontinued date">
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
-									class="form-control" id="companyId">
+									class="form-control" name="companyId" id="companyId">
 									<option value="0">--</option>
 									<c:forEach var="company" items="${companies}">
-										<option value="${company.id }"><c:out
-												value="${company.name }" /></option>
+										<c:choose>
+											<c:when test="${company.id==companyId}">
+												<option 
+												value="${company.id }"
+												selected >
+												<c:out
+														value="${company.name }" />
+												</option>
+											</c:when>
+											<c:otherwise>
+  												<option value="${company.id }">
+  												<c:out
+												value="${company.name }" />
+												</option>
+  											</c:otherwise>
+										</c:choose>
 									</c:forEach>
 								</select>
 							</div>

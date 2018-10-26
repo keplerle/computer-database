@@ -49,6 +49,7 @@ private ComputerDAO computerDao;
 	}
 	
 	@Test
+	@Ignore
 	public void testCreateComputer() {
 		try {
 			Computer computer = new Computer("UnitTestCreate");

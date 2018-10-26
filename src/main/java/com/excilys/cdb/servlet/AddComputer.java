@@ -62,9 +62,10 @@ public class AddComputer extends HttpServlet{
 				cpuService.create(newComputer);
 				response.sendRedirect("dashboard");
 			} catch (DateException e) {
-				response.sendRedirect("404");
-			} catch (SQLException e) {
 				response.sendRedirect("500");
+				
+			} catch (SQLException e) {
+				response.sendRedirect("404");
 			}
 	
 	}

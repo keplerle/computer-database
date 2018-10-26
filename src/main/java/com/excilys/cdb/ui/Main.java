@@ -179,7 +179,7 @@ public class Main {
 					}
 
 					if (companyId > 0) {
-						updatedComputers.getCompany().setId(computerId);
+						updatedComputers.getCompany().setId(companyId);
 					}
 					try {
 						response = cpuService.update(updatedComputers);

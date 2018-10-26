@@ -78,7 +78,7 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="0"></td>
-							<td><a href="edit" onclick=""><c:out value="${computer.getName()}"/></a></td>
+							<td><a href="edit?computerId=${computer.getId()}&computerName=${computer.getName()}&companyId=${computer.getCompany().getId()}&introduced=${computer.getIntroduced()}&discontinued=${computer.getDiscontinued()}" onclick=""><c:out value="${computer.getName()}"/></a></td>
 							<td><c:out value="${computer.getIntroduced()}"/></td>
 							<td><c:out value="${computer.getDiscontinued()}"/></td>
 							<td><c:out value="${computer.getCompany().getName()}"/></td>
