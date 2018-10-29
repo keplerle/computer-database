@@ -76,7 +76,6 @@ public class EditComputer extends HttpServlet {
 		try {
 			cpuService.update(updatedComputer);
 			response.sendRedirect("dashboard");
-			
 		} catch (DateException de) {
 			response.sendRedirect("500");
 		} catch (SQLException e) {

@@ -88,30 +88,30 @@
 	</section>
 
 	<footer class="navbar-fixed-bottom">
-		<div class="container text-center">
+		<div class="container text-center"></div>
 			<ul class="pagination">
-				<li><a href="#" aria-label="Previous"> <span
+				<li><a href="?page=${pageIndex-1}&size=${pageSize}" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>
-				<li><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				<li><a href="?page=1&size=${pageSize}">1</a></li>
+				<li><a href="?page=2&size=${pageSize}">2</a></li>
+				<li><a href="?page=3&size=${pageSize}">3</a></li>
+				<li><a href="?page=4&size=${pageSize}">4</a></li>
+				<li><a href="?page=5&size=${pageSize}">5</a></li>
+				<li><a href="?page=${pageIndex+1}&size=${pageSize}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
-		</div>
+		
 		<div class="btn-group btn-group-sm pull-right" role="group">
-			<button type="button" class="btn btn-default">10</button>
-			<button type="button" class="btn btn-default">50</button>
-			<button type="button" class="btn btn-default">100</button>
+			<a href="?page=1&size=10"><button type="button" class="btn btn-default">10</button></a>
+			<a href="?page=1&size=50"><button type="button" class="btn btn-default">50</button></a>
+			<a href="?page=1&size=100"><button type="button" class="btn btn-default">100</button></a>
 		</div>
 
 	</footer>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/dashboard.js"></script>
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
+	<script src="./js/dashboard.js"></script>
 
 </body>
 </html>

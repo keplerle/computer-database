@@ -7,10 +7,10 @@ import com.excilys.cdb.exception.NoPreviousPageException;
 
 public class Page {
 
-	private static int page;
-	private static int pageSize = 10;
+	private static int page=1;
+	private static int pageSize=10;
 
-	public static <T> List<T> pagination(List<T> sourceList, int page, int pageSize)
+	public static <T> List<T> pagination(List<T> sourceList)
 			throws NoPreviousPageException, NoNextPageException {
 		if (pageSize <= 0 || page <= 0) {
 			throw new NoPreviousPageException();
