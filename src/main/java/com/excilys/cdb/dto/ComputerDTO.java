@@ -1,43 +1,56 @@
 package com.excilys.cdb.dto;
 
-import java.time.LocalDate;
-
-import com.excilys.cdb.model.Company;
-
 public class ComputerDTO {
 	
 	private String name;
-	private LocalDate introduced;
-	private LocalDate discontinued;
-	private Company company;
-	
+	private String introduced;
+	private String discontinued;
+	private String companyId;
+	private String companyName;
 	
 	public ComputerDTO() {
 		super();
 	}
-	
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public LocalDate getIntroduced() {
+
+	public String getIntroduced() {
 		return introduced;
 	}
-	public void setIntroduced(LocalDate introduced) {
+
+	public void setIntroduced(String introduced) {
 		this.introduced = introduced;
 	}
-	public LocalDate getDiscontinued() {
+
+	public String getDiscontinued() {
 		return discontinued;
 	}
-	public void setDiscontinued(LocalDate discontinued) {
+
+	public void setDiscontinued(String discontinued) {
 		this.discontinued = discontinued;
 	}
-	public Company getCompany() {
-		return company;
+
+	public String getCompanyId() {
+		return companyId;
 	}
-	public void setCompany(Company company) {
-		this.company = company;
+
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
 	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+	
+	
 }

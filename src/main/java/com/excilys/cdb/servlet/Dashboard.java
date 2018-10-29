@@ -26,24 +26,29 @@ public class Dashboard extends HttpServlet {
 	ComputerService cpuService;
 	List<Computer> computers;
 	List<Computer> subComputers;
+
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			cpuService = ComputerService.getInstance();
-			
-			if(computers==null) {
+
+			if (request.getParameter("search") == null || request.getParameter("search").equals("")) {
 				computers = cpuService.findAll();
+				request.setAttribute("search", "");
+			} else {
+				computers = cpuService.findAll(request.getParameter("search"));
+				request.setAttribute("search", request.getParameter("search"));
 			}
-			
-			if (request.getParameter("size")!=null) {
+
+			if (request.getParameter("size") != null) {
 				Page.setPageSize(Integer.parseInt(request.getParameter("size")));
 			}
-			
-			if (request.getParameter("page")!=null) {
+
+			if (request.getParameter("page") != null) {
 				Page.setPage(Integer.parseInt(request.getParameter("page")));
 			}
-			
+
 			subComputers = Page.pagination(computers);
-		
+
 		} catch (SQLException ex) {
 			logger.error("SQLException: " + ex.getMessage());
 			logger.error("SQLState: " + ex.getSQLState());
@@ -51,17 +56,17 @@ public class Dashboard extends HttpServlet {
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/404.jsp").forward(request, response);
 		} catch (NoPreviousPageException nppe) {
 			nppe.printStackTrace();
-			Page.setPage(Integer.parseInt(request.getParameter("page"))+1);
-			
+			Page.setPage(Integer.parseInt(request.getParameter("page")) + 1);
+
 		} catch (NoNextPageException nnpe) {
 			nnpe.printStackTrace();
-			Page.setPage(Integer.parseInt(request.getParameter("page"))-1);
+			Page.setPage(Integer.parseInt(request.getParameter("page")) - 1);
 		}
 		request.setAttribute("computers", subComputers);
 		request.setAttribute("counter", computers.size());
 		request.setAttribute("pageIndex", Page.getPage());
 		request.setAttribute("pageSize", Page.getPageSize());
-		
+
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 	}
 

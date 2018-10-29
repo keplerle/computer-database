@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.excilys.cdb.exception.DateException;
 import com.excilys.cdb.model.Company;
@@ -18,7 +19,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	private final static String QUERY_INSERT = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 	private final static String QUERY_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 	private final static String QUERY_DELETE = "DELETE FROM computer WHERE id= ?";
-	private final static String QUERY_SELECT_BY_NAME = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE cpu.name = ?";
+	private final static String QUERY_SELECT_BY_NAME = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE cpu.name LIKE ?";
 	private final static String QUERY_SELECT_BY_ID = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE cpu.id = ?";
 	private final static String QUERY_SELECT_ALL = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id";
 
@@ -164,14 +165,16 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public Computer find(String name) throws SQLException,FileNotFoundException, IOException {
+	public ArrayList<Computer> findAll(String name) throws SQLException,FileNotFoundException, IOException {
 		ComputerDAO.connect = JDBCManager.connectionDB();
-		Computer computer = null;
+		ArrayList<Computer> list = new ArrayList<>();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_SELECT_BY_NAME)) {
-			preparedStatement.setNString(1, name);
+	
+			preparedStatement.setNString(1,"%"+name+"%");
+
 			ResultSet result = preparedStatement.executeQuery();
 			while (result.next()) {
-				computer = new Computer(result.getInt("id"), result.getString("name"));
+				Computer computer = new Computer(result.getInt("id"), result.getString("name"));
 				if (result.getDate("introduced") != null) {
 					computer.setIntroduced(result.getDate("introduced").toLocalDate());
 				}
@@ -183,12 +186,13 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 					computer.getCompany().setId(result.getInt("company_id"));
 					computer.getCompany().setName(result.getString("cpa.name"));
 				}
+				list.add(computer);
 			}
 			result.close();
 		}
 
-		ComputerDAO.connect.close();
-		return computer;
+		ComputerDAO.connect.close();	
+		return list;
 	}
 
 	@Override

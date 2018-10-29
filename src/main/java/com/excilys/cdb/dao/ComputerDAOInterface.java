@@ -3,9 +3,11 @@ package com.excilys.cdb.dao;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.cdb.exception.DateException;
+import com.excilys.cdb.model.Computer;
 
 public interface ComputerDAOInterface<T> {
 
@@ -59,12 +61,12 @@ public interface ComputerDAOInterface<T> {
 	 * Méthode de recherche des informations par nom
 	 * 
 	 * @param name
-	 * @return T
+	 * @return ArrayList<T>
 	 * @throws SQLException
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	public abstract T find(String name) throws SQLException, FileNotFoundException, IOException;
+	public abstract List<T> findAll(String name) throws SQLException, FileNotFoundException, IOException;
 
 	/**
 	 * Méthode de recherche des informations
@@ -75,5 +77,6 @@ public interface ComputerDAOInterface<T> {
 	 * @throws FileNotFoundException 
 	 */
 	public abstract List<T> findAll() throws SQLException, FileNotFoundException, IOException;
+
 
 }

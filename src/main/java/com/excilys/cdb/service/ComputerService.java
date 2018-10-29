@@ -30,9 +30,7 @@ public class ComputerService {
 		return computerDao.find(id);
 	}
 
-	public Computer find(String name) throws SQLException, FileNotFoundException, IOException {
-		return computerDao.find(name);
-	}
+
 
 	public boolean create(Computer computer) throws DateException, SQLException, FileNotFoundException, IOException {
 		return computerDao.create(computer);
@@ -48,5 +46,9 @@ public class ComputerService {
 
 	public <T> List<Computer> findAll() throws SQLException, FileNotFoundException, IOException {
 		return computerDao.findAll();
+	}
+	
+	public <T> List<Computer> findAll(String name) throws SQLException, FileNotFoundException, IOException {
+		return computerDao.findAll(name);
 	}
 }

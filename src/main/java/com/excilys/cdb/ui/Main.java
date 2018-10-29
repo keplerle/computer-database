@@ -101,12 +101,16 @@ public class Main {
 					logger.info("Veuillez entrer le nom de l'ordinateur: ");
 					name = sc.nextLine();
 
-					computerToDisplay = cpuService.find(name);
-
-					logger.info("\n---------------------------------");
-					logger.info(computerToDisplay.toString());
-					logger.info("\n---------------------------------");
-
+					logger.info("\n LISTE DES COMPUTERS");
+					int i;
+						List<Computer> subListComputer = cpuService.findAll(name);
+							i = 0;
+							while (i < subListComputer.size()) {
+								logger.info("\t" + subListComputer.get(i).getId() + "\t |");
+								logger.info("\t" + subListComputer.get(i).getName() + "\t");
+								logger.info("\n---------------------------------");
+								i++;
+							}
 					break;
 				}
 				case 5: { // Créer un PC
