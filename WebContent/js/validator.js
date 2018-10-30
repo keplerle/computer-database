@@ -9,7 +9,7 @@ $.validator.addMethod("dateValid", function(value, element, params) {
 
 	return isNaN(value) && isNaN($(params).val())
 			|| (Number(value) > Number($(params).val()));
-}, 'Erreur de saisie');
+}, 'La date doit être postérieur à celui de la date introduction');
 
 $(document).ready(function() {
 	$("#addForm").validate({
@@ -17,11 +17,11 @@ $(document).ready(function() {
 			computerName : {
 				required : true
 			},
-			discontinued: { dateValid: "#introduced",required : false }
+			discontinued: { dateValid: "#introduced"}
 		},
 		messages : {
-			computerName : "Champ requis",
-			//discontinued : "La date doit être postérieur à celui de la date d'introduction"
+			computerName : "Champ requis"
+
 		}
 	});
 
@@ -30,11 +30,10 @@ $(document).ready(function() {
 			computerName : {
 				required : true
 			},
-			discontinued: { dateValid: "#introduced",required : false }
+			discontinued: { dateValid: "#introduced"}
 		},
 		messages : {
-			computerName : "Champ requis",
-			discontinued : "La date doit être postérieur à celui de la date d'introduction"
+			computerName : "Champ requis"
 		}
 	});
 

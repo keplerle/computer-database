@@ -23,7 +23,7 @@
 					<div class="label label-default pull-right">id: ${computerId}</div>
 					<h1>Edit Computer</h1>
 
-					<form action="edit" method="POST">
+					<form id="editForm" action="edit" method="POST">
 						<input type="hidden" value="${computerId}" id="id" name="id" />
 
 						<fieldset>
