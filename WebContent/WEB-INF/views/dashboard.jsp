@@ -79,7 +79,7 @@
 							<td><a href="edit?computerId=${computer.getId()}" onclick=""><c:out value="${computer.getName()}"/></a></td>
 							<td><c:out value="${computer.getIntroduced()}"/></td>
 							<td><c:out value="${computer.getDiscontinued()}"/></td>
-							<td><c:out value="${computer.getCompany().getName()}"/></td>
+							<td><c:out value="${computer.getCompanyName()}"/></td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -90,22 +90,22 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center"></div>
 			<ul class="pagination">
-				<li><a href="?page=${pageIndex-1}&size=${pageSize}" aria-label="Previous"> <span
+				<li><a href="?page=${pageIndex-1}&size=${pageSize}&search=${search}" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>
-				<li><a href="?page=1&size=${pageSize}">1</a></li>
-				<li><a href="?page=2&size=${pageSize}">2</a></li>
-				<li><a href="?page=3&size=${pageSize}">3</a></li>
-				<li><a href="?page=4&size=${pageSize}">4</a></li>
-				<li><a href="?page=5&size=${pageSize}">5</a></li>
-				<li><a href="?page=${pageIndex+1}&size=${pageSize}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				<li><a href="?page=1&size=${pageSize}&search=${search}">1</a></li>
+				<li><a href="?page=2&size=${pageSize}&search=${search}">2</a></li>
+				<li><a href="?page=3&size=${pageSize}&search=${search}">3</a></li>
+				<li><a href="?page=4&size=${pageSize}&search=${search}">4</a></li>
+				<li><a href="?page=5&size=${pageSize}&search=${search}">5</a></li>
+				<li><a href="?page=${pageIndex+1}&size=${pageSize}&search=${search}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
 		
 		<div class="btn-group btn-group-sm pull-right" role="group">
-			<a href="?page=1&size=10"><button type="button" class="btn btn-default">10</button></a>
-			<a href="?page=1&size=50"><button type="button" class="btn btn-default">50</button></a>
-			<a href="?page=1&size=100"><button type="button" class="btn btn-default">100</button></a>
+			<a href="?page=1&size=10&search=${search}"><button type="button" class="btn btn-default">10</button></a>
+			<a href="?page=1&size=50&search=${search}"><button type="button" class="btn btn-default">50</button></a>
+			<a href="?page=1&size=100&search=${search}"><button type="button" class="btn btn-default">100</button></a>
 		</div>
 
 	</footer>

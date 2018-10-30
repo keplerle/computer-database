@@ -1,4 +1,5 @@
 package com.excilys.cdb.servlet;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -12,61 +13,50 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exception.DataException;
+import com.excilys.cdb.mapper.MapperComputerDTO;
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
-public class AddComputer extends HttpServlet{
-	
+public class AddComputer extends HttpServlet {
+
 	Logger logger = LoggerFactory.getLogger(AddComputer.class);
 	CompanyService cpaService;
 	ComputerService cpuService;
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+	MapperComputerDTO mapper;
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			cpaService= CompanyService.getInstance();
+			cpaService = CompanyService.getInstance();
+			mapper=MapperComputerDTO.getInstance();
 			List<Company> companies = cpaService.findAll();
-			request.setAttribute( "companies", companies );
+			request.setAttribute("companies", companies);
 		} catch (SQLException ex) {
 			logger.error("SQLException: " + ex.getMessage());
 			logger.error("SQLState: " + ex.getSQLState());
 			logger.error("VendorError: " + ex.getErrorCode());
-		}	
-		
-		this.getServletContext().getRequestDispatcher( "/WEB-INF/views/addComputer.jsp" ).forward( request, response );
+		}
+
+		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}
-	
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
-		
-		String computerName = request.getParameter("computerName");
-		String dateIntroduced = request.getParameter("introduced");
-		String dateDiscontinued = request.getParameter("discontinued");
-		int companyId = Integer.parseInt(request.getParameter("companyId"));
 
-		Computer newComputer = new Computer(computerName);
-		Company newCompany = new Company(companyId);
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ComputerDTO computerDto = new ComputerDTO();
+		computerDto.setName(request.getParameter("computerName"));
+		computerDto.setIntroduced(request.getParameter("introduced"));
+		computerDto.setDiscontinued(request.getParameter("discontinued"));
+		computerDto.setCompanyId(request.getParameter("companyId"));
+		cpuService = ComputerService.getInstance();
+		try {
+			cpuService.create(mapper.computerDtoToComputer(computerDto));
+			response.sendRedirect("dashboard");
+		} catch (DataException e) {
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 
-		if (!dateIntroduced.equals("")) {
-			newComputer.setIntroduced(Date.valueOf(dateIntroduced).toLocalDate());
+		} catch (SQLException e) {
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/404.jsp").forward(request, response);
 		}
 
-		if (!dateDiscontinued.equals("")) {
-			newComputer.setDiscontinued(Date.valueOf(dateDiscontinued).toLocalDate());
-		}
-		
-		newComputer.setCompany(newCompany);
-		
-			cpuService= ComputerService.getInstance();
-			try {
-				cpuService.create(newComputer);
-				response.sendRedirect("dashboard");
-			} catch (DataException e) {
-				this.getServletContext().getRequestDispatcher( "/WEB-INF/views/500.jsp" ).forward( request, response );
-				
-			} catch (SQLException e) {
-				this.getServletContext().getRequestDispatcher( "/WEB-INF/views/404.jsp" ).forward( request, response );
-			}
-	
 	}
 }

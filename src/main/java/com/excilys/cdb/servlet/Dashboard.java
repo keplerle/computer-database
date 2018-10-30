@@ -2,6 +2,7 @@ package com.excilys.cdb.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,8 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exception.NoNextPageException;
 import com.excilys.cdb.exception.NoPreviousPageException;
+import com.excilys.cdb.mapper.MapperComputerDTO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.service.ComputerService;
@@ -24,30 +27,42 @@ public class Dashboard extends HttpServlet {
 
 	Logger logger = LoggerFactory.getLogger(Dashboard.class);
 	ComputerService cpuService;
+	MapperComputerDTO mapper;
 	List<Computer> computers;
-	List<Computer> subComputers;
+	List<Computer> subComputers= new ArrayList<Computer>();
+	List<ComputerDTO> subComputersDTO = new ArrayList<ComputerDTO>();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			cpuService = ComputerService.getInstance();
-
+			mapper=MapperComputerDTO.getInstance();
+			subComputersDTO.clear();
+			
+			
 			if (request.getParameter("search") == null || request.getParameter("search").equals("")) {
 				computers = cpuService.findAll();
 				request.setAttribute("search", "");
+
 			} else {
 				computers = cpuService.findAll(request.getParameter("search"));
 				request.setAttribute("search", request.getParameter("search"));
+				
 			}
-
+			
+			if (request.getParameter("page") != null) {
+				Page.setPage(Integer.parseInt(request.getParameter("page")));
+			}else {
+				Page.setPage(1);
+			}
 			if (request.getParameter("size") != null) {
 				Page.setPageSize(Integer.parseInt(request.getParameter("size")));
 			}
-
-			if (request.getParameter("page") != null) {
-				Page.setPage(Integer.parseInt(request.getParameter("page")));
-			}
-
+			
 			subComputers = Page.pagination(computers);
+			
+			for(int i=0;i<subComputers.size();i++) {
+				subComputersDTO.add(mapper.computerToComputerDto(subComputers.get(i)));
+			}
 
 		} catch (SQLException ex) {
 			logger.error("SQLException: " + ex.getMessage());
@@ -60,7 +75,7 @@ public class Dashboard extends HttpServlet {
 		} catch (NoNextPageException nnpe) {
 			Page.setPage(Integer.parseInt(request.getParameter("page")) - 1);
 		}
-		request.setAttribute("computers", subComputers);
+		request.setAttribute("computers", subComputersDTO);
 		request.setAttribute("counter", computers.size());
 		request.setAttribute("pageIndex", Page.getPage());
 		request.setAttribute("pageSize", Page.getPageSize());

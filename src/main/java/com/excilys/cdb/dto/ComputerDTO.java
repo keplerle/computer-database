@@ -2,6 +2,7 @@ package com.excilys.cdb.dto;
 
 public class ComputerDTO {
 	
+	private String id;
 	private String name;
 	private String introduced;
 	private String discontinued;
@@ -51,6 +52,16 @@ public class ComputerDTO {
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+
 	
 	
 }
