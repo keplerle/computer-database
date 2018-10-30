@@ -55,11 +55,9 @@ public class Dashboard extends HttpServlet {
 			logger.error("VendorError: " + ex.getErrorCode());
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/404.jsp").forward(request, response);
 		} catch (NoPreviousPageException nppe) {
-			nppe.printStackTrace();
 			Page.setPage(Integer.parseInt(request.getParameter("page")) + 1);
 
 		} catch (NoNextPageException nnpe) {
-			nnpe.printStackTrace();
 			Page.setPage(Integer.parseInt(request.getParameter("page")) - 1);
 		}
 		request.setAttribute("computers", subComputers);

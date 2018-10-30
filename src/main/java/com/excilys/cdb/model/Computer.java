@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Computer {
 
 	// Variable d'instance
-	private int id;
+	private long id;
 	private String name;
 	private LocalDate introduced;
 	private LocalDate discontinued;

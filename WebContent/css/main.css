@@ -27,3 +27,18 @@ input[type='checkbox'] {
     border-radius: 5px;
     white-space: nowrap;
 }
+
+#addForm label.error {
+color:red;
+}
+#addForm input.error {
+border:1px solid red;
+}
+
+
+#editForm label.error {
+color:red;
+}
+#editForm input.error {
+border:1px solid red;
+}

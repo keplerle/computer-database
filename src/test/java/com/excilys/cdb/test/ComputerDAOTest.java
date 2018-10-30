@@ -115,20 +115,6 @@ private ComputerDAO computerDao;
 	}
 	
 	@Test
-	public void testCreateComputerWithoutName() {
-		try {
-			Computer computer = new Computer();
-			Company company = new Company();
-			computer.setCompany(company);
-			assertFalse(computerDao.create(computer));
-		}catch(Exception e) {
-			e.printStackTrace();
-			
-			
-		}		
-	}
-	
-	@Test
 	public void testUpdateOutOfBoundComputer() {
 		try {
 			

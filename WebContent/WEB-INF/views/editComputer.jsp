@@ -35,13 +35,14 @@
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
-									type="date" value="${introduced}" class="form-control" id="introduced"
-									name="introduced" placeholder="Introduced date">
+									type="date" value="${introduced}" class="form-control"
+									id="introduced" name="introduced" placeholder="Introduced date">
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
-									type="date" value="${discontinued}" class="form-control" id="discontinued"
-									name="discontinued" placeholder="Discontinued date">
+									type="date" value="${discontinued}" class="form-control"
+									id="discontinued" name="discontinued"
+									placeholder="Discontinued date">
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
@@ -50,19 +51,15 @@
 									<c:forEach var="company" items="${companies}">
 										<c:choose>
 											<c:when test="${company.id==companyId}">
-												<option 
-												value="${company.id }"
-												selected >
-												<c:out
-														value="${company.name }" />
+												<option value="${company.id }" selected>
+													<c:out value="${company.name }" />
 												</option>
 											</c:when>
 											<c:otherwise>
-  												<option value="${company.id }">
-  												<c:out
-												value="${company.name }" />
+												<option value="${company.id }">
+													<c:out value="${company.name }" />
 												</option>
-  											</c:otherwise>
+											</c:otherwise>
 										</c:choose>
 									</c:forEach>
 								</select>
@@ -77,5 +74,8 @@
 			</div>
 		</div>
 	</section>
+	<script src="./js/jquery.min.js"></script>
+		<script src="./js/jquery.validate.min.js"></script>
+	<script src="./js/validator.js"></script>
 </body>
 </html>

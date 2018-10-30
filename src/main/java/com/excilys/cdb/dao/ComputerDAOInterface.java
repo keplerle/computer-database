@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.cdb.exception.DateException;
+import com.excilys.cdb.exception.DataException;
 import com.excilys.cdb.model.Computer;
 
 public interface ComputerDAOInterface<T> {
@@ -17,11 +17,11 @@ public interface ComputerDAOInterface<T> {
 	 * @param obj
 	 * @return boolean
 	 * @throws SQLException
-	 * @throws DateException
+	 * @throws DataException
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	public abstract boolean create(T obj) throws SQLException, DateException, FileNotFoundException, IOException;
+	public abstract boolean create(T obj) throws SQLException, DataException, FileNotFoundException, IOException;
 
 	/**
 	 * Méthode pour effacer
@@ -40,11 +40,11 @@ public interface ComputerDAOInterface<T> {
 	 * @param obj
 	 * @return boolean
 	 * @throws SQLException
-	 * @throws DateException
+	 * @throws DataException
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	public abstract boolean update(T obj) throws SQLException, DateException, FileNotFoundException, IOException;
+	public abstract boolean update(T obj) throws SQLException, DataException, FileNotFoundException, IOException;
 
 	/**
 	 * Méthode de recherche des informations par id

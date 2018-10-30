@@ -6,7 +6,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.excilys.cdb.dao.ComputerDAO;
-import com.excilys.cdb.exception.DateException;
+import com.excilys.cdb.exception.DataException;
+import com.excilys.cdb.exception.Validator;
 import com.excilys.cdb.model.Computer;
 
 
@@ -32,11 +33,17 @@ public class ComputerService {
 
 
 
-	public boolean create(Computer computer) throws DateException, SQLException, FileNotFoundException, IOException {
+	public boolean create(Computer computer) throws DataException, SQLException, FileNotFoundException, IOException {
+		if(!Validator.computerValidator(computer)) {
+			throw new DataException();
+		}
 		return computerDao.create(computer);
 	}
 
-	public boolean update(Computer computer) throws DateException, SQLException, FileNotFoundException, IOException {
+	public boolean update(Computer computer) throws DataException, SQLException, FileNotFoundException, IOException {
+		if(!Validator.computerValidator(computer)) {
+			throw new DataException();
+		}
 		return computerDao.update(computer);
 	}
 

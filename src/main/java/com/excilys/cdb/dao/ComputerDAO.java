@@ -8,9 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-
-import com.excilys.cdb.exception.DateException;
+import com.excilys.cdb.exception.DataException;
+import com.excilys.cdb.exception.Validator;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
@@ -36,10 +35,8 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public boolean create(Computer computer) throws SQLException, DateException,FileNotFoundException, IOException {
-		if(computer.getName().equals("")||computer.getName().equals(null)) {
-			return false;
-		}
+	public boolean create(Computer computer) throws SQLException, DataException,FileNotFoundException, IOException {
+	
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_INSERT);) {
 			preparedStatement.setString(1, computer.getName());
@@ -62,12 +59,9 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 				preparedStatement.setBinaryStream(4, null);
 			}
 
-			if (computer.getDiscontinued() != null && computer.getIntroduced() != null
-					&& computer.getDiscontinued().isBefore(computer.getIntroduced())) {
-				throw new DateException();
-			}
 			int result = preparedStatement.executeUpdate();
 			if(result==1) {
+				ComputerDAO.connect.close();
 				return true;
 			}
 		}
@@ -76,11 +70,8 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public boolean update(Computer computer) throws SQLException, DateException ,FileNotFoundException, IOException{
+	public boolean update(Computer computer) throws SQLException, DataException ,FileNotFoundException, IOException{
 		
-		if(computer.getName().equals("")) {
-			return false;
-		}
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_UPDATE);) {
 			
@@ -104,13 +95,9 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 			}
 			preparedStatement.setLong(5, computer.getId());
 
-			if (computer.getDiscontinued() != null && computer.getIntroduced() != null
-					&& computer.getDiscontinued().isBefore(computer.getIntroduced())) {
-				throw new DateException();
-			}
-
 			int result = preparedStatement.executeUpdate();
 			if(result==1) {
+				ComputerDAO.connect.close();
 				return true;
 			}
 		}

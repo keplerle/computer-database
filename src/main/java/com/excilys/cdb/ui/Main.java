@@ -10,7 +10,7 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.exception.DateException;
+import com.excilys.cdb.exception.DataException;
 import com.excilys.cdb.exception.OutOfCommandeScopeException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
@@ -148,7 +148,7 @@ public class Main {
 							logger.info("Echec de la création !! ");
 						}
 						response = false;
-					} catch (DateException de) {
+					} catch (DataException de) {
 						logger.error(de.getMessage());
 					}
 					introduced = null;
@@ -193,7 +193,7 @@ public class Main {
 							logger.warn("Echec de la mise à jour !! ");
 						}
 						response = false;
-					} catch (DateException de) {
+					} catch (DataException de) {
 						logger.error(de.getMessage());
 					}
 					break;
@@ -217,8 +217,6 @@ public class Main {
 				}
 				case 8: { // Quitter
 					sc.close();
-
-					logger.info("Deconnexion to DB");
 					logger.info("A bientot !");
 					System.exit(0);
 					break;

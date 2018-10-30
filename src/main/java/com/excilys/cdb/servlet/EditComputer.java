@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.exception.DateException;
+import com.excilys.cdb.exception.DataException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
@@ -76,10 +76,10 @@ public class EditComputer extends HttpServlet {
 		try {
 			cpuService.update(updatedComputer);
 			response.sendRedirect("dashboard");
-		} catch (DateException de) {
-			response.sendRedirect("500");
+		} catch (DataException de) {
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		} catch (SQLException e) {
-			response.sendRedirect("404");
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/404.jsp").forward(request, response);
 		}
 	}
 

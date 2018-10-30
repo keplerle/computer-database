@@ -13,56 +13,82 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jetty.port>9090</jetty.port>
+		<webapp.dir>./WebContent</webapp.dir>
+
+		<junit.version>4.12</junit.version>
+		<mysql.version>8.0.12</mysql.version>
+		<slf4j.version>1.7.25</slf4j.version>
+		<jstl.version>1.2</jstl.version>
+		<servlet.version>2.0</servlet.version>
+		<jetty.version>9.4.12.v20180830</jetty.version>
+		<selenium.version>3.14.0</selenium.version>
+		<jquery.validation.version>1.17.0-1</jquery.validation.version>
 	</properties>
 
 	<dependencies>
 
 		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery-validation</artifactId>
+			<version>${jquery.validation.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.12</version>
+			<version>${mysql.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.25</version>
+			<version>${slf4j.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.25</version>
+			<version>${slf4j.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<version>${jstl.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jsp-api</artifactId>
-			<version>2.0</version>
+			<version>${servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlets</artifactId>
-			<version>9.4.12.v20180830</version>
+			<version>${jetty.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery-validation</artifactId>
+			<version>${jquery.validation.version}</version>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -72,13 +98,13 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			
-			<plugin>            
-			  <groupId>org.apache.maven.plugins</groupId>
-			  <artifactId>maven-war-plugin</artifactId>
-			  <configuration>
-			    <webXml>WebContent/WEB-INF/web.xml</webXml>        
-			  </configuration>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webXml>WebContent/WEB-INF/web.xml</webXml>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
