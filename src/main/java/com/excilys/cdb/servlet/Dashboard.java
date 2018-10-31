@@ -91,7 +91,6 @@ public class Dashboard extends HttpServlet {
 		String[] idTab = checkedIds[0].split(",");
 
 		for (int i = 0; i < idTab.length; i++) {
-
 			try {
 				cpuService.delete(Integer.parseInt(idTab[i]));
 			} catch (NumberFormatException e) {

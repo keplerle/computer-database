@@ -1,5 +1,5 @@
 package com.excilys.cdb.SeleniumTest;
 
-public class SeleniumTest {
+public class TestEditWrongDate {
 
 }
