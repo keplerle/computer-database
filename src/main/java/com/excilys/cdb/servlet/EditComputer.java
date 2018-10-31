@@ -34,11 +34,11 @@ public class EditComputer extends HttpServlet {
 			mapper=MapperComputerDTO.getInstance();
 			
 			ComputerDTO computerDto = mapper.computerToComputerDto(cpuService.find(Integer.parseInt(request.getParameter("computerId"))));
-			request.setAttribute("computerId", computerDto.getId());
-			request.setAttribute("computerName", computerDto.getName());
-			request.setAttribute("introduced", computerDto.getIntroduced());
-			request.setAttribute("discontinued", computerDto.getDiscontinued());
-			request.setAttribute("companyId", computerDto.getCompanyId());
+			request.setAttribute("computerId", computerDto.id);
+			request.setAttribute("computerName", computerDto.name);
+			request.setAttribute("introduced", computerDto.introduced);
+			request.setAttribute("discontinued", computerDto.discontinued);
+			request.setAttribute("companyId", computerDto.companyId);
 			
 			cpaService = CompanyService.getInstance();
 
@@ -57,11 +57,11 @@ public class EditComputer extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		ComputerDTO computerDto = new ComputerDTO();
-		computerDto.setId(request.getParameter("id"));
-		computerDto.setName(request.getParameter("computerName"));
-		computerDto.setIntroduced(request.getParameter("introduced"));
-		computerDto.setDiscontinued(request.getParameter("discontinued"));
-		computerDto.setCompanyId(request.getParameter("companyId"));
+		computerDto.id=request.getParameter("id");
+		computerDto.name=request.getParameter("computerName");
+		computerDto.introduced=request.getParameter("introduced");
+		computerDto.discontinued=request.getParameter("discontinued");
+		computerDto.companyId=request.getParameter("companyId");
 
 		cpuService = ComputerService.getInstance();
 		try {

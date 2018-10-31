@@ -43,10 +43,10 @@ public class AddComputer extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ComputerDTO computerDto = new ComputerDTO();
-		computerDto.setName(request.getParameter("computerName"));
-		computerDto.setIntroduced(request.getParameter("introduced"));
-		computerDto.setDiscontinued(request.getParameter("discontinued"));
-		computerDto.setCompanyId(request.getParameter("companyId"));
+		computerDto.name = request.getParameter("computerName");
+		computerDto.introduced = request.getParameter("introduced");
+		computerDto.discontinued = request.getParameter("discontinued");
+		computerDto.companyId = request.getParameter("companyId");
 		cpuService = ComputerService.getInstance();
 		try {
 			cpuService.create(mapper.computerDtoToComputer(computerDto));
