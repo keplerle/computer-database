@@ -1,27 +1,20 @@
 package com.excilys.cdb.ui;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Scanner;
-
+/*import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;*/
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.excilys.cdb.exception.DataException;
-import com.excilys.cdb.exception.OutOfCommandeScopeException;
-import com.excilys.cdb.model.Company;
-import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.CompanyService;
-import com.excilys.cdb.service.ComputerService;
 
 public class Main {
 
 	public static void main(String[] args) {
 
 		Logger logger = LoggerFactory.getLogger(Main.class);
+		
+		/*System.setProperty("webdriver.chrome.driver", "/home/excilys/Téléchargements/chromedriver");
+		WebDriver driver = new ChromeDriver();
+		driver.get("http://localhost:8080/Main/dashboard");*/
+		/*
 		CompanyService cpaService;
 		ComputerService cpuService;
 
@@ -238,5 +231,6 @@ public class Main {
 				logger.error(ioEx.getMessage());
 			}
 		}
+		*/
 	}
 }

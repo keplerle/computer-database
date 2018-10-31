@@ -36,7 +36,7 @@ public class Dashboard extends HttpServlet {
 		try {
 			cpuService = ComputerService.getInstance();
 			mapper=MapperComputerDTO.getInstance();
-			subComputersDTO.clear();
+			
 			
 			
 			if (request.getParameter("search") == null || request.getParameter("search").equals("")) {
@@ -60,6 +60,7 @@ public class Dashboard extends HttpServlet {
 			
 			subComputers = Page.pagination(computers);
 			
+			subComputersDTO.clear();
 			for(int i=0;i<subComputers.size();i++) {
 				subComputersDTO.add(mapper.computerToComputerDto(subComputers.get(i)));
 			}

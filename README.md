@@ -20,9 +20,9 @@
 
 * junit: 4.12
 * mysql: 8.0.12
-* slf4j:1.7.25
-* jstl:1.2
-* servlet:2.0
-* jetty:9.4.12.v20180830
-* selenium:3.14.0
-* jquery-validation:1.17.0-1
+* slf4j: 1.7.25
+* jstl: 1.2
+* servlet: 2.0
+* jetty: 9.4.12.v20180830
+* selenium: 3.14.0
+* jquery-validation: 1.17.0-1

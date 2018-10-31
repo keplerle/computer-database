@@ -1,4 +1,4 @@
-package com.excilys.cdb.test;
+package com.excilys.cdb.JUnitTest;
 
 import static org.junit.Assert.*;
 
