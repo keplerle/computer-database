@@ -26,56 +26,43 @@ public class Dashboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	Logger logger = LoggerFactory.getLogger(Dashboard.class);
-	
+
 	ComputerService cpuService;
 	MapperComputerDTO mapper;
 	List<Computer> computers;
-	List<Computer> subComputers= new ArrayList<Computer>();
+	List<Computer> subComputers = new ArrayList<Computer>();
 	List<ComputerDTO> subComputersDTO = new ArrayList<ComputerDTO>();
+	int counter;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			cpuService = ComputerService.getInstance();
-			mapper=MapperComputerDTO.getInstance();
-
-			if (request.getParameter("search") == null || request.getParameter("search").equals("")) {
-				computers = cpuService.findAll();
-				request.setAttribute("search", "");
-
+			mapper = MapperComputerDTO.getInstance();
+			
+			counter = cpuService.count();
+			Page.setPage(request.getParameter("page"), request.getParameter("size"));
+			if (request.getParameter("search") == null) {
+				computers = cpuService.findAll("");
 			} else {
-				computers = cpuService.findAll(request.getParameter("search"));
 				request.setAttribute("search", request.getParameter("search"));
-				
+				computers = cpuService.findAll(request.getParameter("search"));
 			}
-			
-			if (request.getParameter("page") != null) {
-				Page.setPage(Integer.parseInt(request.getParameter("page")));
-			}else {
-				Page.setPage(1);
-			}
-			if (request.getParameter("size") != null) {
-				Page.setPageSize(Integer.parseInt(request.getParameter("size")));
-			}
-			
-			subComputers = Page.pagination(computers);
-			
 			subComputersDTO.clear();
-			for(int i=0;i<subComputers.size();i++) {
-				subComputersDTO.add(mapper.computerDtoFromComputer(subComputers.get(i)));
+			for (int i = 0; i < computers.size(); i++) {
+				subComputersDTO.add(mapper.computerDtoFromComputer(computers.get(i)));
 			}
-			
 
 		} catch (DataBaseException dbe) {
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		} catch (NoPreviousPageException nppe) {
-			Page.setPage(Integer.parseInt(request.getParameter("page")) + 1);
+			Page.increasePage();
 
 		} catch (NoNextPageException nnpe) {
-			Page.setPage(Integer.parseInt(request.getParameter("page")) - 1);
+			Page.decreasePage();
 		}
-		
+
 		request.setAttribute("computers", subComputersDTO);
-		request.setAttribute("counter", computers.size());
+		request.setAttribute("counter", counter);
 		request.setAttribute("pageIndex", Page.getPage());
 		request.setAttribute("pageSize", Page.getPageSize());
 

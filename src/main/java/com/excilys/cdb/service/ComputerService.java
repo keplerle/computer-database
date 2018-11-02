@@ -7,8 +7,12 @@ import java.util.Optional;
 import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.exception.DataException;
+import com.excilys.cdb.exception.NoNextPageException;
+import com.excilys.cdb.exception.NoPreviousPageException;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.model.Page;
 import com.excilys.cdb.validator.ComputerValidator;
+import com.excilys.cdb.validator.PageValidator;
 
 
 public class ComputerService {
@@ -52,11 +56,20 @@ public class ComputerService {
 		}
 	}
 
-	public <T> List<Computer> findAll() throws IOException, DataBaseException {
-		return computerDao.findAll();
+	public <T> List<Computer> findAll() throws IOException, DataBaseException, NoPreviousPageException, NoNextPageException {
+		PageValidator.previousPageValidator();
+		List<Computer> list = computerDao.findAll(Page.getPage(),Page.getPageSize());
+		PageValidator.nextPageValidator(list);
+		return list;
 	}
 	
-	public <T> List<Computer> findAll(String name) throws  IOException, DataBaseException {
-		return computerDao.findAll(name);
+	public <T> List<Computer> findAll(String name) throws  IOException, DataBaseException, NoPreviousPageException, NoNextPageException {
+		PageValidator.previousPageValidator();
+		List<Computer> list = computerDao.findAll(name,Page.getPage(),Page.getPageSize());
+		PageValidator.nextPageValidator(list);
+		return list;
+	}
+	public int count() throws  IOException, DataBaseException{
+		return computerDao.count();
 	}
 }

@@ -1,38 +1,45 @@
 package com.excilys.cdb.JUnitTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
-import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.exception.DataBaseException;
+import com.excilys.cdb.exception.DataException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.service.ComputerService;
 
-public class ComputerDAOTest {
-private ComputerDAO computerDao;
+public class ComputerServiceTest {
+private ComputerService computerService;
 	
 	@Before
 	public void setUp() {
-		computerDao = ComputerDAO.getInstance();
+		computerService = ComputerService.getInstance();
 	}
 	
 	@After
 	public void tearDown() {
-		computerDao=null;
+		computerService=null;
 	}
 	
 	@Test
 	public void testNotNullFindAllComputers() {
 		try {
-			assertNotNull(computerDao.findAll());	
+			assertNotNull(computerService.findAll());	
 		}catch(Exception e) {
 			fail("Exception inattendue");
 		}		
@@ -41,7 +48,7 @@ private ComputerDAO computerDao;
 	@Test
 	public void testEqualsComputerFindAllComputers() {
 		try {
-			List<Computer> result = computerDao.findAll();
+			List<Computer> result = computerService.findAll();
 			Computer computer= new Computer();
 			for(int i=0;i<result.size();i++) {
 				assertEquals(computer.getClass(),result.get(i).getClass());
@@ -58,7 +65,7 @@ private ComputerDAO computerDao;
 			Computer computer = new Computer("UnitTestCreate");
 			Company company = new Company();
 			computer.setCompany(company);
-			assertTrue(computerDao.create(computer));
+			assertTrue(computerService.create(computer));
 		}catch(Exception e) {
 			fail("Exception inattendue");
 		}		
@@ -76,7 +83,7 @@ private ComputerDAO computerDao;
 			computer.setDiscontinued(LocalDate.of(2010, 01, 01));
 			computer.setCompany(company);
 
-			assertTrue(computerDao.update(computer));
+			assertTrue(computerService.update(computer));
 			
 		}catch(Exception e) {
 			fail("Exception inattendue");
@@ -87,7 +94,7 @@ private ComputerDAO computerDao;
 	@Ignore
 	public void testDeleteComputer() {
 		try {	
-			assertTrue(computerDao.delete(650));	
+			assertTrue(computerService.delete(650));	
 		}catch(Exception e) {
 			fail("Exception inattendue");
 		}		
@@ -96,7 +103,7 @@ private ComputerDAO computerDao;
 	@Test
 	public void testFindByIdComputer() {
 		try {	
-			Optional<Computer> computer = computerDao.find(12);
+			Optional<Computer> computer = computerService.find(12);
 			assertEquals(12,computer.get().getId());
 			assertEquals("Apple III",computer.get().getName());
 			assertEquals("1980-05-01",computer.get().getIntroduced().toString());
@@ -111,7 +118,7 @@ private ComputerDAO computerDao;
 	public void testFindByIdOutofBoundComputer() throws IOException{
 		Optional<Computer> computer = null;
 		try {	
-			computer = computerDao.find(0);
+			computer = computerService.find(0);
 		}catch(DataBaseException e) {
 			assertNull(computer);
 		}
@@ -128,7 +135,7 @@ private ComputerDAO computerDao;
 			computer.setDiscontinued(LocalDate.of(2010, 01, 01));
 			computer.setCompany(company);
 
-			assertFalse(computerDao.update(computer));
+			assertFalse(computerService.update(computer));
 			
 		}catch(Exception e) {
 			fail("Exception inattendue");
@@ -136,8 +143,8 @@ private ComputerDAO computerDao;
 	}
 	
 	@Test
-	public void testUpdateComputerWithoutName() {
-		try {
+	public void testUpdateComputerWithoutName() throws IOException, DataBaseException {
+		
 			
 			Computer computer = new Computer(600,"");
 			Company company = new Company(5);
@@ -146,17 +153,19 @@ private ComputerDAO computerDao;
 			computer.setDiscontinued(LocalDate.of(2010, 01, 01));
 			computer.setCompany(company);
 
-			assertFalse(computerDao.update(computer));
+			try {
+				computerService.update(computer);
+			} catch (DataException e) {
+				assertEquals("Le nom est requis",e.getMessage());			
+			}
 			
-		}catch(Exception e) {
-			fail("Exception inattendue");
-		}		
+				
 	}
 	
 	@Test
 	public void testDeleteOutOfBoundComputer() {
 		try {	
-			assertFalse(computerDao.delete(0));	
+			assertFalse(computerService.delete(0));	
 		}catch(Exception e) {
 			fail("Exception inattendue");
 		}		

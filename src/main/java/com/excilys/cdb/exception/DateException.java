@@ -4,6 +4,6 @@ public class DateException extends DataException{
 	private static final long serialVersionUID = 1L;
 
 	public DateException() {
-		super();
+		super("Les dates sont incohérentes");
 	}
 }

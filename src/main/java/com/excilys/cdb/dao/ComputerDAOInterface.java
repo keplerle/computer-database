@@ -60,7 +60,7 @@ public interface ComputerDAOInterface<T> {
 	 * @throws IOException 
 	 * @throws DataBaseException 
 	 */
-	public abstract List<T> findAll(String name) throws IOException, DataBaseException;
+	public abstract List<T> findAll(String name, int page, int size) throws IOException, DataBaseException;
 
 	/**
 	 * Méthode de recherche des informations
@@ -69,7 +69,15 @@ public interface ComputerDAOInterface<T> {
 	 * @throws IOException 
 	 * @throws DataBaseException 
 	 */
-	public abstract List<T> findAll() throws IOException, DataBaseException;
+	public abstract List<T> findAll(int page, int size) throws IOException, DataBaseException;
+	/**
+	 * Méthode pour compter le nombre total de données
+	 * 
+	 * @return int
+	 * @throws IOException 
+	 * @throws DataBaseException 
+	 */
+	int count() throws IOException, DataBaseException;
 
 
 }
