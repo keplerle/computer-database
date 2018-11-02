@@ -70,6 +70,7 @@
 							or <a href="dashboard" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
+					<div><c:out value="${internError}" /></div>
 				</div>
 			</div>
 		</div>

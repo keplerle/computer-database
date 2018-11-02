@@ -7,9 +7,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
 import org.junit.*;
 
 import com.excilys.cdb.dao.ComputerDAO;
+import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
@@ -93,23 +96,23 @@ private ComputerDAO computerDao;
 	@Test
 	public void testFindByIdComputer() {
 		try {	
-			Computer computer = computerDao.find(12);
-			assertEquals(12,computer.getId());
-			assertEquals("Apple III",computer.getName());
-			assertEquals("1980-05-01",computer.getIntroduced().toString());
-			assertEquals("1984-04-01",computer.getDiscontinued().toString());
-			assertEquals("Apple Inc.",computer.getCompany().getName());
+			Optional<Computer> computer = computerDao.find(12);
+			assertEquals(12,computer.get().getId());
+			assertEquals("Apple III",computer.get().getName());
+			assertEquals("1980-05-01",computer.get().getIntroduced().toString());
+			assertEquals("1984-04-01",computer.get().getDiscontinued().toString());
+			assertEquals("Apple Inc.",computer.get().getCompany().getName());
 		}catch(Exception e) {
 			fail("Exception inattendue");
 		}		
 	}
 	
 	@Test
-	public void testFindByIdOutofBoundComputer() throws FileNotFoundException,IOException{
-		Computer computer = null;
+	public void testFindByIdOutofBoundComputer() throws IOException{
+		Optional<Computer> computer = null;
 		try {	
 			computer = computerDao.find(0);
-		}catch(SQLException e) {
+		}catch(DataBaseException e) {
 			assertNull(computer);
 		}
 	}

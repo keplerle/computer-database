@@ -6,6 +6,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
@@ -17,12 +18,14 @@ public class TestEditWithoutName {
 
   @Before
   public void setUp() throws Exception {
-    driver = new FirefoxDriver();
+		System.setProperty("webdriver.chrome.driver", "/home/excilys/Téléchargements/chromedriver");
+		WebDriver driver = new ChromeDriver();	
     baseUrl = "https://www.katalon.com/";
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
   }
 
   @Test
+  @Ignore
   public void testEditWithoutName() throws Exception {
     driver.get("http://localhost:8080/Main/dashboard");
     driver.findElement(By.linkText("MacBook Pro 15.4 inch")).click();

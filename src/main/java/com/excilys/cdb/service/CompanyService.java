@@ -1,11 +1,10 @@
 package com.excilys.cdb.service;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import com.excilys.cdb.dao.CompanyDAO;
+import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.model.Company;
 
 public class CompanyService {
@@ -23,7 +22,7 @@ public class CompanyService {
 		return companyService;
 	}
 
-	public <T> List<Company> findAll() throws SQLException, FileNotFoundException, IOException {
+	public <T> List<Company> findAll() throws IOException, DataBaseException {
 		return dc.findAll();
 	}
 

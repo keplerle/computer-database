@@ -1,10 +1,9 @@
 package com.excilys.cdb.exception;
 
-public class DataException extends Exception {
-
+public class DateException extends DataException{
 	private static final long serialVersionUID = 1L;
 
-	public DataException() {
+	public DateException() {
 		super();
 	}
 }

@@ -1,7 +1,6 @@
 package com.excilys.cdb.servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.dto.ComputerDTO;
+import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.exception.NoNextPageException;
 import com.excilys.cdb.exception.NoPreviousPageException;
 import com.excilys.cdb.mapper.MapperComputerDTO;
@@ -26,6 +26,7 @@ public class Dashboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	Logger logger = LoggerFactory.getLogger(Dashboard.class);
+	
 	ComputerService cpuService;
 	MapperComputerDTO mapper;
 	List<Computer> computers;
@@ -36,9 +37,7 @@ public class Dashboard extends HttpServlet {
 		try {
 			cpuService = ComputerService.getInstance();
 			mapper=MapperComputerDTO.getInstance();
-			
-			
-			
+
 			if (request.getParameter("search") == null || request.getParameter("search").equals("")) {
 				computers = cpuService.findAll();
 				request.setAttribute("search", "");
@@ -62,20 +61,19 @@ public class Dashboard extends HttpServlet {
 			
 			subComputersDTO.clear();
 			for(int i=0;i<subComputers.size();i++) {
-				subComputersDTO.add(mapper.computerToComputerDto(subComputers.get(i)));
+				subComputersDTO.add(mapper.computerDtoFromComputer(subComputers.get(i)));
 			}
+			
 
-		} catch (SQLException ex) {
-			logger.error("SQLException: " + ex.getMessage());
-			logger.error("SQLState: " + ex.getSQLState());
-			logger.error("VendorError: " + ex.getErrorCode());
-			this.getServletContext().getRequestDispatcher("/WEB-INF/views/404.jsp").forward(request, response);
+		} catch (DataBaseException dbe) {
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		} catch (NoPreviousPageException nppe) {
 			Page.setPage(Integer.parseInt(request.getParameter("page")) + 1);
 
 		} catch (NoNextPageException nnpe) {
 			Page.setPage(Integer.parseInt(request.getParameter("page")) - 1);
 		}
+		
 		request.setAttribute("computers", subComputersDTO);
 		request.setAttribute("counter", computers.size());
 		request.setAttribute("pageIndex", Page.getPage());
@@ -90,14 +88,10 @@ public class Dashboard extends HttpServlet {
 		String[] checkedIds = request.getParameterValues("selection");
 		String[] idTab = checkedIds[0].split(",");
 
-		for (int i = 0; i < idTab.length; i++) {
-			try {
-				cpuService.delete(Integer.parseInt(idTab[i]));
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		try {
+			cpuService.deleteAll(idTab);
+		} catch (DataBaseException e) {
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		}
 
 		response.sendRedirect("dashboard");

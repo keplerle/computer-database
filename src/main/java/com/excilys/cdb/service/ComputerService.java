@@ -1,14 +1,14 @@
 package com.excilys.cdb.service;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.cdb.dao.ComputerDAO;
+import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.exception.DataException;
-import com.excilys.cdb.exception.Validator;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.validator.ComputerValidator;
 
 
 public class ComputerService {
@@ -27,35 +27,36 @@ public class ComputerService {
 		return computerService;
 	}
 
-	public Computer find(int id) throws SQLException, FileNotFoundException, IOException {
+	public Optional<Computer> find(int id) throws IOException, DataBaseException {
 		return computerDao.find(id);
 	}
 
-
-
-	public boolean create(Computer computer) throws DataException, SQLException, FileNotFoundException, IOException {
-		if(!Validator.computerValidator(computer)) {
-			throw new DataException();
-		}
+	public boolean create(Computer computer) throws DataException, IOException, DataBaseException {
+		ComputerValidator.computerValidator(computer);
 		return computerDao.create(computer);
 	}
 
-	public boolean update(Computer computer) throws DataException, SQLException, FileNotFoundException, IOException {
-		if(!Validator.computerValidator(computer)) {
-			throw new DataException();
-		}
+	public boolean update(Computer computer) throws DataException, IOException, DataBaseException {
+		ComputerValidator.computerValidator(computer);
 		return computerDao.update(computer);
 	}
 
-	public boolean delete(int id) throws SQLException, FileNotFoundException, IOException {
+	public boolean delete(int id) throws IOException, DataBaseException {
 		return computerDao.delete(id);
 	}
+	
+	public void deleteAll(String[] idTab) throws IOException, DataBaseException {
+		for (int i = 0; i < idTab.length; i++) {
+			if(!("".equals(idTab[i])))
+			delete(Integer.parseInt(idTab[i]));
+		}
+	}
 
-	public <T> List<Computer> findAll() throws SQLException, FileNotFoundException, IOException {
+	public <T> List<Computer> findAll() throws IOException, DataBaseException {
 		return computerDao.findAll();
 	}
 	
-	public <T> List<Computer> findAll(String name) throws SQLException, FileNotFoundException, IOException {
+	public <T> List<Computer> findAll(String name) throws  IOException, DataBaseException {
 		return computerDao.findAll(name);
 	}
 }

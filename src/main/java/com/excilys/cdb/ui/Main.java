@@ -1,7 +1,7 @@
 package com.excilys.cdb.ui;
 
 /*import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;*/
+import org.openqa.selenium.chrome.FirefoxDriver;*/
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,8 +11,8 @@ public class Main {
 
 		Logger logger = LoggerFactory.getLogger(Main.class);
 		
-		/*System.setProperty("webdriver.chrome.driver", "/home/excilys/Téléchargements/chromedriver");
-		WebDriver driver = new ChromeDriver();
+		/*System.setProperty("webdriver.chrome.driver", "/home/excilys/Téléchargements/FirefoxDriver");
+		WebDriver driver = new FirefoxDriver();
 		driver.get("http://localhost:8080/Main/dashboard");*/
 		/*
 		CompanyService cpaService;

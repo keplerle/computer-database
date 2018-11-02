@@ -1,9 +1,9 @@
 package com.excilys.cdb.dao;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
+
+import com.excilys.cdb.exception.DataBaseException;
 
 public interface CompanyDAOInterface<T> {
 
@@ -11,10 +11,9 @@ public interface CompanyDAOInterface<T> {
 	 * Méthode de recherche des informations
 	 * 
 	 * @return ArrayList<T>
-	 * @throws SQLException
 	 * @throws IOException 
-	 * @throws FileNotFoundException 
+	 * @throws DataBaseException 
 	 */
-	public abstract List<T> findAll() throws SQLException, FileNotFoundException, IOException;
+	public abstract List<T> findAll() throws IOException, DataBaseException;
 
 }

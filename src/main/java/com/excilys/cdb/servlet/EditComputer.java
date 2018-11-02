@@ -13,10 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.dto.ComputerDTO;
+import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.exception.DataException;
 import com.excilys.cdb.mapper.MapperComputerDTO;
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
@@ -33,7 +33,7 @@ public class EditComputer extends HttpServlet {
 			cpuService = ComputerService.getInstance();
 			mapper=MapperComputerDTO.getInstance();
 			
-			ComputerDTO computerDto = mapper.computerToComputerDto(cpuService.find(Integer.parseInt(request.getParameter("computerId"))));
+			ComputerDTO computerDto = mapper.computerDtoFromOptionalComputer(cpuService.find(Integer.parseInt(request.getParameter("computerId"))));
 			request.setAttribute("computerId", computerDto.id);
 			request.setAttribute("computerName", computerDto.name);
 			request.setAttribute("introduced", computerDto.introduced);
@@ -45,10 +45,9 @@ public class EditComputer extends HttpServlet {
 			List<Company> companies = cpaService.findAll();
 			request.setAttribute("companies", companies);
 			
-		} catch (SQLException ex) {
-			logger.error("SQLException: " + ex.getMessage());
-			logger.error("SQLState: " + ex.getSQLState());
-			logger.error("VendorError: " + ex.getErrorCode());
+		} catch (DataBaseException dbe) {
+			logger.error(dbe.getMessage());
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		}
 
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
@@ -70,9 +69,10 @@ public class EditComputer extends HttpServlet {
 
 			response.sendRedirect("dashboard");
 		} catch (DataException de) {
+			request.setAttribute("internError", de.getMessage());
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
+		} catch (DataBaseException dbe) {
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
-		} catch (SQLException e) {
-			this.getServletContext().getRequestDispatcher("/WEB-INF/views/404.jsp").forward(request, response);
 		}
 	}
 

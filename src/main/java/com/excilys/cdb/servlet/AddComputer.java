@@ -1,8 +1,6 @@
 package com.excilys.cdb.servlet;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.dto.ComputerDTO;
+import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.exception.DataException;
 import com.excilys.cdb.mapper.MapperComputerDTO;
 import com.excilys.cdb.model.Company;
@@ -32,10 +31,8 @@ public class AddComputer extends HttpServlet {
 			mapper=MapperComputerDTO.getInstance();
 			List<Company> companies = cpaService.findAll();
 			request.setAttribute("companies", companies);
-		} catch (SQLException ex) {
-			logger.error("SQLException: " + ex.getMessage());
-			logger.error("SQLState: " + ex.getSQLState());
-			logger.error("VendorError: " + ex.getErrorCode());
+		} catch (DataBaseException dbe) {
+			logger.error(dbe.getMessage());
 		}
 
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
@@ -51,12 +48,12 @@ public class AddComputer extends HttpServlet {
 		try {
 			cpuService.create(mapper.computerDtoToComputer(computerDto));
 			response.sendRedirect("dashboard");
-		} catch (DataException e) {
-			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
-
-		} catch (SQLException e) {
-			this.getServletContext().getRequestDispatcher("/WEB-INF/views/404.jsp").forward(request, response);
+		} catch (DataException de) {
+			request.setAttribute("internError", de.getMessage());
+			this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
+		} 
+		 catch (DataBaseException e) {
+			 this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		}
-
 	}
 }

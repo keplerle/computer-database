@@ -1,6 +1,5 @@
 package com.excilys.cdb.dao;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
@@ -8,8 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.exception.DataException;
-import com.excilys.cdb.exception.Validator;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
@@ -18,13 +22,13 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	private final static String QUERY_INSERT = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 	private final static String QUERY_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 	private final static String QUERY_DELETE = "DELETE FROM computer WHERE id= ?";
-	private final static String QUERY_SELECT_BY_NAME = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE cpu.name LIKE ?";
+	private final static String QUERY_SELECT_BY_NAME = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE UPPER(cpu.name) LIKE UPPER(?)";
 	private final static String QUERY_SELECT_BY_ID = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE cpu.id = ?";
 	private final static String QUERY_SELECT_ALL = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id";
 
 	private static ComputerDAO computerDAO = new ComputerDAO();
 	private static Connection connect;
-
+	Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	private ComputerDAO() {
 		JDBCManager.getInstance();
 		connect = JDBCManager.getConnection();
@@ -35,7 +39,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public boolean create(Computer computer) throws SQLException, DataException,FileNotFoundException, IOException {
+	public boolean create(Computer computer) throws DataException, IOException, DataBaseException {
 	
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_INSERT);) {
@@ -64,13 +68,16 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 				ComputerDAO.connect.close();
 				return true;
 			}
+			ComputerDAO.connect.close();
+		} catch (SQLException e) {
+			throw new DataBaseException();
 		}
-		ComputerDAO.connect.close();
+		
 		return false;
 	}
 
 	@Override
-	public boolean update(Computer computer) throws SQLException, DataException ,FileNotFoundException, IOException{
+	public boolean update(Computer computer) throws DataException, IOException, DataBaseException{
 		
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_UPDATE);) {
@@ -100,14 +107,16 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 				ComputerDAO.connect.close();
 				return true;
 			}
+			ComputerDAO.connect.close();
+		} catch (SQLException e) {
+			throw new DataBaseException();
 		}
 
-		ComputerDAO.connect.close();
 		return false;
 	}
 
 	@Override
-	public boolean delete(int id) throws SQLException ,FileNotFoundException, IOException{
+	public boolean delete(int id) throws IOException, DataBaseException{
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_DELETE);) {
 			
@@ -116,15 +125,15 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 			if(result==1) {
 				return true;
 			}
-			
+			ComputerDAO.connect.close();
+		} catch (SQLException e) {
+			throw new DataBaseException();
 		}
-		ComputerDAO.connect.close();
-		
 		return false;
 	}
 
 	@Override
-	public Computer find(int id) throws SQLException ,FileNotFoundException, IOException{
+	public Optional<Computer> find(int id) throws  IOException, DataBaseException{
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		Computer computer = null;
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_SELECT_BY_ID)) {
@@ -145,14 +154,15 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 				}
 			}
 			result.close();
+			ComputerDAO.connect.close();
+		} catch (SQLException e) {
+			throw new DataBaseException();
 		}
-
-		ComputerDAO.connect.close();
-		return computer;
+		return Optional.ofNullable(computer);
 	}
 
 	@Override
-	public ArrayList<Computer> findAll(String name) throws SQLException,FileNotFoundException, IOException {
+	public ArrayList<Computer> findAll(String name) throws IOException, DataBaseException {
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		ArrayList<Computer> list = new ArrayList<>();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_SELECT_BY_NAME)) {
@@ -176,14 +186,15 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 				list.add(computer);
 			}
 			result.close();
+			ComputerDAO.connect.close();	
+		} catch (SQLException e) {
+			throw new DataBaseException();
 		}
-
-		ComputerDAO.connect.close();	
 		return list;
 	}
 
 	@Override
-	public ArrayList<Computer> findAll() throws SQLException,FileNotFoundException, IOException {
+	public ArrayList<Computer> findAll() throws IOException, DataBaseException {
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		ArrayList<Computer> list = new ArrayList<>();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_SELECT_ALL);
@@ -203,10 +214,10 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 				}
 				list.add(computer);
 			}
+			ComputerDAO.connect.close();
+		} catch (SQLException e) {
+			throw new DataBaseException();
 		}
-
-		ComputerDAO.connect.close();
-
 		return list;
 	}
 }
