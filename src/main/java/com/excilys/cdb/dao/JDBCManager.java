@@ -11,6 +11,9 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 
 public class JDBCManager {
 	
@@ -24,28 +27,14 @@ public class JDBCManager {
 	}
 
 	public static Connection connectionDB() throws IOException {
-		Properties props = new Properties();
+		HikariConfig config = new HikariConfig("/home/excilys/eclipse-workspace/computer-database/src/main/resources/db.properties");
+		HikariDataSource ds = new HikariDataSource(config);
 		try {
-			FileInputStream in = new FileInputStream(
-					"/home/excilys/eclipse-workspace/computer-database/src/main/resources/db.properties");
-			props.load(in);
-			in.close();
-
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		} catch (FileNotFoundException e) {
-			logger.error("Le fichier properties est introuvable.");
-		} catch (ClassNotFoundException e) {
-			logger.error("Le driver est introuvable.");
-		}
-
-		String url = props.getProperty("jdbc.url");
-		String username = props.getProperty("jdbc.username");
-		String password = props.getProperty("jdbc.password");
-
-		try {
-			return DriverManager.getConnection(url, username, password);
+			Connection connect = ds.getConnection();
+			return connect;
 		} catch (SQLException e) {
 			logger.error("Echec de la connexion.");
+			ds.close();
 			return null;
 		}
 	}

@@ -26,10 +26,11 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	private final static String QUERY_SELECT_BY_ID = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE cpu.id = ?";
 	private final static String QUERY_SELECT_ALL = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id LIMIT ? OFFSET ?";
 	private final static String QUERY_COUNT = "SELECT COUNT(computer.id)  FROM computer";
-	
+
 	private static ComputerDAO computerDAO = new ComputerDAO();
 	private static Connection connect;
 	Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+
 	private ComputerDAO() {
 		JDBCManager.getInstance();
 		connect = JDBCManager.getConnection();
@@ -40,10 +41,11 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public boolean create(Computer computer) throws DataException, IOException, DataBaseException {
-	
+	public void create(Computer computer) throws DataException, IOException, DataBaseException {
+
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_INSERT);) {
+			ComputerDAO.connect.setAutoCommit(false);
 			preparedStatement.setString(1, computer.getName());
 
 			if (computer.getIntroduced() == null) {
@@ -64,25 +66,35 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 				preparedStatement.setBinaryStream(4, null);
 			}
 
-			int result = preparedStatement.executeUpdate();
-			if(result==1) {
-				ComputerDAO.connect.close();
-				return true;
-			}
-			ComputerDAO.connect.close();
+			preparedStatement.executeUpdate();
+			ComputerDAO.connect.commit();
+
 		} catch (SQLException e) {
+			try {
+				ComputerDAO.connect.rollback();
+			} catch (SQLException e1) {
+				logger.error(e.getMessage());
+				throw new DataBaseException();
+			}
+			logger.error(e.getMessage());
 			throw new DataBaseException();
+			
+		} finally {
+			try {
+				ComputerDAO.connect.close();
+			} catch (SQLException e) {
+				logger.error(e.getMessage());
+				throw new DataBaseException();
+			}
 		}
-		
-		return false;
 	}
 
 	@Override
-	public boolean update(Computer computer) throws DataException, IOException, DataBaseException{
-		
+	public void update(Computer computer) throws DataException, IOException, DataBaseException {
+
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_UPDATE);) {
-			
+			ComputerDAO.connect.setAutoCommit(false);
 			preparedStatement.setString(1, computer.getName());
 			if (computer.getIntroduced() == null) {
 				preparedStatement.setDate(2, null);
@@ -103,41 +115,60 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 			}
 			preparedStatement.setLong(5, computer.getId());
 
-			int result = preparedStatement.executeUpdate();
-			if(result==1) {
-				ComputerDAO.connect.close();
-				return true;
-			}
-			ComputerDAO.connect.close();
+			preparedStatement.executeUpdate();
+			ComputerDAO.connect.commit();
 		} catch (SQLException e) {
+			try {
+				ComputerDAO.connect.rollback();
+			} catch (SQLException e1) {
+				logger.error(e.getMessage());
+				throw new DataBaseException();
+			}
+			logger.error(e.getMessage());
 			throw new DataBaseException();
+		} finally {
+			try {
+				ComputerDAO.connect.close();
+			} catch (SQLException e) {
+				logger.error(e.getMessage());
+				throw new DataBaseException();
+			}
 		}
-
-		return false;
 	}
 
 	@Override
-	public boolean delete(int id) throws IOException, DataBaseException{
+	public void delete(int id) throws IOException, DataBaseException {
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_DELETE);) {
-			
+			ComputerDAO.connect.setAutoCommit(false);
 			preparedStatement.setLong(1, id);
-			int result = preparedStatement.executeUpdate();
-			if(result==1) {
-				return true;
-			}
-			ComputerDAO.connect.close();
+			preparedStatement.executeUpdate();
+			ComputerDAO.connect.commit();
 		} catch (SQLException e) {
+			try {
+				ComputerDAO.connect.rollback();
+			} catch (SQLException e1) {
+				logger.error(e.getMessage());
+				throw new DataBaseException();
+			}
+			logger.error(e.getMessage());
 			throw new DataBaseException();
+		} finally {
+			try {
+				ComputerDAO.connect.close();
+			} catch (SQLException e) {
+				logger.error(e.getMessage());
+				throw new DataBaseException();
+			}
 		}
-		return false;
 	}
 
 	@Override
-	public Optional<Computer> find(int id) throws  IOException, DataBaseException{
+	public Optional<Computer> find(int id) throws IOException, DataBaseException {
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		Computer computer = null;
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_SELECT_BY_ID)) {
+			ComputerDAO.connect.setAutoCommit(false);
 			preparedStatement.setLong(1, id);
 			ResultSet result = preparedStatement.executeQuery();
 			while (result.next()) {
@@ -155,23 +186,36 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 				}
 			}
 			result.close();
-			ComputerDAO.connect.close();
+			ComputerDAO.connect.commit();
 		} catch (SQLException e) {
+			try {
+				ComputerDAO.connect.rollback();
+			} catch (SQLException e1) {
+				logger.error(e.getMessage());
+				throw new DataBaseException();
+			}
 			logger.error(e.getMessage());
 			throw new DataBaseException();
+		} finally {
+			try {
+				ComputerDAO.connect.close();
+			} catch (SQLException e) {
+				logger.error(e.getMessage());
+				throw new DataBaseException();
+			}
 		}
 		return Optional.ofNullable(computer);
 	}
 
 	@Override
-	public ArrayList<Computer> findAll(String name,int page, int size) throws IOException, DataBaseException {
+	public ArrayList<Computer> findAll(String name, int page, int size) throws IOException, DataBaseException {
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		ArrayList<Computer> list = new ArrayList<>();
 		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_SELECT_BY_NAME)) {
-	
-			preparedStatement.setNString(1,"%"+name+"%");
-			preparedStatement.setInt(2,size);
-			preparedStatement.setInt(3,(page-1)*size);
+			ComputerDAO.connect.setAutoCommit(false);
+			preparedStatement.setNString(1, "%" + name + "%");
+			preparedStatement.setInt(2, size);
+			preparedStatement.setInt(3, (page - 1) * size);
 			ResultSet result = preparedStatement.executeQuery();
 			while (result.next()) {
 				Computer computer = new Computer(result.getInt("id"), result.getString("name"));
@@ -189,10 +233,23 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 				list.add(computer);
 			}
 			result.close();
-			ComputerDAO.connect.close();	
+			ComputerDAO.connect.commit();
 		} catch (SQLException e) {
+			try {
+				ComputerDAO.connect.rollback();
+			} catch (SQLException e1) {
+				logger.error(e.getMessage());
+				throw new DataBaseException();
+			}
 			logger.error(e.getMessage());
 			throw new DataBaseException();
+		} finally {
+			try {
+				ComputerDAO.connect.close();
+			} catch (SQLException e) {
+				logger.error(e.getMessage());
+				throw new DataBaseException();
+			}
 		}
 		return list;
 	}
@@ -201,11 +258,10 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	public ArrayList<Computer> findAll(int page, int size) throws IOException, DataBaseException {
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		ArrayList<Computer> list = new ArrayList<>();
-		try (
-				PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_SELECT_ALL)
-				) {
-			preparedStatement.setInt(1,size);
-			preparedStatement.setInt(2,(page-1)*size);
+		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_SELECT_ALL)) {
+			ComputerDAO.connect.setAutoCommit(false);
+			preparedStatement.setInt(1, size);
+			preparedStatement.setInt(2, (page - 1) * size);
 			ResultSet result = preparedStatement.executeQuery();
 			while (result.next()) {
 				Computer computer = new Computer(result.getInt("id"), result.getString("name"));
@@ -223,30 +279,57 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 				list.add(computer);
 			}
 			result.close();
-			ComputerDAO.connect.close();
+			ComputerDAO.connect.commit();
+
 		} catch (SQLException e) {
+			try {
+				ComputerDAO.connect.rollback();
+			} catch (SQLException e1) {
+				logger.error(e.getMessage());
+				throw new DataBaseException();
+			}
 			logger.error(e.getMessage());
 			throw new DataBaseException();
+		} finally {
+			try {
+				ComputerDAO.connect.close();
+			} catch (SQLException e) {
+				logger.error(e.getMessage());
+				throw new DataBaseException();
+			}
 		}
 		return list;
 	}
-	
+
 	@Override
 	public int count() throws IOException, DataBaseException {
 		ComputerDAO.connect = JDBCManager.connectionDB();
-		int count=0;
-		try (
-				PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_COUNT);
-				ResultSet result = preparedStatement.executeQuery();
-				) {
+		int count = 0;
+		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_COUNT)) {
+			ComputerDAO.connect.setAutoCommit(false);
+			ResultSet result = preparedStatement.executeQuery();
 			while (result.next()) {
-				count=result.getInt(1);
+				count = result.getInt(1);
 			}
-			
-			ComputerDAO.connect.close();
+			result.close();
+			ComputerDAO.connect.commit();
 		} catch (SQLException e) {
+			try {
+				ComputerDAO.connect.rollback();
+			} catch (SQLException e1) {
+				logger.error(e.getMessage());
+				throw new DataBaseException();
+			}
 			logger.error(e.getMessage());
 			throw new DataBaseException();
+			
+		} finally {
+			try {
+				ComputerDAO.connect.close();
+			} catch (SQLException e) {
+				logger.error(e.getMessage());
+				throw new DataBaseException();
+			}
 		}
 		return count;
 	}

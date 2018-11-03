@@ -19,7 +19,7 @@ public interface ComputerDAOInterface<T> {
 	 * @throws IOException 
 	 * @throws DataBaseException 
 	 */
-	public abstract boolean create(T obj) throws DataException, IOException, DataBaseException;
+	public abstract void create(T obj) throws DataException, IOException, DataBaseException;
 
 	/**
 	 * Méthode pour effacer
@@ -29,7 +29,7 @@ public interface ComputerDAOInterface<T> {
 	 * @throws IOException 
 	 * @throws DataBaseException 
 	 */
-	public abstract boolean delete(int id) throws IOException, DataBaseException;
+	public abstract void delete(int id) throws IOException, DataBaseException;
 
 	/**
 	 * Méthode de mise à jour
@@ -40,7 +40,7 @@ public interface ComputerDAOInterface<T> {
 	 * @throws IOException 
 	 * @throws DataBaseException 
 	 */
-	public abstract boolean update(T obj) throws DataException, IOException, DataBaseException;
+	public abstract void update(T obj) throws DataException, IOException, DataBaseException;
 
 	/**
 	 * Méthode de recherche des informations par id

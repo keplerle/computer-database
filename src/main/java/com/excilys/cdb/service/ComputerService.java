@@ -35,18 +35,18 @@ public class ComputerService {
 		return computerDao.find(id);
 	}
 
-	public boolean create(Computer computer) throws DataException, IOException, DataBaseException {
+	public void create(Computer computer) throws DataException, IOException, DataBaseException {
 		ComputerValidator.computerValidator(computer);
-		return computerDao.create(computer);
+		computerDao.create(computer);
 	}
 
-	public boolean update(Computer computer) throws DataException, IOException, DataBaseException {
+	public void update(Computer computer) throws DataException, IOException, DataBaseException {
 		ComputerValidator.computerValidator(computer);
-		return computerDao.update(computer);
+		computerDao.update(computer);
 	}
 
-	public boolean delete(int id) throws IOException, DataBaseException {
-		return computerDao.delete(id);
+	public void delete(int id) throws IOException, DataBaseException {
+		computerDao.delete(id);
 	}
 	
 	public void deleteAll(String[] idTab) throws IOException, DataBaseException {

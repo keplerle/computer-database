@@ -21,6 +21,7 @@
 		<jetty.version>9.4.12.v20180830</jetty.version>
 		<selenium.version>3.14.0</selenium.version>
 		<jquery.validation.version>1.17.0-1</jquery.validation.version>
+		<hikari.cp.version>2.7.8</hikari.cp.version>
 	</properties>
 
 	<dependencies>
@@ -81,6 +82,13 @@
 			<artifactId>jquery-validation</artifactId>
 			<version>${jquery.validation.version}</version>
 		</dependency>
+		
+		<dependency>
+    <groupId>com.zaxxer</groupId>
+    <artifactId>HikariCP</artifactId>
+    <version>${hikari.cp.version}</version>
+    <scope>compile</scope>
+</dependency>
 	</dependencies>
 
 	<build>

@@ -41,6 +41,7 @@ private ComputerService computerService;
 		try {
 			assertNotNull(computerService.findAll());	
 		}catch(Exception e) {
+			e.printStackTrace();
 			fail("Exception inattendue");
 		}		
 	}
@@ -54,6 +55,7 @@ private ComputerService computerService;
 				assertEquals(computer.getClass(),result.get(i).getClass());
 			}
 		}catch(Exception e) {
+			e.printStackTrace();
 			fail("Exception inattendue");
 		}		
 	}
@@ -65,8 +67,9 @@ private ComputerService computerService;
 			Computer computer = new Computer("UnitTestCreate");
 			Company company = new Company();
 			computer.setCompany(company);
-			assertTrue(computerService.create(computer));
+			computerService.create(computer);
 		}catch(Exception e) {
+			e.printStackTrace();
 			fail("Exception inattendue");
 		}		
 	}
@@ -83,9 +86,10 @@ private ComputerService computerService;
 			computer.setDiscontinued(LocalDate.of(2010, 01, 01));
 			computer.setCompany(company);
 
-			assertTrue(computerService.update(computer));
+			computerService.update(computer);
 			
 		}catch(Exception e) {
+			e.printStackTrace();
 			fail("Exception inattendue");
 		}		
 	}
@@ -94,8 +98,9 @@ private ComputerService computerService;
 	@Ignore
 	public void testDeleteComputer() {
 		try {	
-			assertTrue(computerService.delete(650));	
+			computerService.delete(650);	
 		}catch(Exception e) {
+			e.printStackTrace();
 			fail("Exception inattendue");
 		}		
 	}
@@ -110,6 +115,7 @@ private ComputerService computerService;
 			assertEquals("1984-04-01",computer.get().getDiscontinued().toString());
 			assertEquals("Apple Inc.",computer.get().getCompany().getName());
 		}catch(Exception e) {
+			e.printStackTrace();
 			fail("Exception inattendue");
 		}		
 	}
@@ -120,6 +126,7 @@ private ComputerService computerService;
 		try {	
 			computer = computerService.find(0);
 		}catch(DataBaseException e) {
+			e.printStackTrace();
 			assertNull(computer);
 		}
 	}
@@ -135,9 +142,10 @@ private ComputerService computerService;
 			computer.setDiscontinued(LocalDate.of(2010, 01, 01));
 			computer.setCompany(company);
 
-			assertFalse(computerService.update(computer));
+			computerService.update(computer);
 			
 		}catch(Exception e) {
+			e.printStackTrace();
 			fail("Exception inattendue");
 		}		
 	}
@@ -156,6 +164,7 @@ private ComputerService computerService;
 			try {
 				computerService.update(computer);
 			} catch (DataException e) {
+				e.printStackTrace();
 				assertEquals("Le nom est requis",e.getMessage());			
 			}
 			
@@ -165,8 +174,9 @@ private ComputerService computerService;
 	@Test
 	public void testDeleteOutOfBoundComputer() {
 		try {	
-			assertFalse(computerService.delete(0));	
+			computerService.delete(0);	
 		}catch(Exception e) {
+			e.printStackTrace();
 			fail("Exception inattendue");
 		}		
 	}
