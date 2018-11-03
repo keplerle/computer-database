@@ -34,12 +34,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql.version}</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
@@ -82,13 +76,19 @@
 			<artifactId>jquery-validation</artifactId>
 			<version>${jquery.validation.version}</version>
 		</dependency>
-		
+
 		<dependency>
-    <groupId>com.zaxxer</groupId>
-    <artifactId>HikariCP</artifactId>
-    <version>${hikari.cp.version}</version>
-    <scope>compile</scope>
-</dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>${hikari.cp.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
