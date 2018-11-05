@@ -30,7 +30,7 @@ public class MapperComputerDTO {
 		if (!"".equals(computerDto.introduced)) {
 			computer.setIntroduced(Date.valueOf(computerDto.introduced).toLocalDate());
 		}
-		if (!"".equals(computerDto.introduced)) {
+		if (!"".equals(computerDto.discontinued)) {
 			computer.setDiscontinued(Date.valueOf(computerDto.discontinued).toLocalDate());
 		}
 		

@@ -22,9 +22,9 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	private final static String QUERY_INSERT = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 	private final static String QUERY_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 	private final static String QUERY_DELETE = "DELETE FROM computer WHERE id= ?";
+	private final static String QUERY_DELETE_COMPANY = "DELETE FROM computer WHERE company_id= ?";
 	private final static String QUERY_SELECT_BY_NAME = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE UPPER(cpu.name) LIKE UPPER(?) OR UPPER(cpa.name) LIKE UPPER(?) ORDER BY cpu.name LIMIT ? OFFSET ?";
 	private final static String QUERY_SELECT_BY_ID = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE cpu.id = ?";
-	private final static String QUERY_SELECT_ALL = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id LIMIT ? OFFSET ?";
 	private final static String QUERY_COUNT = "SELECT COUNT(cpu.id)  FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE UPPER(cpu.name) LIKE UPPER(?) OR UPPER(cpa.name) LIKE UPPER(?) ";
 
 	private static ComputerDAO computerDAO = new ComputerDAO();
@@ -224,47 +224,6 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public ArrayList<Computer> findAll(int page, int size) throws IOException, DataBaseException {
-		ComputerDAO.connect = JDBCManager.connectionDB();
-		ArrayList<Computer> list = new ArrayList<>();
-		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_SELECT_ALL)) {
-			
-			preparedStatement.setInt(1, size);
-			preparedStatement.setInt(2, (page - 1) * size);
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				Computer computer = new Computer(result.getInt("id"), result.getString("name"));
-				if (result.getDate("introduced") != null) {
-					computer.setIntroduced(result.getDate("introduced").toLocalDate());
-				}
-				if (result.getDate("discontinued") != null) {
-					computer.setDiscontinued(result.getDate("discontinued").toLocalDate());
-				}
-				computer.setCompany(new Company());
-				if (result.getInt("company_id") != 0) {
-					computer.getCompany().setId(result.getInt("company_id"));
-					computer.getCompany().setName(result.getString("cpa.name"));
-				}
-				list.add(computer);
-			}
-			result.close();
-			
-
-		} catch (SQLException e) {
-			logger.error(e.getMessage());
-			throw new DataBaseException("Erreur interne à la base de données");
-		} finally {
-			try {
-				ComputerDAO.connect.close();
-			} catch (SQLException e) {
-				logger.error(e.getMessage());
-				throw new DataBaseException("Echec de la fermeture de la connexion à la BDD");
-			}
-		}
-		return list;
-	}
-
-	@Override
 	public int count(String name) throws IOException, DataBaseException {
 		ComputerDAO.connect = JDBCManager.connectionDB();
 		int count = 0;
@@ -289,5 +248,24 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 			}
 		}
 		return count;
+	}
+
+	@Override
+	public void deleteByCompany(int companyId) throws IOException, DataBaseException {
+		ComputerDAO.connect = JDBCManager.connectionDB();
+		try (PreparedStatement preparedStatement = ComputerDAO.connect.prepareStatement(QUERY_DELETE_COMPANY)) {
+			preparedStatement.setInt(1, companyId);
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+			throw new DataBaseException("Erreur interne à la base de données");
+		} finally {
+			try {
+				ComputerDAO.connect.close();
+			} catch (SQLException e) {
+				logger.error(e.getMessage());
+				throw new DataBaseException("Echec de la fermeture de la connexion à la BDD");
+			}
+		}
 	}
 }

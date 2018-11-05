@@ -1,20 +1,31 @@
 package com.excilys.cdb.ui;
 
-/*import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.FirefoxDriver;*/
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.excilys.cdb.exception.DataBaseException;
+import com.excilys.cdb.exception.DataException;
+import com.excilys.cdb.exception.NoNextPageException;
+import com.excilys.cdb.exception.NoPreviousPageException;
+import com.excilys.cdb.exception.OutOfCommandeScopeException;
+import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
 
 public class Main {
 
 	public static void main(String[] args) {
 
 		Logger logger = LoggerFactory.getLogger(Main.class);
-		
-		/*System.setProperty("webdriver.chrome.driver", "/home/excilys/Téléchargements/FirefoxDriver");
-		WebDriver driver = new FirefoxDriver();
-		driver.get("http://localhost:8080/Main/dashboard");*/
-		/*
+
 		CompanyService cpaService;
 		ComputerService cpuService;
 
@@ -23,8 +34,7 @@ public class Main {
 		int companyId = 0;
 		int computerId = 0;
 
-		boolean response = false;
-		Computer computerToDisplay;
+		Optional<Computer> computerToDisplay;
 		Computer updatedComputers;
 		String name = "";
 		String computerName = "";
@@ -35,7 +45,7 @@ public class Main {
 
 		Scanner sc = new Scanner(System.in);
 		logger.info("Bienvenue sur CDB !");
-		while (commande != 8) {
+		while (commande != 9) {
 			try {
 				for (Menu menu : Menu.values()) {
 					logger.info(menu.getMessage());
@@ -50,14 +60,14 @@ public class Main {
 
 					logger.info("\n LISTE DES COMPUTERS");
 					int i;
-						List<Computer> subListComputer = cpuService.findAll();
-							i = 0;
-							while (i < subListComputer.size()) {
-								logger.info("\t" + subListComputer.get(i).getId() + "\t |");
-								logger.info("\t" + subListComputer.get(i).getName() + "\t");
-								logger.info("\n---------------------------------");
-								i++;
-							}
+					List<Computer> subListComputer = cpuService.findAll("");
+					i = 0;
+					while (i < subListComputer.size()) {
+						logger.info("\t" + subListComputer.get(i).getId() + "\t |");
+						logger.info("\t" + subListComputer.get(i).getName() + "\t");
+						logger.info("\n---------------------------------");
+						i++;
+					}
 					break;
 				}
 				case 2: { // Lister les entreprises
@@ -65,15 +75,15 @@ public class Main {
 					cpaService = CompanyService.getInstance();
 
 					logger.info("\n LISTE DES COMPANIES");
-				
-					int j;		
-							List<Company> subListCompany = cpaService.findAll();
-							j = 0;
-							while (j < subListCompany.size()) {
-								logger.info(subListCompany.get(j).toString());
-								logger.info("\n---------------------------------");
-								j++;
-							}
+
+					int j;
+					List<Company> subListCompany = cpaService.findAll();
+					j = 0;
+					while (j < subListCompany.size()) {
+						logger.info(subListCompany.get(j).toString());
+						logger.info("\n---------------------------------");
+						j++;
+					}
 					break;
 				}
 				case 3: { // Montrer les details d'un ordinateur par son id
@@ -96,14 +106,14 @@ public class Main {
 
 					logger.info("\n LISTE DES COMPUTERS");
 					int i;
-						List<Computer> subListComputer = cpuService.findAll(name);
-							i = 0;
-							while (i < subListComputer.size()) {
-								logger.info("\t" + subListComputer.get(i).getId() + "\t |");
-								logger.info("\t" + subListComputer.get(i).getName() + "\t");
-								logger.info("\n---------------------------------");
-								i++;
-							}
+					List<Computer> subListComputer = cpuService.findAll(name);
+					i = 0;
+					while (i < subListComputer.size()) {
+						logger.info("\t" + subListComputer.get(i).getId() + "\t |");
+						logger.info("\t" + subListComputer.get(i).getName() + "\t");
+						logger.info("\n---------------------------------");
+						i++;
+					}
 					break;
 				}
 				case 5: { // Créer un PC
@@ -116,8 +126,7 @@ public class Main {
 					logger.info("Veuillez entrer la date de fin: ");
 					dateDiscontinued = sc.nextLine();
 
-					logger.info(
-							"Veuillez entrer le numéro du fabricant de l'ordinateur (0 pour passer cette étape): ");
+					logger.info("Veuillez entrer le numéro du fabricant de l'ordinateur (0 pour passer cette étape): ");
 					companyId = sc.nextInt();
 
 					Computer newComputer = new Computer(computerName);
@@ -134,13 +143,9 @@ public class Main {
 					}
 					newComputer.setCompany(newCompany);
 					try {
-						response = cpuService.create(newComputer);
-						if (response == true) {
-							logger.info("Ordinateur créé avec succès !! ");
-						} else {
-							logger.info("Echec de la création !! ");
-						}
-						response = false;
+						cpuService.create(newComputer);
+						logger.info("Ordinateur créé avec succès !! ");
+
 					} catch (DataException de) {
 						logger.error(de.getMessage());
 					}
@@ -179,13 +184,10 @@ public class Main {
 						updatedComputers.getCompany().setId(companyId);
 					}
 					try {
-						response = cpuService.update(updatedComputers);
-						if (response == true) {
-							logger.info("Ordinateur mis à jour avec succès !! ");
-						} else {
-							logger.warn("Echec de la mise à jour !! ");
-						}
-						response = false;
+						cpuService.update(updatedComputers);
+
+						logger.info("Ordinateur mis à jour avec succès !! ");
+
 					} catch (DataException de) {
 						logger.error(de.getMessage());
 					}
@@ -197,18 +199,23 @@ public class Main {
 
 					logger.info("Veuillez entrer l'id de l'ordinateur à supprimer: ");
 					id = sc.nextInt();
-					
-					response = cpuService.delete(id);
-					
-					if (response == true) {
-						logger.info("Ordinateur supprimé avec succès !! ");
-					} else {
-						logger.warn("Echec de la suppression !! ");
-					}
-					response = false;
+
+					cpuService.delete(id);
+					logger.info("Ordinateur supprimé avec succès !! ");
+
 					break;
 				}
-				case 8: { // Quitter
+				
+				case 8: { // Supprimer une company
+					cpaService = CompanyService.getInstance();
+					logger.info("Veuillez entrer la company de l'ordinateur à supprimer: ");
+					id = sc.nextInt();
+					cpaService.delete(id);
+					logger.info("Company supprimé avec succès !! ");
+					break;
+				}
+				
+				case 9: { // Quitter
 					sc.close();
 					logger.info("A bientot !");
 					System.exit(0);
@@ -219,18 +226,21 @@ public class Main {
 				}
 				}
 				commande = 0;
-			} catch (SQLException ex) {
-				logger.error("SQLException: " + ex.getMessage());
-				logger.error("SQLState: " + ex.getSQLState());
-				logger.error("VendorError: " + ex.getErrorCode());
+			} catch (DataBaseException ex) {
+				logger.error(ex.getMessage());
+
 			} catch (OutOfCommandeScopeException outEx) {
 				logger.error(outEx.getMessage());
-			}catch (FileNotFoundException fnfEx) {
+			} catch (FileNotFoundException fnfEx) {
 				logger.error(fnfEx.getMessage());
-			}catch (IOException ioEx) {
+			} catch (IOException ioEx) {
 				logger.error(ioEx.getMessage());
+			} catch (NoPreviousPageException e) {
+				logger.error(e.getMessage());
+			} catch (NoNextPageException e) {
+				logger.error(e.getMessage());
 			}
 		}
-		*/
+
 	}
 }

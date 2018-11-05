@@ -16,4 +16,13 @@ public interface CompanyDAOInterface<T> {
 	 */
 	public abstract List<T> findAll() throws IOException, DataBaseException;
 
+	/**
+	 * Méthode pour effacer par id
+	 * 
+	 * @param id
+	 * @throws IOException 
+	 * @throws DataBaseException 
+	 */
+	public abstract void delete(int id) throws IOException, DataBaseException;
+	
 }

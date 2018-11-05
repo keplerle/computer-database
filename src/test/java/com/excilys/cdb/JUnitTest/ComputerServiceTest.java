@@ -39,7 +39,7 @@ private ComputerService computerService;
 	@Test
 	public void testNotNullFindAllComputers() {
 		try {
-			assertNotNull(computerService.findAll());	
+			assertNotNull(computerService.findAll(""));	
 		}catch(Exception e) {
 			e.printStackTrace();
 			fail("Exception inattendue");
@@ -49,7 +49,7 @@ private ComputerService computerService;
 	@Test
 	public void testEqualsComputerFindAllComputers() {
 		try {
-			List<Computer> result = computerService.findAll();
+			List<Computer> result = computerService.findAll("");
 			Computer computer= new Computer();
 			for(int i=0;i<result.size();i++) {
 				assertEquals(computer.getClass(),result.get(i).getClass());

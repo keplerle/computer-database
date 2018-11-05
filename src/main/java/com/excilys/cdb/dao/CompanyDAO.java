@@ -16,6 +16,7 @@ import com.excilys.cdb.model.Company;
 public class CompanyDAO implements CompanyDAOInterface<Company> {
 	Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 	private final static String QUERY_SELECT_ALL = "SELECT id,name FROM company";
+	private final static String QUERY_DELETE = "DELETE FROM company WHERE id= ?";
 	private static CompanyDAO companyDAO = new CompanyDAO();
 	private static Connection connect;
 
@@ -57,4 +58,23 @@ public class CompanyDAO implements CompanyDAOInterface<Company> {
 		return list;
 	}
 
+	@Override
+	public void delete(int id) throws IOException, DataBaseException {
+		CompanyDAO.connect = JDBCManager.connectionDB();
+		try (PreparedStatement preparedStatement = CompanyDAO.connect.prepareStatement(QUERY_DELETE)) {
+			preparedStatement.setInt(1, id);
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+			throw new DataBaseException("Erreur interne à la base de données");
+		} finally {
+			try {
+				CompanyDAO.connect.close();
+			} catch (SQLException e) {
+				logger.error(e.getMessage());
+				throw new DataBaseException("Echec de la fermeture de la connexion à la BDD");
+			}
+		}
+	}
 }

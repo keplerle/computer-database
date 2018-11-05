@@ -94,20 +94,7 @@ public class ComputerService {
 			throw dbe;
 		}
 	}
-	 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public <T> List<Computer> findAll()
-			throws IOException, DataBaseException, NoPreviousPageException, NoNextPageException {
-		List<Computer> list;
-		try {
-			PageValidator.previousPageValidator();
-			list = computerDao.findAll(Page.getPage(), Page.getPageSize());
-			PageValidator.nextPageValidator(list);
-		} catch (DataBaseException dbe) {
-			context.setRollbackOnly();
-			throw dbe;
-		}
-		return list;
-	}
+
 	 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public <T> List<Computer> findAll(String name)
 			throws IOException, DataBaseException, NoPreviousPageException, NoNextPageException {

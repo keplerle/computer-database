@@ -14,7 +14,6 @@ public interface ComputerDAOInterface<T> {
 	 * Méthode de création
 	 * 
 	 * @param obj
-	 * @return boolean
 	 * @throws DataException
 	 * @throws IOException 
 	 * @throws DataBaseException 
@@ -22,20 +21,27 @@ public interface ComputerDAOInterface<T> {
 	public abstract void create(T obj) throws DataException, IOException, DataBaseException;
 
 	/**
-	 * Méthode pour effacer
+	 * Méthode pour effacer par id
 	 * 
-	 * @param obj
-	 * @return boolean
+	 * @param id
 	 * @throws IOException 
 	 * @throws DataBaseException 
 	 */
 	public abstract void delete(int id) throws IOException, DataBaseException;
+	
+	/**
+	 * Méthode pour effacer par company_id
+	 * 
+	 * @param id
+	 * @throws IOException 
+	 * @throws DataBaseException 
+	 */
+	public abstract void deleteByCompany(int id) throws IOException, DataBaseException;
 
 	/**
 	 * Méthode de mise à jour
 	 * 
 	 * @param obj
-	 * @return boolean
 	 * @throws DataException
 	 * @throws IOException 
 	 * @throws DataBaseException 
@@ -53,7 +59,7 @@ public interface ComputerDAOInterface<T> {
 	public abstract Optional<Computer> find(int id) throws IOException, DataBaseException;
 
 	/**
-	 * Méthode de recherche des informations par nom
+	 * Méthode de recherche des informations
 	 * 
 	 * @param name
 	 * @return ArrayList<T>
@@ -63,14 +69,6 @@ public interface ComputerDAOInterface<T> {
 	public abstract List<T> findAll(String name, int page, int size) throws IOException, DataBaseException;
 
 	/**
-	 * Méthode de recherche des informations
-	 * 
-	 * @return ArrayList<T>
-	 * @throws IOException 
-	 * @throws DataBaseException 
-	 */
-	public abstract List<T> findAll(int page, int size) throws IOException, DataBaseException;
-	/**
 	 * Méthode pour compter le nombre total de données
 	 * 
 	 * @param name
@@ -78,7 +76,7 @@ public interface ComputerDAOInterface<T> {
 	 * @throws IOException 
 	 * @throws DataBaseException 
 	 */
-	int count(String name) throws IOException, DataBaseException;
+	public abstract int count(String name) throws IOException, DataBaseException;
 
 
 }
