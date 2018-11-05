@@ -39,33 +39,34 @@ public class Dashboard extends HttpServlet {
 			cpuService = ComputerService.getInstance();
 			mapper = MapperComputerDTO.getInstance();
 			
-			counter = cpuService.count();
+			
 			Page.setPage(request.getParameter("page"), request.getParameter("size"));
+			
 			if (request.getParameter("search") == null) {
 				computers = cpuService.findAll("");
+				counter = cpuService.count("");
 			} else {
 				request.setAttribute("search", request.getParameter("search"));
 				computers = cpuService.findAll(request.getParameter("search"));
+				counter = cpuService.count(request.getParameter("search"));
 			}
 			subComputersDTO.clear();
 			for (int i = 0; i < computers.size(); i++) {
 				subComputersDTO.add(mapper.computerDtoFromComputer(computers.get(i)));
 			}
-
+	
 		} catch (DataBaseException dbe) {
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		} catch (NoPreviousPageException nppe) {
 			Page.increasePage();
-
 		} catch (NoNextPageException nnpe) {
 			Page.decreasePage();
 		}
-
-		request.setAttribute("computers", subComputersDTO);
+		
 		request.setAttribute("counter", counter);
 		request.setAttribute("pageIndex", Page.getPage());
 		request.setAttribute("pageSize", Page.getPageSize());
-
+		request.setAttribute("computers", subComputersDTO);
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 	}
 
@@ -77,7 +78,7 @@ public class Dashboard extends HttpServlet {
 
 		try {
 			cpuService.deleteAll(idTab);
-		} catch (DataBaseException e) {
+		} catch (Exception e) {
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		}
 

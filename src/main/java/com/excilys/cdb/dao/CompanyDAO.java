@@ -44,13 +44,13 @@ public class CompanyDAO implements CompanyDAOInterface<Company> {
 			CompanyDAO.connect.commit();
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
-			throw new DataBaseException();
+			throw new DataBaseException("Erreur dû à la base de données");
 		} finally {
 			try {
 				CompanyDAO.connect.close();
 			} catch (SQLException e) {
 				logger.error(e.getMessage());
-				throw new DataBaseException();
+				throw new DataBaseException("Erreur dû à la base de données");
 			}
 		}
 

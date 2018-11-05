@@ -128,6 +128,8 @@ private ComputerService computerService;
 		}catch(DataBaseException e) {
 			e.printStackTrace();
 			assertNull(computer);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -166,6 +168,8 @@ private ComputerService computerService;
 			} catch (DataException e) {
 				e.printStackTrace();
 				assertEquals("Le nom est requis",e.getMessage());			
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			
 				

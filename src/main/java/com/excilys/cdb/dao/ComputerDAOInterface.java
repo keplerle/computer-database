@@ -73,11 +73,12 @@ public interface ComputerDAOInterface<T> {
 	/**
 	 * Méthode pour compter le nombre total de données
 	 * 
+	 * @param name
 	 * @return int
 	 * @throws IOException 
 	 * @throws DataBaseException 
 	 */
-	int count() throws IOException, DataBaseException;
+	int count(String name) throws IOException, DataBaseException;
 
 
 }

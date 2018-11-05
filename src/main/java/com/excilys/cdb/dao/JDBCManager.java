@@ -26,6 +26,7 @@ public class JDBCManager {
 	public static Connection connectionDB() throws IOException {
 		HikariConfig config = new HikariConfig("/home/excilys/eclipse-workspace/computer-database/src/main/resources/db.properties");
 		HikariDataSource ds = new HikariDataSource(config);
+	
 		try {
 			Connection connect = ds.getConnection();
 			return connect;
@@ -35,7 +36,7 @@ public class JDBCManager {
 			return null;
 		}
 	}
-
+	
 	public static JDBCManager getInstance() {
 		return jdbcManager;
 	}

@@ -52,7 +52,7 @@ public class AddComputer extends HttpServlet {
 			request.setAttribute("internError", de.getMessage());
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 		} 
-		 catch (DataBaseException e) {
+		 catch (Exception e) {
 			 this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		}
 	}
