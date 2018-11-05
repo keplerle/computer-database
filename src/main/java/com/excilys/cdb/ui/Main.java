@@ -17,6 +17,7 @@ import com.excilys.cdb.exception.NoPreviousPageException;
 import com.excilys.cdb.exception.OutOfCommandeScopeException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.model.Page;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
@@ -42,6 +43,7 @@ public class Main {
 		String dateDiscontinued = "";
 		Date introduced = null;
 		Date discontinued = null;
+		String subCommand = "";
 
 		Scanner sc = new Scanner(System.in);
 		logger.info("Bienvenue sur CDB !");
@@ -60,14 +62,41 @@ public class Main {
 
 					logger.info("\n LISTE DES COMPUTERS");
 					int i;
-					List<Computer> subListComputer = cpuService.findAll("");
-					i = 0;
-					while (i < subListComputer.size()) {
-						logger.info("\t" + subListComputer.get(i).getId() + "\t |");
-						logger.info("\t" + subListComputer.get(i).getName() + "\t");
-						logger.info("\n---------------------------------");
-						i++;
-					}
+					do {
+						try {
+							List<Computer> subListComputer = cpuService.findAll("");
+							i = 0;
+							while (i < subListComputer.size()) {
+								logger.info("\t" + subListComputer.get(i).getId() + "\t |");
+								logger.info("\t" + subListComputer.get(i).getName() + "\t");
+								logger.info("\n---------------------------------");
+								i++;
+							}
+							logger.info("Previous page (p) 	Quit(q) 		Next page(n)");
+							logger.info("Que voulez vous faire ? :");
+							subCommand = sc.nextLine();
+							if (subCommand.equals("n")) {
+								Page.increasePage();
+								;
+							} else if (subCommand.equals("p")) {
+								Page.decreasePage();
+								;
+							} else if (subCommand.equals("q")) {
+								break;
+							} else {
+								logger.info("Je ne comprend pas la commande");
+							}
+						} catch (NoPreviousPageException nppe) {
+							logger.error(nppe.getMessage());
+							Page.increasePage();
+							;
+						} catch (NoNextPageException nnpe) {
+							logger.error(nnpe.getMessage());
+							Page.decreasePage();
+							;
+						}
+
+					} while (!subCommand.equals("q"));
 					break;
 				}
 				case 2: { // Lister les entreprises
@@ -106,14 +135,41 @@ public class Main {
 
 					logger.info("\n LISTE DES COMPUTERS");
 					int i;
-					List<Computer> subListComputer = cpuService.findAll(name);
-					i = 0;
-					while (i < subListComputer.size()) {
-						logger.info("\t" + subListComputer.get(i).getId() + "\t |");
-						logger.info("\t" + subListComputer.get(i).getName() + "\t");
-						logger.info("\n---------------------------------");
-						i++;
-					}
+					do {
+						try {
+							List<Computer> subListComputer = cpuService.findAll(name);
+							i = 0;
+							while (i < subListComputer.size()) {
+								logger.info("\t" + subListComputer.get(i).getId() + "\t |");
+								logger.info("\t" + subListComputer.get(i).getName() + "\t");
+								logger.info("\n---------------------------------");
+								i++;
+							}
+							logger.info("Previous page (p) 	Quit(q) 		Next page(n)");
+							logger.info("Que voulez vous faire ? :");
+							subCommand = sc.nextLine();
+							if (subCommand.equals("n")) {
+								Page.increasePage();
+								;
+							} else if (subCommand.equals("p")) {
+								Page.decreasePage();
+								;
+							} else if (subCommand.equals("q")) {
+								break;
+							} else {
+								logger.info("Je ne comprend pas la commande");
+							}
+						} catch (NoPreviousPageException nppe) {
+							logger.error(nppe.getMessage());
+							Page.increasePage();
+							;
+						} catch (NoNextPageException nnpe) {
+							logger.error(nnpe.getMessage());
+							Page.decreasePage();
+							;
+						}
+
+					} while (!subCommand.equals("q"));
 					break;
 				}
 				case 5: { // Créer un PC
@@ -205,7 +261,7 @@ public class Main {
 
 					break;
 				}
-				
+
 				case 8: { // Supprimer une company
 					cpaService = CompanyService.getInstance();
 					logger.info("Veuillez entrer la company de l'ordinateur à supprimer: ");
@@ -214,7 +270,7 @@ public class Main {
 					logger.info("Company supprimé avec succès !! ");
 					break;
 				}
-				
+
 				case 9: { // Quitter
 					sc.close();
 					logger.info("A bientot !");
@@ -235,10 +291,6 @@ public class Main {
 				logger.error(fnfEx.getMessage());
 			} catch (IOException ioEx) {
 				logger.error(ioEx.getMessage());
-			} catch (NoPreviousPageException e) {
-				logger.error(e.getMessage());
-			} catch (NoNextPageException e) {
-				logger.error(e.getMessage());
 			}
 		}
 

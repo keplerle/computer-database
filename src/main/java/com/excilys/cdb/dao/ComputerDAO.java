@@ -25,7 +25,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	private final static String QUERY_DELETE_COMPANY = "DELETE FROM computer WHERE company_id= ?";
 	private final static String QUERY_SELECT_BY_NAME = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE UPPER(cpu.name) LIKE UPPER(?) OR UPPER(cpa.name) LIKE UPPER(?) ORDER BY cpu.name LIMIT ? OFFSET ?";
 	private final static String QUERY_SELECT_BY_ID = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE cpu.id = ?";
-	private final static String QUERY_COUNT = "SELECT COUNT(cpu.id)  FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE UPPER(cpu.name) LIKE UPPER(?) OR UPPER(cpa.name) LIKE UPPER(?) ";
+	private final static String QUERY_COUNT = "SELECT COUNT(cpu.id) FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE UPPER(cpu.name) LIKE UPPER(?) OR UPPER(cpa.name) LIKE UPPER(?) ";
 
 	private static ComputerDAO computerDAO = new ComputerDAO();
 	private static Connection connect;
