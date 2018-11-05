@@ -18,15 +18,16 @@ public class JDBCManager {
 	private static Connection connection;
 
 	private final static JDBCManager jdbcManager = new JDBCManager();
-
+	static HikariConfig config ;
+	static HikariDataSource ds ;
 	private JDBCManager() {
 		super();
+		 config = new HikariConfig("/home/excilys/eclipse-workspace/computer-database/src/main/resources/db.properties");
+		 ds = new HikariDataSource(config);
 	}
 
 	public static Connection connectionDB() throws IOException {
-		HikariConfig config = new HikariConfig("/home/excilys/eclipse-workspace/computer-database/src/main/resources/db.properties");
-		HikariDataSource ds = new HikariDataSource(config);
-	
+
 		try {
 			Connection connect = ds.getConnection();
 			return connect;
