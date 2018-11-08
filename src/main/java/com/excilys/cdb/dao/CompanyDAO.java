@@ -1,14 +1,16 @@
 package com.excilys.cdb.dao;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.exception.DataBaseException;
@@ -18,61 +20,32 @@ import com.excilys.cdb.model.Company;
 public class CompanyDAO extends JDBCManager implements CompanyDAOInterface<Company> {
 	Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 	private final static String QUERY_SELECT_ALL = "SELECT id,name FROM company";
-	private final static String QUERY_DELETE = "DELETE FROM company WHERE id= ?";
-	private static Connection connect;
-
+	private final static String QUERY_DELETE = "DELETE FROM company WHERE id= :id";
 	private CompanyDAO() {
 		super();
 	}
 
 	@Override
-	public ArrayList<Company> findAll() throws IOException, DataBaseException {
-
-		CompanyDAO.connect = JDBCManager.getConnexion();
-
-		ArrayList<Company> list = new ArrayList<>();
-
-		try (PreparedStatement preparedStatement = CompanyDAO.connect.prepareStatement(QUERY_SELECT_ALL)) {
-			CompanyDAO.connect.setAutoCommit(false);
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				Company company = new Company(result.getInt("id"), result.getString("name"));
-				list.add(company);
-			}
-			result.close();
-			CompanyDAO.connect.commit();
-		} catch (SQLException e) {
-			logger.error(e.getMessage());
-			throw new DataBaseException("Erreur dû à la base de données");
-		} finally {
-			try {
-				CompanyDAO.connect.close();
-			} catch (SQLException e) {
-				logger.error(e.getMessage());
-				throw new DataBaseException("Erreur dû à la base de données");
-			}
-		}
-
-		return list;
+	public List<Company> findAll() throws IOException, DataBaseException {
+		
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(getDataSource());
+        RowMapper<Company> rowMapper = new RowMapper<Company>() {
+            public Company mapRow(ResultSet result, int pRowNum) throws SQLException {
+            	Company company = new Company(result.getInt("id"), result.getString("name"));
+                return company;
+            }
+        };
+        List<Company> list = jdbcTemplate.query(QUERY_SELECT_ALL, rowMapper);
+        return list;
+		
 	}
 
 	@Override
 	public void delete(int id) throws IOException, DataBaseException {
-		CompanyDAO.connect = JDBCManager.getConnexion();
-		try (PreparedStatement preparedStatement = CompanyDAO.connect.prepareStatement(QUERY_DELETE)) {
-			preparedStatement.setInt(1, id);
-			preparedStatement.executeUpdate();
-
-		} catch (SQLException e) {
-			logger.error(e.getMessage());
-			throw new DataBaseException("Erreur interne à la base de données");
-		} finally {
-			try {
-				CompanyDAO.connect.close();
-			} catch (SQLException e) {
-				logger.error(e.getMessage());
-				throw new DataBaseException("Echec de la fermeture de la connexion à la BDD");
-			}
-		}
+		
+		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
+		MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("id", id);
+        jdbcTemplate.update(QUERY_DELETE,params);
 	}
 }
