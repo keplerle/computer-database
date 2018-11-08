@@ -1,7 +1,5 @@
 package com.excilys.cdb.dao;
 
-
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -12,38 +10,24 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 
-public class JDBCManager {
+public abstract class JDBCManager {
 	
-	static Logger logger = LoggerFactory.getLogger(JDBCManager.class);
-	private static Connection connection;
-
-	private final static JDBCManager jdbcManager = new JDBCManager();
-	static HikariConfig config ;
-	static HikariDataSource ds ;
-	private JDBCManager() {
-		super();
-		 config = new HikariConfig("/home/excilys/eclipse-workspace/computer-database/src/main/resources/db.properties");
-		 ds = new HikariDataSource(config);
-	}
-
-	public static Connection connectionDB() throws IOException {
-
+	private static Logger logger = LoggerFactory.getLogger(JDBCManager.class);
+	private static HikariConfig config = new HikariConfig("/home/excilys/eclipse-workspace/computer-database/src/main/resources/db.properties") ;
+	private static HikariDataSource dataSource = new HikariDataSource(config);
+	
+    protected static HikariDataSource getDataSource() {
+        return dataSource;
+    }
+    
+    protected static Connection getConnexion() {
+    	 Connection connect = null;
 		try {
-			Connection connect = ds.getConnection();
-			return connect;
+			connect = dataSource.getConnection();
 		} catch (SQLException e) {
-			logger.error("Echec de la connexion.");
-			ds.close();
-			return null;
+			logger.error(e.getMessage());
 		}
-	}
+        return connect;
+    }
 	
-	public static JDBCManager getInstance() {
-		return jdbcManager;
-	}
-
-	public static Connection getConnection() {
-		return connection;
-	}
-
 }

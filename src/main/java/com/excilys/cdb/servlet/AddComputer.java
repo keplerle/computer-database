@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exception.DataBaseException;
@@ -22,12 +25,15 @@ import com.excilys.cdb.service.ComputerService;
 public class AddComputer extends HttpServlet {
 
 	Logger logger = LoggerFactory.getLogger(AddComputer.class);
+	@Autowired
 	CompanyService cpaService;
+	@Autowired
 	ComputerService cpuService;
 	MapperComputerDTO mapper;
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		  ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+	      ctx.getAutowireCapableBeanFactory().autowireBean(this);
 		try {
-			cpaService = CompanyService.getInstance();
 			mapper=MapperComputerDTO.getInstance();
 			List<Company> companies = cpaService.findAll();
 			request.setAttribute("companies", companies);
@@ -44,7 +50,7 @@ public class AddComputer extends HttpServlet {
 		computerDto.introduced = request.getParameter("introduced");
 		computerDto.discontinued = request.getParameter("discontinued");
 		computerDto.companyId = request.getParameter("companyId");
-		cpuService = ComputerService.getInstance();
+	
 		try {
 			cpuService.create(mapper.computerDtoToComputer(computerDto));
 			response.sendRedirect("dashboard");
@@ -52,7 +58,8 @@ public class AddComputer extends HttpServlet {
 			request.setAttribute("internError", de.getMessage());
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 		} 
-		 catch (Exception e) {
+		 catch (DataBaseException e) {
+			 logger.error(e.getMessage());
 			 this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		}
 	}

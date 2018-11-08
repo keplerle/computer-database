@@ -1,5 +1,6 @@
 package com.excilys.cdb.model;
 
+
 public class Company {
 
 	// Variable d'instance

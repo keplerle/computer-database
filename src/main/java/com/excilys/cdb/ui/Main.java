@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.exception.DataException;
@@ -23,13 +25,14 @@ import com.excilys.cdb.service.ComputerService;
 
 public class Main {
 
+	@Autowired
+	static
+	CompanyService cpaService;
+	@Autowired
+	static
+	ComputerService cpuService;
 	public static void main(String[] args) {
-
 		Logger logger = LoggerFactory.getLogger(Main.class);
-
-		CompanyService cpaService;
-		ComputerService cpuService;
-
 		int commande = 0;
 		int id = 0;
 		int companyId = 0;
@@ -57,8 +60,6 @@ public class Main {
 
 				switch (commande) {
 				case 1: { // Lister les PC
-
-					cpuService = ComputerService.getInstance();
 
 					logger.info("\n LISTE DES COMPUTERS");
 					int i;
@@ -101,7 +102,7 @@ public class Main {
 				}
 				case 2: { // Lister les entreprises
 
-					cpaService = CompanyService.getInstance();
+			
 
 					logger.info("\n LISTE DES COMPANIES");
 
@@ -116,7 +117,7 @@ public class Main {
 					break;
 				}
 				case 3: { // Montrer les details d'un ordinateur par son id
-					cpuService = ComputerService.getInstance();
+		
 
 					logger.info("Veuillez entrer l'id de l'ordinateur: ");
 					id = sc.nextInt();
@@ -128,7 +129,7 @@ public class Main {
 					break;
 				}
 				case 4: { // Montrer les details d'un ordinateur par son nom
-					cpuService = ComputerService.getInstance();
+		
 
 					logger.info("Veuillez entrer le nom de l'ordinateur: ");
 					name = sc.nextLine();
@@ -173,7 +174,6 @@ public class Main {
 					break;
 				}
 				case 5: { // Créer un PC
-					cpuService = ComputerService.getInstance();
 
 					logger.info("Veuillez entrer le nom de l'ordinateur: ");
 					computerName = sc.nextLine();
@@ -210,7 +210,6 @@ public class Main {
 					break;
 				}
 				case 6: { // Mettre à jour un PC
-					cpuService = ComputerService.getInstance();
 
 					logger.info("Veuillez entrer l'id de l'ordinateur à mettre à jour: ");
 					computerId = sc.nextInt();
@@ -251,7 +250,7 @@ public class Main {
 
 				}
 				case 7: { // Supprimer un PC
-					cpuService = ComputerService.getInstance();
+	
 
 					logger.info("Veuillez entrer l'id de l'ordinateur à supprimer: ");
 					id = sc.nextInt();
@@ -263,7 +262,7 @@ public class Main {
 				}
 
 				case 8: { // Supprimer une company
-					cpaService = CompanyService.getInstance();
+	
 					logger.info("Veuillez entrer la company de l'ordinateur à supprimer: ");
 					id = sc.nextInt();
 					cpaService.delete(id);

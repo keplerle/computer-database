@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exception.DataBaseException;
@@ -26,8 +29,10 @@ public class Dashboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	Logger logger = LoggerFactory.getLogger(Dashboard.class);
-
+	
+	@Autowired
 	ComputerService cpuService;
+
 	MapperComputerDTO mapper;
 	List<Computer> computers;
 	List<Computer> subComputers = new ArrayList<Computer>();
@@ -35,8 +40,9 @@ public class Dashboard extends HttpServlet {
 	int counter;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		  ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+	      ctx.getAutowireCapableBeanFactory().autowireBean(this);
 		try {
-			cpuService = ComputerService.getInstance();
 			mapper = MapperComputerDTO.getInstance();
 			
 			
@@ -71,14 +77,14 @@ public class Dashboard extends HttpServlet {
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		cpuService = ComputerService.getInstance();
 
 		String[] checkedIds = request.getParameterValues("selection");
 		String[] idTab = checkedIds[0].split(",");
 
 		try {
 			cpuService.deleteAll(idTab);
-		} catch (Exception e) {
+		} catch (DataBaseException e) {
+			logger.error(e.getMessage());
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		}
 

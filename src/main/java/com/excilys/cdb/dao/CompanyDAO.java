@@ -9,29 +9,27 @@ import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.model.Company;
 
-public class CompanyDAO implements CompanyDAOInterface<Company> {
+@Repository
+public class CompanyDAO extends JDBCManager implements CompanyDAOInterface<Company> {
 	Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 	private final static String QUERY_SELECT_ALL = "SELECT id,name FROM company";
 	private final static String QUERY_DELETE = "DELETE FROM company WHERE id= ?";
-	private static CompanyDAO companyDAO = new CompanyDAO();
 	private static Connection connect;
 
 	private CompanyDAO() {
-		JDBCManager.getInstance();
-		connect = JDBCManager.getConnection();
-	}
-
-	public static CompanyDAO getInstance() {
-		return companyDAO;
+		super();
 	}
 
 	@Override
 	public ArrayList<Company> findAll() throws IOException, DataBaseException {
-		CompanyDAO.connect = JDBCManager.connectionDB();
+
+		CompanyDAO.connect = JDBCManager.getConnexion();
+
 		ArrayList<Company> list = new ArrayList<>();
 
 		try (PreparedStatement preparedStatement = CompanyDAO.connect.prepareStatement(QUERY_SELECT_ALL)) {
@@ -60,7 +58,7 @@ public class CompanyDAO implements CompanyDAOInterface<Company> {
 
 	@Override
 	public void delete(int id) throws IOException, DataBaseException {
-		CompanyDAO.connect = JDBCManager.connectionDB();
+		CompanyDAO.connect = JDBCManager.getConnexion();
 		try (PreparedStatement preparedStatement = CompanyDAO.connect.prepareStatement(QUERY_DELETE)) {
 			preparedStatement.setInt(1, id);
 			preparedStatement.executeUpdate();
