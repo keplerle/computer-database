@@ -38,7 +38,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	DataSource dataSource;
 
 	@Override
-	public void create(Computer computer) throws DataException, IOException, DataBaseException {
+	public void create(Computer computer){
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		Object[] params = { new SqlParameterValue(Types.VARCHAR, computer.getName()),
 				new SqlParameterValue(Types.DATE, computer.getIntroduced() == null ? null : computer.getIntroduced()),
@@ -50,7 +50,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public void update(Computer computer) throws DataException, IOException, DataBaseException {
+	public void update(Computer computer){
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("name", computer.getName(), Types.VARCHAR);
@@ -64,7 +64,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public void delete(int id) throws IOException, DataBaseException {
+	public void delete(int id) {
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("id", id);
@@ -72,7 +72,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public Optional<Computer> find(int id) throws IOException, DataBaseException {
+	public Optional<Computer> find(int id) {
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("id", id);
@@ -98,7 +98,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public List<Computer> findAll(String name, int page, int size) throws IOException, DataBaseException {
+	public List<Computer> findAll(String name, int page, int size) {
 
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		MapSqlParameterSource params = new MapSqlParameterSource();
@@ -127,7 +127,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public int count(String name) throws IOException, DataBaseException {
+	public int count(String name) {
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("name", "%" + name + "%");
@@ -136,7 +136,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public void deleteByCompany(int companyId) throws IOException, DataBaseException {
+	public void deleteByCompany(int companyId) {
 
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		MapSqlParameterSource params = new MapSqlParameterSource();

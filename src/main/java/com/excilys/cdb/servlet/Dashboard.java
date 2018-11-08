@@ -60,9 +60,6 @@ public class Dashboard extends HttpServlet {
 			for (int i = 0; i < computers.size(); i++) {
 				subComputersDTO.add(mapper.computerDtoFromComputer(computers.get(i)));
 			}
-	
-		} catch (DataBaseException dbe) {
-			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
 		} catch (NoPreviousPageException nppe) {
 			Page.increasePage();
 		} catch (NoNextPageException nnpe) {
@@ -80,13 +77,7 @@ public class Dashboard extends HttpServlet {
 
 		String[] checkedIds = request.getParameterValues("selection");
 		String[] idTab = checkedIds[0].split(",");
-
-		try {
-			cpuService.deleteAll(idTab);
-		} catch (DataBaseException e) {
-			logger.error(e.getMessage());
-			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
-		}
+			cpuService.deleteAll(idTab);	
 
 		response.sendRedirect("dashboard");
 	}

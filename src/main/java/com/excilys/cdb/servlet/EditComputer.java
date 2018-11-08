@@ -34,7 +34,6 @@ public class EditComputer extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		  ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 	      ctx.getAutowireCapableBeanFactory().autowireBean(this);
-		try {
 			mapper=MapperComputerDTO.getInstance();
 			
 			ComputerDTO computerDto = mapper.computerDtoFromOptionalComputer(cpuService.find(Integer.parseInt(request.getParameter("computerId"))));
@@ -46,11 +45,6 @@ public class EditComputer extends HttpServlet {
 
 			List<Company> companies = cpaService.findAll();
 			request.setAttribute("companies", companies);
-			
-		} catch (DataBaseException e) {
-			logger.error(e.getMessage());
-			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
-		}
 
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
 	}
@@ -72,10 +66,7 @@ public class EditComputer extends HttpServlet {
 		} catch (DataException de) {
 			request.setAttribute("internError", de.getMessage());
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
-		} catch (DataBaseException e) {
-			logger.error(e.getMessage());
-			this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
-		}
+		} 
 	}
 
 }

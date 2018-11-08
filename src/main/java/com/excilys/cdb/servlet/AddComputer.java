@@ -33,13 +33,10 @@ public class AddComputer extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		  ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 	      ctx.getAutowireCapableBeanFactory().autowireBean(this);
-		try {
 			mapper=MapperComputerDTO.getInstance();
 			List<Company> companies = cpaService.findAll();
 			request.setAttribute("companies", companies);
-		} catch (DataBaseException dbe) {
-			logger.error(dbe.getMessage());
-		}
+		
 
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}
@@ -58,9 +55,6 @@ public class AddComputer extends HttpServlet {
 			request.setAttribute("internError", de.getMessage());
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 		} 
-		 catch (DataBaseException e) {
-			 logger.error(e.getMessage());
-			 this.getServletContext().getRequestDispatcher("/WEB-INF/views/500.jsp").forward(request, response);
-		}
+
 	}
 }

@@ -28,7 +28,7 @@ public class CompanyDAO implements CompanyDAOInterface<Company> {
 	DataSource dataSource;
 
 	@Override
-	public List<Company> findAll() throws IOException, DataBaseException {
+	public List<Company> findAll() {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         RowMapper<Company> rowMapper = new RowMapper<Company>() {
             public Company mapRow(ResultSet result, int pRowNum) throws SQLException {
@@ -42,7 +42,7 @@ public class CompanyDAO implements CompanyDAOInterface<Company> {
 	}
 
 	@Override
-	public void delete(int id) throws IOException, DataBaseException {
+	public void delete(int id) {
 		
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		MapSqlParameterSource params = new MapSqlParameterSource();

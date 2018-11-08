@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -21,6 +22,12 @@ public class SpringConfig {
 				"/home/excilys/eclipse-workspace/computer-database/src/main/resources/db.properties");
 		HikariDataSource dataSource = new HikariDataSource(config);
 		return dataSource;
+	}
+	
+	@Bean
+	public DataSourceTransactionManager transactionManager() {
+		DataSourceTransactionManager transactionManager =  new DataSourceTransactionManager(dataSource());
+		return transactionManager;
 	}
 
 }

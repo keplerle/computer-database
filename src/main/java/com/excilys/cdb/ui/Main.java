@@ -281,16 +281,10 @@ public class Main {
 				}
 				}
 				commande = 0;
-			} catch (DataBaseException ex) {
-				logger.error(ex.getMessage());
 
 			} catch (OutOfCommandeScopeException outEx) {
 				logger.error(outEx.getMessage());
-			} catch (FileNotFoundException fnfEx) {
-				logger.error(fnfEx.getMessage());
-			} catch (IOException ioEx) {
-				logger.error(ioEx.getMessage());
-			}
+			} 
 		}
 
 	}
