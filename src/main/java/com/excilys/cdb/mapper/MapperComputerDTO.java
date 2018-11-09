@@ -18,7 +18,7 @@ public class MapperComputerDTO {
 		return mapperComputerDTO;
 	}
 
-	public Computer computerDtoToComputer(ComputerDTO computerDto) {
+	public Computer toComputer(ComputerDTO computerDto) {
 		Computer computer = new Computer();
 		Company company = new Company();
 
@@ -41,7 +41,7 @@ public class MapperComputerDTO {
 
 	}
 
-	public ComputerDTO computerDtoFromOptionalComputer(Optional<Computer> optional) {
+	public ComputerDTO fromOptionalComputer(Optional<Computer> optional) {
 
 		ComputerDTO computerDto = new ComputerDTO();
 		
@@ -62,7 +62,7 @@ public class MapperComputerDTO {
 
 	}
 	
-	public ComputerDTO computerDtoFromComputer(Computer computer) {
+	public ComputerDTO fromComputer(Computer computer) {
 
 		ComputerDTO computerDto = new ComputerDTO();
 		

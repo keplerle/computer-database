@@ -57,7 +57,7 @@ public class Dashboard extends HttpServlet {
 			}
 			subComputersDTO.clear();
 			for (int i = 0; i < computers.size(); i++) {
-				subComputersDTO.add(mapper.computerDtoFromComputer(computers.get(i)));
+				subComputersDTO.add(mapper.fromComputer(computers.get(i)));
 			}
 		} catch (NoPreviousPageException nppe) {
 			Page.increasePage();

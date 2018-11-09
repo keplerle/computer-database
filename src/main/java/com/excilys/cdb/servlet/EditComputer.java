@@ -36,7 +36,7 @@ public class EditComputer extends HttpServlet {
 	      ctx.getAutowireCapableBeanFactory().autowireBean(this);
 			mapper=MapperComputerDTO.getInstance();
 			
-			ComputerDTO computerDto = mapper.computerDtoFromOptionalComputer(cpuService.find(Integer.parseInt(request.getParameter("computerId"))));
+			ComputerDTO computerDto = mapper.fromOptionalComputer(cpuService.find(Integer.parseInt(request.getParameter("computerId"))));
 			request.setAttribute("computerId", computerDto.id);
 			request.setAttribute("computerName", computerDto.name);
 			request.setAttribute("introduced", computerDto.introduced);
@@ -60,7 +60,7 @@ public class EditComputer extends HttpServlet {
 
 		try {
 
-			cpuService.update(mapper.computerDtoToComputer(computerDto));
+			cpuService.update(mapper.toComputer(computerDto));
 
 			response.sendRedirect("dashboard");
 		} catch (DataException de) {

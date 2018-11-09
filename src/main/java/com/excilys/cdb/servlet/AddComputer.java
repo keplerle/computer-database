@@ -49,7 +49,7 @@ public class AddComputer extends HttpServlet {
 		computerDto.companyId = request.getParameter("companyId");
 	
 		try {
-			cpuService.create(mapper.computerDtoToComputer(computerDto));
+			cpuService.create(mapper.toComputer(computerDto));
 			response.sendRedirect("dashboard");
 		} catch (DataException de) {
 			request.setAttribute("internError", de.getMessage());
