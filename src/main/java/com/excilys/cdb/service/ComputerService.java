@@ -33,48 +33,23 @@ public class ComputerService {
 	private PlatformTransactionManager transactionManager;
 
 	public Optional<Computer> find(int id) {
-		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
 		Optional<Computer> computer;
-		computer = transactionTemplate.execute(new TransactionCallback<Optional<Computer>>() {
-			@Override
-			public Optional<Computer> doInTransaction(TransactionStatus transactionStatus) {
-				Optional<Computer> computer = computerDao.find(id);
-				return computer;
-			}
-		});
+		computer = computerDao.find(id);
 		return computer;
 	}
 
 	public void create(Computer computer) throws DataException {
 		ComputerValidator.computerValidator(computer);
-		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
-		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-			@Override
-			protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-				computerDao.create(computer);
-			}
-		});
+		computerDao.create(computer);
 	}
 
 	public void update(Computer computer) throws DataException {
 		ComputerValidator.computerValidator(computer);
-		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
-		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-			@Override
-			protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-				computerDao.update(computer);
-			}
-		});
+		computerDao.update(computer);
 	}
 
 	public void delete(int id) {
-		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
-		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-			@Override
-			protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
 				computerDao.delete(id);
-			}
-		});
 	}
 	
 	public void deleteAll(String[] idTab) {
@@ -96,31 +71,15 @@ public class ComputerService {
 
 	public <T> List<Computer> findAll(String name) throws NoPreviousPageException, NoNextPageException {
 		PageValidator.previousPageValidator();
-		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
 		List<Computer> computerList = new ArrayList<Computer>();
-		computerList = transactionTemplate.execute(new TransactionCallback<List<Computer>>() {
-			@Override
-			public List<Computer> doInTransaction(TransactionStatus transactionStatus) {
-				List<Computer> list = new ArrayList<Computer>();
-				list = computerDao.findAll(name, Page.getPage(), Page.getPageSize());
-				return list;
-			}
-		});
+		computerList = computerDao.findAll(name, Page.getPage(), Page.getPageSize());
 		PageValidator.nextPageValidator(computerList);
 		return computerList;
 	}
 
 	public int count(String name) {
-		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
 		int count = 0;
-		count = transactionTemplate.execute(new TransactionCallback<Integer>() {
-			@Override
-			public Integer doInTransaction(TransactionStatus transactionStatus) {
-				int result = 0;
-				result = computerDao.count(name);
-				return result;
-			}
-		});
+		count = computerDao.count(name);
 		return count;
 	}
 }
