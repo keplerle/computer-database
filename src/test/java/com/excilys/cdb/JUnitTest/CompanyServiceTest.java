@@ -1,7 +1,6 @@
 package com.excilys.cdb.JUnitTest;
 
 import static org.junit.Assert.assertEquals;
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
@@ -11,12 +10,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-
+import com.excilys.cdb.config.SpringConfig;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.service.CompanyService;
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = SpringConfig.class)
 public class CompanyServiceTest {
 	@Autowired
 	private CompanyService companyService;

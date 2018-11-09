@@ -16,7 +16,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.excilys.cdb.dto.ComputerDTO;
-import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.exception.NoNextPageException;
 import com.excilys.cdb.exception.NoPreviousPageException;
 import com.excilys.cdb.mapper.MapperComputerDTO;

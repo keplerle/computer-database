@@ -2,7 +2,6 @@ package com.excilys.cdb.JUnitTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -14,13 +13,23 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
+
+import com.excilys.cdb.config.SpringConfig;
 import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.exception.DataException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.ComputerService;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes=SpringConfig.class)
 
 public class ComputerServiceTest {
 
@@ -121,18 +130,6 @@ public class ComputerServiceTest {
 		}
 	}
 
-	@Test
-	public void testFindByIdOutofBoundComputer() throws IOException {
-		Optional<Computer> computer = null;
-		try {
-			computer = computerService.find(0);
-		} catch (DataBaseException e) {
-			e.printStackTrace();
-			assertNull(computer);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	@Test
 	public void testUpdateOutOfBoundComputer() {
