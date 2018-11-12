@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +26,7 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
+@WebServlet("/add")
 public class AddComputer extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -36,10 +39,13 @@ public class AddComputer extends HttpServlet {
 	
 	MapperComputerDTO computerMapper=MapperComputerDTO.getInstance();
 	MapperCompanyDTO companyMapper=MapperCompanyDTO.getInstance();
-	
+	@Override
+	public void init(ServletConfig config) throws ServletException{
+		super.init(config);
+		ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		ctx.getAutowireCapableBeanFactory().autowireBean(this);
+	}
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		  ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-	      ctx.getAutowireCapableBeanFactory().autowireBean(this);
 			List<Company> companies = cpaService.findAll();
 			List<CompanyDTO> subCompaniesDTO = new ArrayList<CompanyDTO>();
 			for (int i = 0; i < companies.size(); i++) {

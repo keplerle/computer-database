@@ -26,10 +26,13 @@ import com.excilys.cdb.service.ComputerService;
 @RequestMapping("/computer")
 public class ComputerController {
 	
-	@Autowired
-	ComputerService computerService;
+	private final ComputerService computerService;
+	
+	public ComputerController(ComputerService computerService) {
+		this.computerService = computerService;
+	}
 
-	@GetMapping(value = "")
+	@GetMapping
 	public ResponseEntity<Optional<Computer>> find(int id) {
 		Optional<Computer> computer = computerService.find(id);
 		if (computer == null) {
@@ -60,7 +63,7 @@ public class ComputerController {
 		return new ResponseEntity<List<Computer>>(computerList, HttpStatus.OK);
 
 	}
-	@PostMapping(value = "")
+	@PostMapping
 	public ResponseEntity<Computer> create(@RequestBody Computer computer) {
 		try {
 			computerService.create(computer);
@@ -71,7 +74,7 @@ public class ComputerController {
 		return responseEntity;
 		
 	}
-	@PutMapping(value = "")
+	@PutMapping
 	public ResponseEntity<Computer> update(@RequestBody Computer computer) {
 		try {
 			computerService.update(computer);
@@ -82,7 +85,7 @@ public class ComputerController {
 		return responseEntity;
 		
 	}
-	@DeleteMapping(value = "")
+	@DeleteMapping
 	public ResponseEntity<Void> delete(String[] idTab) {
 		computerService.deleteAll(idTab);
 		return new ResponseEntity<Void>(HttpStatus.GONE);

@@ -18,8 +18,12 @@ import com.excilys.cdb.service.CompanyService;
 @RequestMapping("/company")
 public class CompanyController {
 
-	@Autowired
-	CompanyService companyService;
+	
+	private final CompanyService companyService;
+	
+	public CompanyController(CompanyService companyService) {
+		this.companyService = companyService;
+	}
 
 	@GetMapping(value = "")
 	public ResponseEntity<List<Company>> findAll() {

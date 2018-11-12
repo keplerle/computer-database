@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @ComponentScan(basePackages ="com.excilys.cdb.dao")
-public class RepositoryConfig {
+public class RepositoryConfig extends AnnotationConfigApplicationContext{
 	Logger logger = LoggerFactory.getLogger(RepositoryConfig.class);
 	@Bean
 	public DataSource dataSource() {

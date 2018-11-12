@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +25,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.service.ComputerService;
 
+@WebServlet("/dashboard")
 public class Dashboard extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -37,10 +40,15 @@ public class Dashboard extends HttpServlet {
 	List<Computer> subComputers = new ArrayList<Computer>();
 	List<ComputerDTO> subComputersDTO = new ArrayList<ComputerDTO>();
 	int counter;
-
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException{
+		super.init(config);
+		ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		ctx.getAutowireCapableBeanFactory().autowireBean(this);
+	}
+	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		  ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-	      ctx.getAutowireCapableBeanFactory().autowireBean(this);
 		try {
 			Page.setPage(request.getParameter("page"), request.getParameter("size"));
 			

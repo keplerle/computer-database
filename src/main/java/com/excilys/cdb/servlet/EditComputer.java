@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +26,7 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
+@WebServlet("/edit")
 public class EditComputer extends HttpServlet {
 
 	Logger logger = LoggerFactory.getLogger(EditComputer.class);
@@ -31,37 +34,42 @@ public class EditComputer extends HttpServlet {
 	CompanyService cpaService;
 	@Autowired
 	ComputerService cpuService;
-	MapperComputerDTO computerMapper=MapperComputerDTO.getInstance();
-	MapperCompanyDTO companyMapper=MapperCompanyDTO.getInstance();
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		  ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-	      ctx.getAutowireCapableBeanFactory().autowireBean(this);
-			
-			ComputerDTO computerDto = computerMapper.fromOptionalComputer(cpuService.find(Integer.parseInt(request.getParameter("computerId"))));
-			request.setAttribute("computerId", computerDto.id);
-			request.setAttribute("computerName", computerDto.name);
-			request.setAttribute("introduced", computerDto.introduced);
-			request.setAttribute("discontinued", computerDto.discontinued);
-			request.setAttribute("companyId", computerDto.companyId);
+	MapperComputerDTO computerMapper = MapperComputerDTO.getInstance();
+	MapperCompanyDTO companyMapper = MapperCompanyDTO.getInstance();
 
-			List<Company> companies = cpaService.findAll();
-			List<CompanyDTO> subCompaniesDTO = new ArrayList<CompanyDTO>();
-			for (int i = 0; i < companies.size(); i++) {
-				subCompaniesDTO.add(companyMapper.fromCompany(companies.get(i)));
-			}
-			request.setAttribute("companies", companies);
+	@Override
+	public void init(ServletConfig config) throws ServletException{
+		super.init(config);
+		ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		ctx.getAutowireCapableBeanFactory().autowireBean(this);
+	}
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ComputerDTO computerDto = computerMapper
+				.fromOptionalComputer(cpuService.find(Integer.parseInt(request.getParameter("computerId"))));
+		request.setAttribute("computerId", computerDto.id);
+		request.setAttribute("computerName", computerDto.name);
+		request.setAttribute("introduced", computerDto.introduced);
+		request.setAttribute("discontinued", computerDto.discontinued);
+		request.setAttribute("companyId", computerDto.companyId);
+
+		List<Company> companies = cpaService.findAll();
+		List<CompanyDTO> subCompaniesDTO = new ArrayList<CompanyDTO>();
+		for (int i = 0; i < companies.size(); i++) {
+			subCompaniesDTO.add(companyMapper.fromCompany(companies.get(i)));
+		}
+		request.setAttribute("companies", companies);
 
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		ComputerDTO computerDto = new ComputerDTO();
-		computerDto.id=request.getParameter("id");
-		computerDto.name=request.getParameter("computerName");
-		computerDto.introduced=request.getParameter("introduced");
-		computerDto.discontinued=request.getParameter("discontinued");
-		computerDto.companyId=request.getParameter("companyId");
+		computerDto.id = request.getParameter("id");
+		computerDto.name = request.getParameter("computerName");
+		computerDto.introduced = request.getParameter("introduced");
+		computerDto.discontinued = request.getParameter("discontinued");
+		computerDto.companyId = request.getParameter("companyId");
 
 		try {
 
@@ -71,7 +79,7 @@ public class EditComputer extends HttpServlet {
 		} catch (DataException de) {
 			request.setAttribute("internError", de.getMessage());
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
-		} 
+		}
 	}
 
 }

@@ -17,7 +17,8 @@
 		<mysql.version>8.0.12</mysql.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<jstl.version>1.2</jstl.version>
-		<servlet.version>2.0</servlet.version>
+		<jsp.version>2.0</jsp.version>
+		<servlet.version>3.0.1</servlet.version>
 		<jetty.version>9.4.12.v20180830</jetty.version>
 		<selenium.version>3.14.0</selenium.version>
 		<jquery.validation.version>1.17.0-1</jquery.validation.version>
@@ -55,6 +56,13 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jsp-api</artifactId>
+			<version>${jsp.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
 			<version>${servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
