@@ -25,14 +25,10 @@ import com.excilys.cdb.validator.PageValidator;
 @Service
 public class ComputerService {
 	Logger logger = LoggerFactory.getLogger(ComputerService.class);
-
-	private final ComputerDAO computerDao;
-	private final PlatformTransactionManager transactionManager;
-
-	public ComputerService(ComputerDAO computerDao, PlatformTransactionManager transactionManager) {
-		this.computerDao = computerDao;
-		this.transactionManager = transactionManager;
-	}
+	@Autowired
+	private ComputerDAO computerDao;
+	@Autowired
+	private PlatformTransactionManager transactionManager;
 
 	public Optional<Computer> find(int id) {
 		Optional<Computer> computer;

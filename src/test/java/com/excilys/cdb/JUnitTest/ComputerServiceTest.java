@@ -17,25 +17,22 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import com.excilys.cdb.config.SpringConfig;
+import com.excilys.cdb.config.CliAppConfig;
 import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.exception.DataException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=SpringConfig.class)
+@ContextConfiguration(classes = CliAppConfig.class)
 
 public class ComputerServiceTest {
 	Logger logger = LoggerFactory.getLogger(ComputerServiceTest.class);
+	
 	@Autowired
 	private ComputerService computerService;
 
@@ -46,7 +43,7 @@ public class ComputerServiceTest {
 
 	@After
 	public void tearDown() {
-		computerService = null;
+	
 	}
 
 	@Test

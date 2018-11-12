@@ -15,22 +15,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.cdb.config.SpringConfig;
+import com.excilys.cdb.config.CliAppConfig;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.service.CompanyService;
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SpringConfig.class)
+@ContextConfiguration(classes = CliAppConfig.class)
 public class CompanyServiceTest {
 	@Autowired
 	private CompanyService companyService;
-	
+
 	@Before
 	public void setUp() {
 	}
 	
 	@After
 	public void tearDown() {
-		companyService=null;
+
 	}
 	
 	@Test

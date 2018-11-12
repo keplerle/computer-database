@@ -8,18 +8,18 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
 @Configuration
-@ComponentScan(basePackages ="com.excilys.cdb.dao")
-public class RepositoryConfig extends AnnotationConfigApplicationContext{
-	Logger logger = LoggerFactory.getLogger(RepositoryConfig.class);
+@ComponentScan("com.excilys.cdb.dao, " + "com.excilys.cdb.service")
+public class CliAppConfig {
+	Logger logger = LoggerFactory.getLogger(CliAppConfig.class);
+
 	@Bean
 	public DataSource dataSource() {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -37,5 +37,11 @@ public class RepositoryConfig extends AnnotationConfigApplicationContext{
 		config.setPassword(prop.getProperty("password"));
 		HikariDataSource dataSource = new HikariDataSource(config);
 		return dataSource;
+	}
+
+	@Bean
+	public DataSourceTransactionManager transactionManager(DataSource dataSource) {
+		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
+		return transactionManager;
 	}
 }
