@@ -23,6 +23,7 @@
 		<jquery.validation.version>1.17.0-1</jquery.validation.version>
 		<hikari.cp.version>2.7.8</hikari.cp.version>
 		<spring.version>5.1.2.RELEASE</spring.version>
+		<spring.validation.version>0.8</spring.validation.version>
 	</properties>
 
 	<dependencies>
@@ -131,6 +132,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springmodules</groupId>
+			<artifactId>spring-modules-validation</artifactId>
+			<version>${spring.validation.version}</version>
 		</dependency>
 
 	</dependencies>
