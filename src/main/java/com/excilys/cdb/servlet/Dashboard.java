@@ -31,15 +31,18 @@ public class Dashboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	Logger logger = LoggerFactory.getLogger(Dashboard.class);
-	
-	@Autowired
-	ComputerService cpuService;
-
 	MapperComputerDTO computerMapper = MapperComputerDTO.getInstance();
 	List<Computer> computers;
 	List<Computer> subComputers = new ArrayList<Computer>();
 	List<ComputerDTO> subComputersDTO = new ArrayList<ComputerDTO>();
 	int counter;
+	
+	@Autowired
+	private ComputerService cpuService;
+	
+
+
+
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException{

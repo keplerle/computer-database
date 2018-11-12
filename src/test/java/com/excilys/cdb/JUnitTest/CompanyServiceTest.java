@@ -24,6 +24,7 @@ public class CompanyServiceTest {
 	@Autowired
 	private CompanyService companyService;
 
+	
 	@Before
 	public void setUp() {
 	}

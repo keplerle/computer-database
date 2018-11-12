@@ -31,14 +31,14 @@ public class AddComputer extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	Logger logger = LoggerFactory.getLogger(AddComputer.class);
-	
 	@Autowired
-	CompanyService cpaService;
+	private CompanyService cpaService;
 	@Autowired
-	ComputerService cpuService;
+	private  ComputerService cpuService;
 	
-	MapperComputerDTO computerMapper=MapperComputerDTO.getInstance();
-	MapperCompanyDTO companyMapper=MapperCompanyDTO.getInstance();
+	private MapperComputerDTO computerMapper=MapperComputerDTO.getInstance();
+	private MapperCompanyDTO companyMapper=MapperCompanyDTO.getInstance();
+
 	@Override
 	public void init(ServletConfig config) throws ServletException{
 		super.init(config);

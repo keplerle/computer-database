@@ -28,17 +28,18 @@ import com.excilys.cdb.service.ComputerService;
 
 @WebServlet("/edit")
 public class EditComputer extends HttpServlet {
-
+	
 	Logger logger = LoggerFactory.getLogger(EditComputer.class);
 	@Autowired
-	CompanyService cpaService;
+	private CompanyService cpaService;
 	@Autowired
-	ComputerService cpuService;
+	private ComputerService cpuService;
+
 	MapperComputerDTO computerMapper = MapperComputerDTO.getInstance();
 	MapperCompanyDTO companyMapper = MapperCompanyDTO.getInstance();
 
 	@Override
-	public void init(ServletConfig config) throws ServletException{
+	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 		ctx.getAutowireCapableBeanFactory().autowireBean(this);

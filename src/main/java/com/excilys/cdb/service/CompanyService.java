@@ -19,12 +19,17 @@ import com.excilys.cdb.model.Company;
 @Service
 public class CompanyService {
 	Logger logger = LoggerFactory.getLogger(CompanyService.class);
-	@Autowired
-	private CompanyDAO companyDao;
-	@Autowired
-	private ComputerDAO computerDao;
-	@Autowired
-	private PlatformTransactionManager transactionManager;
+	
+	private final CompanyDAO companyDao;
+	private final ComputerDAO computerDao;
+	private final PlatformTransactionManager transactionManager;
+
+	public CompanyService(CompanyDAO companyDao, ComputerDAO computerDao,
+			PlatformTransactionManager transactionManager) {
+		this.companyDao = companyDao;
+		this.computerDao = computerDao;
+		this.transactionManager = transactionManager;
+	}
 
 	public <T> List<Company> findAll() {
 		List<Company> list = new ArrayList<Company>();

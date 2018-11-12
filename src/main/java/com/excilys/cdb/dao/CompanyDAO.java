@@ -1,6 +1,5 @@
 package com.excilys.cdb.dao;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -9,14 +8,11 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.model.Company;
 
 @Repository
@@ -24,8 +20,12 @@ public class CompanyDAO implements CompanyDAOInterface<Company> {
 	Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 	private final static String QUERY_SELECT_ALL = "SELECT id,name FROM company";
 	private final static String QUERY_DELETE = "DELETE FROM company WHERE id= :id";
-    @Autowired
-	DataSource dataSource;
+ 
+	private final DataSource dataSource;
+
+	public CompanyDAO(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
 
 	@Override
 	public List<Company> findAll() {
