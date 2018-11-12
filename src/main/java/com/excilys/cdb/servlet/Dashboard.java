@@ -32,7 +32,7 @@ public class Dashboard extends HttpServlet {
 	@Autowired
 	ComputerService cpuService;
 
-	MapperComputerDTO mapper;
+	MapperComputerDTO computerMapper = MapperComputerDTO.getInstance();
 	List<Computer> computers;
 	List<Computer> subComputers = new ArrayList<Computer>();
 	List<ComputerDTO> subComputersDTO = new ArrayList<ComputerDTO>();
@@ -42,9 +42,6 @@ public class Dashboard extends HttpServlet {
 		  ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 	      ctx.getAutowireCapableBeanFactory().autowireBean(this);
 		try {
-			mapper = MapperComputerDTO.getInstance();
-			
-			
 			Page.setPage(request.getParameter("page"), request.getParameter("size"));
 			
 			if (request.getParameter("search") == null) {
@@ -57,7 +54,7 @@ public class Dashboard extends HttpServlet {
 			}
 			subComputersDTO.clear();
 			for (int i = 0; i < computers.size(); i++) {
-				subComputersDTO.add(mapper.fromComputer(computers.get(i)));
+				subComputersDTO.add(computerMapper.fromComputer(computers.get(i)));
 			}
 		} catch (NoPreviousPageException nppe) {
 			Page.increasePage();

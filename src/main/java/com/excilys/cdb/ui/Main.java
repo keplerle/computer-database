@@ -1,7 +1,5 @@
 package com.excilys.cdb.ui;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.exception.DataException;
 import com.excilys.cdb.exception.NoNextPageException;
 import com.excilys.cdb.exception.NoPreviousPageException;
@@ -31,6 +28,7 @@ public class Main {
 	@Autowired
 	static
 	ComputerService cpuService;
+
 	public static void main(String[] args) {
 		Logger logger = LoggerFactory.getLogger(Main.class);
 		int commande = 0;

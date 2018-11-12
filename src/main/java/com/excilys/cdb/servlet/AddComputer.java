@@ -1,6 +1,7 @@
 package com.excilys.cdb.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,9 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.dto.ComputerDTO;
-import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.exception.DataException;
+import com.excilys.cdb.mapper.MapperCompanyDTO;
 import com.excilys.cdb.mapper.MapperComputerDTO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.service.CompanyService;
@@ -24,20 +26,26 @@ import com.excilys.cdb.service.ComputerService;
 
 public class AddComputer extends HttpServlet {
 
+	private static final long serialVersionUID = 1L;
 	Logger logger = LoggerFactory.getLogger(AddComputer.class);
+	
 	@Autowired
 	CompanyService cpaService;
 	@Autowired
 	ComputerService cpuService;
-	MapperComputerDTO mapper;
+	
+	MapperComputerDTO computerMapper=MapperComputerDTO.getInstance();
+	MapperCompanyDTO companyMapper=MapperCompanyDTO.getInstance();
+	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		  ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 	      ctx.getAutowireCapableBeanFactory().autowireBean(this);
-			mapper=MapperComputerDTO.getInstance();
 			List<Company> companies = cpaService.findAll();
+			List<CompanyDTO> subCompaniesDTO = new ArrayList<CompanyDTO>();
+			for (int i = 0; i < companies.size(); i++) {
+				subCompaniesDTO.add(companyMapper.fromCompany(companies.get(i)));
+			}
 			request.setAttribute("companies", companies);
-		
-
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}
 
@@ -49,12 +57,11 @@ public class AddComputer extends HttpServlet {
 		computerDto.companyId = request.getParameter("companyId");
 	
 		try {
-			cpuService.create(mapper.toComputer(computerDto));
+			cpuService.create(computerMapper.toComputer(computerDto));
 			response.sendRedirect("dashboard");
 		} catch (DataException de) {
 			request.setAttribute("internError", de.getMessage());
 			this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 		} 
-
 	}
 }
