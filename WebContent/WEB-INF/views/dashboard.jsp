@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!DOCTYPE html>
 <html>
 <head>
-<title>Computer Database</title>
+<title><spring:message code="label.title" /></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
@@ -15,8 +16,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard"> Application - Computer
-				Database </a>
+			<a class="navbar-brand" href="dashboard"> <spring:message code="label.banner" /> </a>
 		</div>
 	</header>
 
@@ -25,22 +25,21 @@
 			<h1 id="homeTitle">
 
 				<c:out value="${ counter }">0</c:out>
-				Computers found
+		<spring:message code="label.count" />
 			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="dashboard" method="GET" class="form-inline">
 
 						<input type="search" id="searchbox" name="search"
-							class="form-control" value='${search}' placeholder="Search name" /> <input
-							type="submit" id="searchsubmit" value="Filter by name"
+							class="form-control" value='${search}' placeholder="<spring:message code="label.searchBar" />" /> <input
+							type="submit" id="searchsubmit" value="<spring:message code="label.searchBarButton" />"
 							class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="add">Add
-						Computer</a> 
-						   <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Delete</a>
+					<a class="btn btn-success" id="addComputer" href="add"><spring:message code="label.addComputer" /></a> 
+						   <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="label.deleteButton" /></a>
 				</div>
 			</div>
 		</div>
@@ -63,12 +62,12 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
-						<th>Introduced date</th>
+						<th><spring:message code="label.computerName" /></th>
+						<th><spring:message code="label.introducedDate" /></th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
+						<th><spring:message code="label.discontinuedDate" /></th>
 						<!-- Table header for Company -->
-						<th>Company</th>
+						<th><spring:message code="label.company" /></th>
 
 					</tr>
 				</thead>
