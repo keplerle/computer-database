@@ -20,9 +20,9 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 @EnableWebMvc
 @ComponentScan("com.excilys.cdb.config, " + "com.excilys.cdb.mapper, " + "com.excilys.cdb.dao, "
 		+ "com.excilys.cdb.service, " + "com.excilys.cdb.controller")
-public class WebConfiguration implements WebMvcConfigurer{
+public class WebMvcConfig implements WebMvcConfigurer{
 	
-	Logger logger = LoggerFactory.getLogger(WebConfiguration.class);
+	Logger logger = LoggerFactory.getLogger(WebMvcConfig.class);
 	
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
@@ -39,7 +39,7 @@ public class WebConfiguration implements WebMvcConfigurer{
 	@Bean("messageSource")
 	public MessageSource messageSource() {
 	    ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-	    messageSource.setBasenames("languages/messages");
+	    messageSource.setBasenames("classpath:messages");
 	    messageSource.setDefaultEncoding("UTF-8");
 	    return messageSource;
 	}
