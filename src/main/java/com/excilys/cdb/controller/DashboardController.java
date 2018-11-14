@@ -2,6 +2,7 @@ package com.excilys.cdb.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exception.NoNextPageException;
 import com.excilys.cdb.exception.NoPreviousPageException;
@@ -49,10 +51,12 @@ public class DashboardController {
 				computers = computerService.findAll(search);
 				counter = computerService.count(search);
 			}
-			subComputersDTO.clear();
-			for (int i = 0; i < computers.size(); i++) {
-				subComputersDTO.add(computerMapper.fromComputer(computers.get(i)));
-			}
+			subComputersDTO.clear();	
+			subComputersDTO = computers.stream().map(temp -> {
+				ComputerDTO obj = computerMapper.fromComputer(temp);
+				return obj;
+			}).collect(Collectors.toList());
+
 		} catch (NoPreviousPageException nppe) {
 			Page.increasePage();
 		} catch (NoNextPageException nnpe) {
@@ -66,7 +70,7 @@ public class DashboardController {
 	}
 	
 	@PostMapping
-	public String postDeleteComputer(ModelMap model, 
+	public String postDashboard(ModelMap model, 
 			@RequestParam String[] selection) {
 		
 		String[] idTab = selection[0].split(",");

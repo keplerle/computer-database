@@ -1,13 +1,16 @@
 package com.excilys.cdb.controller;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,37 +43,25 @@ public class EditController {
 	}
 
 	@GetMapping
-	public String getDashboard(ModelMap model, @RequestParam String computerId) {
+	public String getEditComputer(ModelMap model, @RequestParam String computerId) {
 		ComputerDTO computerDto = computerMapper
 				.fromOptionalComputer(computerService.find(Integer.parseInt(computerId)));
-
-		model.addAttribute("computerId", computerDto.id);
-		model.addAttribute("computerName", computerDto.name);
-		model.addAttribute("introduced", computerDto.introduced);
-		model.addAttribute("discontinued", computerDto.discontinued);
-		model.addAttribute("companyId", computerDto.companyId);
+		model.addAttribute("computerDto", computerDto);
 
 		List<Company> companies = companyService.findAll();
-		List<CompanyDTO> subCompaniesDTO = new ArrayList<CompanyDTO>();
-		for (int i = 0; i < companies.size(); i++) {
-			subCompaniesDTO.add(companyMapper.fromCompany(companies.get(i)));
-		}
-		model.addAttribute("companies", companies);
-
+		List<CompanyDTO> subCompaniesDTO = companies.stream().map(temp -> {
+			CompanyDTO obj = companyMapper.fromCompany(temp);
+			return obj;
+		}).collect(Collectors.toList());	
+		model.addAttribute("companies", subCompaniesDTO);
 		return "editComputer";
 	}
 
 	@PostMapping
-	public String postDeleteComputer(ModelMap model, @RequestParam String id, @RequestParam String computerName,
-			@RequestParam String introduced, @RequestParam String discontinued, @RequestParam String companyId) {
-
-		ComputerDTO computerDto = new ComputerDTO();
-		computerDto.id = id;
-		computerDto.name = computerName;
-		computerDto.introduced = introduced;
-		computerDto.discontinued = discontinued;
-		computerDto.companyId = companyId;
-
+	public String postEditComputer(@Validated @ModelAttribute("computerDto") ComputerDTO computerDto, BindingResult result, ModelMap model) {
+        if (result.hasErrors()) {
+            return "500";
+        }
 		try {
 
 			computerService.update(computerMapper.toComputer(computerDto));
