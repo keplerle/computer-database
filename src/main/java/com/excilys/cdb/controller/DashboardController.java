@@ -3,13 +3,11 @@ package com.excilys.cdb.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.cdb.dto.ComputerDTO;
@@ -20,15 +18,19 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.service.ComputerService;
 
-@Controller("dashboardController")
+@Controller
+@RequestMapping("dashboard")
 public class DashboardController {
 
-	private final Logger logger = LoggerFactory.getLogger(DashboardController.class);
-	@Autowired
-	private ComputerService computerService;
-	private  MapperComputerDTO computerMapper = MapperComputerDTO.getInstance();
+	private final ComputerService computerService;
+	private final MapperComputerDTO computerMapper;
 
-	@GetMapping("dashboard")
+	public DashboardController(ComputerService computerService, MapperComputerDTO computerMapper) {
+		this.computerService = computerService;
+		this.computerMapper = computerMapper;
+	}
+
+	@GetMapping
 	public String getDashboard(ModelMap model,
 			@RequestParam(required = false, defaultValue = "") String search,
 			@RequestParam(required = false, defaultValue = "1") String page,
@@ -63,7 +65,7 @@ public class DashboardController {
 		return "dashboard";
 	}
 	
-	@PostMapping("dashboard")
+	@PostMapping
 	public String postDeleteComputer(ModelMap model, 
 			@RequestParam String[] selection) {
 		

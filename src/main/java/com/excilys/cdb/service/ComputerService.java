@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -26,12 +25,16 @@ import com.excilys.cdb.validator.PageValidator;
 public class ComputerService {
 	Logger logger = LoggerFactory.getLogger(ComputerService.class);
 	private final ComputerDAO computerDao;
+	private final ComputerValidator computerValidator;
+	private final PageValidator pageValidator;
 	private final PlatformTransactionManager transactionManager;
 
-	
-	
-	public ComputerService(ComputerDAO computerDao, PlatformTransactionManager transactionManager) {
+
+	public ComputerService(ComputerDAO computerDao, ComputerValidator computerValidator, PageValidator pageValidator,
+			PlatformTransactionManager transactionManager) {
 		this.computerDao = computerDao;
+		this.computerValidator = computerValidator;
+		this.pageValidator = pageValidator;
 		this.transactionManager = transactionManager;
 	}
 
@@ -42,12 +45,12 @@ public class ComputerService {
 	}
 
 	public void create(Computer computer) throws DataException {
-		ComputerValidator.computerValidator(computer);
+		computerValidator.computerValidator(computer);
 		computerDao.create(computer);
 	}
 
 	public void update(Computer computer) throws DataException {
-		ComputerValidator.computerValidator(computer);
+		computerValidator.computerValidator(computer);
 		computerDao.update(computer);
 	}
 
@@ -73,10 +76,10 @@ public class ComputerService {
 	}
 
 	public <T> List<Computer> findAll(String name) throws NoPreviousPageException, NoNextPageException {
-		PageValidator.previousPageValidator();
+		pageValidator.previousPageValidator();
 		List<Computer> computerList = new ArrayList<Computer>();
 		computerList = computerDao.findAll(name, Page.getPage(), Page.getPageSize());
-		PageValidator.nextPageValidator(computerList);
+		pageValidator.nextPageValidator(computerList);
 		return computerList;
 	}
 

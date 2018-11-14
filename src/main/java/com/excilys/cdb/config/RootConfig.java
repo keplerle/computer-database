@@ -12,13 +12,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 @Configuration
-@ComponentScan("com.excilys.cdb.dao, " + "com.excilys.cdb.service, "+ "com.excilys.cdb.ui")
+@ComponentScan({"com.excilys.cdb.dao","com.excilys.cdb.service","com.excilys.cdb.validator"})
 public class RootConfig {
 	Logger logger = LoggerFactory.getLogger(RootConfig.class);
 	
@@ -45,13 +43,5 @@ public class RootConfig {
 	public DataSourceTransactionManager transactionManager(DataSource dataSource) {
 		DataSourceTransactionManager transactionManager =  new DataSourceTransactionManager(dataSource);
 		return transactionManager;
-	}
-	
-	@Bean
-	public ViewResolver viewResolver() {
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setPrefix("/WEB-INF/views/");
-		viewResolver.setSuffix(".jsp");
-		return viewResolver;
 	}
 }

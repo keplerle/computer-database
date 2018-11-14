@@ -3,20 +3,13 @@ package com.excilys.cdb.mapper;
 import java.sql.Date;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-
+@Component
 public class MapperComputerDTO {
-
-	private static MapperComputerDTO mapperComputerDTO = new MapperComputerDTO();
-
-	private MapperComputerDTO() {
-	}
-
-	public static MapperComputerDTO getInstance() {
-		return mapperComputerDTO;
-	}
 
 	public Computer toComputer(ComputerDTO computerDto) {
 		Computer computer = new Computer();

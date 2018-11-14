@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.cdb.dto.CompanyDTO;
@@ -20,18 +21,25 @@ import com.excilys.cdb.mapper.MapperComputerDTO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-@Controller("addController")
+@Controller
+@RequestMapping("add")
 public class AddController {
 	Logger logger = LoggerFactory.getLogger(AddController.class);
-	@Autowired
-	private CompanyService companyService;
-	@Autowired
-	private  ComputerService computerService;
 	
-	private MapperComputerDTO computerMapper=MapperComputerDTO.getInstance();
-	private MapperCompanyDTO companyMapper=MapperCompanyDTO.getInstance();
+	private final CompanyService companyService;
+	private final ComputerService computerService;
+	private final MapperComputerDTO computerMapper;
+	private final MapperCompanyDTO companyMapper;
 	
-	@GetMapping("add")
+	public AddController(CompanyService companyService, ComputerService computerService,
+			MapperComputerDTO computerMapper, MapperCompanyDTO companyMapper) {
+		this.companyService = companyService;
+		this.computerService = computerService;
+		this.computerMapper = computerMapper;
+		this.companyMapper = companyMapper;
+	}
+
+	@GetMapping
 	public String getDashboard(ModelMap model) {
 		List<Company> companies = companyService.findAll();
 		List<CompanyDTO> subCompaniesDTO = new ArrayList<CompanyDTO>();
@@ -42,7 +50,7 @@ public class AddController {
 	return "addComputer";
 	}
 	
-	@PostMapping("add")
+	@PostMapping
 	public String postDeleteComputer(ModelMap model, 
 			@RequestParam String computerName,
 			@RequestParam String introduced,

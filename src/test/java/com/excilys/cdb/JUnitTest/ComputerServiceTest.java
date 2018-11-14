@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.excilys.cdb.config.CliAppConfig;
+import com.excilys.cdb.config.RootConfig;
 import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.exception.DataException;
 import com.excilys.cdb.model.Company;
@@ -28,7 +28,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.ComputerService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = CliAppConfig.class)
+@ContextConfiguration(classes = RootConfig.class)
 
 public class ComputerServiceTest {
 	Logger logger = LoggerFactory.getLogger(ComputerServiceTest.class);
