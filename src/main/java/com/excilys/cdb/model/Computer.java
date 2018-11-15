@@ -2,19 +2,36 @@ package com.excilys.cdb.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+@Entity
+@Table(name = "computer")
 public class Computer {
 
 	// Variable d'instance
-	private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+	private Long id;
+	@Column(name = "name")
 	private String name;
+	@Column(name = "introduced")
 	private LocalDate introduced;
+	  @Column(name = "discontinued")
 	private LocalDate discontinued;
+	  @ManyToOne
+	    @JoinColumn(name="company_id")
 	private Company company;
 
 	// Construteur
 	
 	public Computer() {
-		super();
 	}
 	
 	/**
@@ -22,7 +39,6 @@ public class Computer {
 	 * @param name
 	 */
 	public Computer(String name) {
-		super();
 		this.name = name;
 	}
 
@@ -31,23 +47,24 @@ public class Computer {
 	 * @param id
 	 * @param name
 	 */
-	public Computer(int id, String name) {
-		super();
+	public Computer(long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
 	// Getter & setter
-	public long getId() {
-		return id;
-	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public void setName(String name) {

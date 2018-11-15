@@ -33,7 +33,7 @@ public class Main {
 		Logger logger = LoggerFactory.getLogger(Main.class);
 		int commande = 0;
 		int id = 0;
-		int companyId = 0;
+		long companyId = 0;
 		int computerId = 0;
 
 		Optional<Computer> computerToDisplay;
@@ -220,7 +220,7 @@ public class Main {
 					dateDiscontinued = sc.nextLine();
 					logger.info(
 							"Veuillez entrer le nouveau numéro du fabricant de l'ordinateur (0 pour passer cette étape): ");
-					companyId = sc.nextInt();
+					companyId = sc.nextLong();
 
 					updatedComputers = new Computer(computerId, computerName);
 

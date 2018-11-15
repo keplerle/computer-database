@@ -25,7 +25,7 @@
 		<hikari.cp.version>2.7.8</hikari.cp.version>
 		<spring.version>5.1.2.RELEASE</spring.version>
 		<spring.validation.version>0.8</spring.validation.version>
-		<spring.hibernate.version>1.2.9</spring.hibernate.version>
+		<hibernate.version>5.3.7.Final</hibernate.version>
 	</properties>
 
 	<dependencies>
@@ -127,8 +127,14 @@
 
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-hibernate</artifactId>
-			<version>${spring.hibernate.version}</version>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
 		</dependency>
 
 	</dependencies>

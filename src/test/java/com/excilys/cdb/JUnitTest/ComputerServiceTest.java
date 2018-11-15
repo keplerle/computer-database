@@ -119,7 +119,7 @@ public class ComputerServiceTest {
 	public void testFindByIdComputer() {
 		try {
 			Optional<Computer> computer = computerService.find(12);
-			assertEquals(12, computer.get().getId());
+			assertEquals(new Long(12L), computer.get().getId());
 			assertEquals("Apple III", computer.get().getName());
 			assertEquals("1980-05-01", computer.get().getIntroduced().toString());
 			assertEquals("1984-04-01", computer.get().getDiscontinued().toString());

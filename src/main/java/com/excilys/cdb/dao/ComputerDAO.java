@@ -86,7 +86,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 				}
 				computer.setCompany(new Company());
 				if (result.getInt("company_id") != 0) {
-					computer.getCompany().setId(result.getInt("company_id"));
+					computer.getCompany().setId(result.getLong("company_id"));
 					computer.getCompany().setName(result.getString("cpa.name"));
 				}
 				return computer;
@@ -114,7 +114,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 				}
 				computer.setCompany(new Company());
 				if (result.getInt("company_id") != 0) {
-					computer.getCompany().setId(result.getInt("company_id"));
+					computer.getCompany().setId(result.getLong("company_id"));
 					computer.getCompany().setName(result.getString("cpa.name"));
 				}
 				return computer;
