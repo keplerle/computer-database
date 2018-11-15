@@ -1,12 +1,12 @@
 package com.excilys.cdb.dto;
 
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
+import org.springframework.lang.NonNull;
+
 
 public class CompanyDTO {
-	@NotNull
+	@NonNull
 	public String id;
-	@NotBlank
+	@NonNull
 	public String name;
 	
 	public CompanyDTO() {

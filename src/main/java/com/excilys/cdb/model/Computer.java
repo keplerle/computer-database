@@ -13,8 +13,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "computer")
 public class Computer {
-
-	// Variable d'instance
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -28,8 +26,6 @@ public class Computer {
 	  @ManyToOne
 	    @JoinColumn(name="company_id")
 	private Company company;
-
-	// Construteur
 	
 	public Computer() {
 	}

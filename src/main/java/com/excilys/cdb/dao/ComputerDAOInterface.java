@@ -76,7 +76,7 @@ public interface ComputerDAOInterface<T> {
 	 * @throws IOException 
 	 * @throws DataBaseException 
 	 */
-	public abstract int count(String name) throws IOException, DataBaseException;
+	public abstract long count(String name) throws IOException, DataBaseException;
 
 
 }

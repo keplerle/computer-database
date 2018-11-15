@@ -1,12 +1,13 @@
 package com.excilys.cdb.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
+import org.springframework.lang.NonNull;
+
 
 public class ComputerDTO {
 
 	public String id;
-	@NotBlank
+	@NonNull
 	public String name;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	public String introduced;

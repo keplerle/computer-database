@@ -41,9 +41,9 @@ public class ComputerController {
 	}
 
 	@GetMapping(value = "/count")
-	public ResponseEntity<Integer> count(String name) {
-		int count = computerService.count(name);
-		return new ResponseEntity<Integer>(count, HttpStatus.OK);
+	public ResponseEntity<Long> count(String name) {
+		long count = computerService.count(name);
+		return new ResponseEntity<Long>(count, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/all")

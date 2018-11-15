@@ -21,13 +21,13 @@ public class CompanyService {
 	
 	private final CompanyDAO companyDao;
 	private final ComputerDAO computerDao;
-	private final PlatformTransactionManager transactionManager;
+	private final PlatformTransactionManager hibernateTransactionManager;
 
 	public CompanyService(CompanyDAO companyDao, ComputerDAO computerDao,
-			PlatformTransactionManager transactionManager) {
+			PlatformTransactionManager hibernateTransactionManager) {
 		this.companyDao = companyDao;
 		this.computerDao = computerDao;
-		this.transactionManager = transactionManager;
+		this.hibernateTransactionManager = hibernateTransactionManager;
 	}
 
 	public <T> List<Company> findAll() {
@@ -37,7 +37,7 @@ public class CompanyService {
 	}
 
 	public void delete(int id) {
-		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+		TransactionTemplate transactionTemplate = new TransactionTemplate(hibernateTransactionManager);
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {

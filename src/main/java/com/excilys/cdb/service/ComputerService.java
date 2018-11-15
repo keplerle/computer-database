@@ -83,8 +83,8 @@ public class ComputerService {
 		return computerList;
 	}
 
-	public int count(String name) {
-		int count = 0;
+	public long count(String name) {
+		long count = 0;
 		count = computerDao.count(name);
 		return count;
 	}

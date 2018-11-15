@@ -10,8 +10,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "company")
 public class Company {
-
-	// Variable d'instance
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -19,10 +17,8 @@ public class Company {
 	@Column(name = "name")
 	private String name;
 
-	// Construteur
 	public Company() {
 		super();
-
 	}
 
 	/**
