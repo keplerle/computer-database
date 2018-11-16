@@ -45,14 +45,14 @@ public class RootConfig {
 		return dataSource;
 	}
 
-	@Bean
-	public DataSourceTransactionManager transactionManager(DataSource dataSource) {
-		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
-		return transactionManager;
-	}
+//	@Bean
+//	public DataSourceTransactionManager transactionManager(DataSource dataSource) {
+//		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
+//		return transactionManager;
+//	}
 
 	@Bean
-	public HibernateTransactionManager hibernateTransactionManager(SessionFactory sessionFactory) {
+	public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
 		HibernateTransactionManager manager = new HibernateTransactionManager();
 		manager.setSessionFactory(sessionFactory);
 		return manager;	

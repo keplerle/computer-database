@@ -22,7 +22,6 @@ import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.ComputerService;
 
 @Repository
 public class ComputerDAO implements ComputerDAOInterface<Computer> {
@@ -32,16 +31,17 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	private final static String QUERY_DELETE = "DELETE FROM computer WHERE id= :id";
 	private final static String QUERY_SELECT_BY_NAME = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE UPPER(cpu.name) LIKE UPPER(:name) OR UPPER(cpa.name) LIKE UPPER(:name) ORDER BY cpu.name LIMIT :limit OFFSET :offset";
 	private final static String QUERY_SELECT_BY_ID = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE cpu.id = :id";
+	private final static String QUERY_COUNT = "SELECT COUNT(cpu.id) FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE UPPER(cpu.name) LIKE UPPER(:name) OR UPPER(cpa.name) LIKE UPPER(:name) ";
+	private final static String QUERY_DELETE_COMPANY = "DELETE FROM computer WHERE company_id= :company_id";
 	
 	private final static String HQL_INSERT = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 	private final static String HQL_UPDATE = "UPDATE computer SET name = :name, introduced = :introduced, discontinued = :discontinued, company_id = :company_id WHERE id = :id";
-	private final static String HQL_DELETE = "DELETE FROM computer WHERE id= :id";
-	private final static String HQL_SELECT_BY_NAME = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE UPPER(cpu.name) LIKE UPPER(:name) OR UPPER(cpa.name) LIKE UPPER(:name) ORDER BY cpu.name LIMIT :limit OFFSET :offset";
-
-	private final static String HQL_SELECT_BY_ID = "select new Computer(cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company) from Computer as cpu left join Company as cpa with cpu.company = cpa.id where cpu.id = :id";
+	
+	private final static String HQL_SELECT_BY_ID = "select cpu from Computer as cpu left join Company as cpa with cpu.company = cpa.id where cpu.id = :id";
+	private final static String HQL_SELECT_BY_NAME = "select cpu from Computer as cpu left join Company as cpa with cpu.company = cpa.id where upper(cpu.name) like upper(:name) or upper(cpa.name) like upper(:name) order by cpu.name ";
 	private final static String HQL_COUNT = "select count(cpu.id) from Computer as cpu left join Company as cpa with cpu.company = cpa.id where upper(cpu.name) like upper(:name) or upper(cpa.name) like upper(:name) ";
 	private final static String HQL_DELETE_COMPANY = "delete Computer where company= :companyId";
-	
+	private final static String HQL_DELETE = "delete Computer where id= :id";
 	
 	private final DataSource dataSource;
 	private final SessionFactory sessionFactory;
@@ -78,48 +78,30 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 
 	@Override
 	public void delete(int id) {
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("id", id);
-		jdbcTemplate.update(QUERY_DELETE, params);
+		try (Session session = sessionFactory.openSession()) {
+			   session.createQuery(HQL_DELETE).setParameter("id", id).executeUpdate();
+		}
 	}
 
 	@Override
 	public Optional<Computer> find(long id) {
-		Computer computer;
+		final Computer computer;
 		try (Session session = sessionFactory.openSession()) {
-			computer = (Computer) session.createQuery(HQL_SELECT_BY_ID).setParameter("id", id).list().get(0);
+			computer = session.createQuery(HQL_SELECT_BY_ID,Computer.class).setParameter("id", id).list().get(0);
 		}
 		return Optional.ofNullable(computer);
-
 	}
 
 	@Override
 	public List<Computer> findAll(String name, int page, int size) {
-
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("name", "%" + name + "%");
-		params.addValue("limit", size);
-		params.addValue("offset", (page - 1) * size);
-		RowMapper<Computer> rowMapper = new RowMapper<Computer>() {
-			public Computer mapRow(ResultSet result, int pRowNum) throws SQLException {
-				Computer computer = new Computer(result.getInt("id"), result.getString("name"));
-				if (result.getDate("introduced") != null) {
-					computer.setIntroduced(result.getDate("introduced").toLocalDate());
-				}
-				if (result.getDate("discontinued") != null) {
-					computer.setDiscontinued(result.getDate("discontinued").toLocalDate());
-				}
-				computer.setCompany(new Company());
-				if (result.getInt("company_id") != 0) {
-					computer.getCompany().setId(result.getLong("company_id"));
-					computer.getCompany().setName(result.getString("cpa.name"));
-				}
-				return computer;
-			}
-		};
-		List<Computer> list = jdbcTemplate.query(QUERY_SELECT_BY_NAME, params, rowMapper);
+		List<Computer> list;
+		try (Session session = sessionFactory.openSession()) {
+			Query query = session.createQuery(HQL_SELECT_BY_NAME);
+			query.setParameter("name", "%" + name + "%");
+			query.setMaxResults(size);
+			query.setFirstResult((page - 1) * size);
+			list = query.list();
+		}
 		return list;
 	}
 
@@ -127,7 +109,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	public long count(String name) {
 		long count = 0;
 		try (Session session = sessionFactory.openSession()) {
-			  count = (long) session.createQuery(HQL_COUNT).setParameter("name", "%" + name + "%").uniqueResult();
+			  count = session.createQuery(HQL_COUNT,Long.class).setParameter("name", "%" + name + "%").uniqueResult();
 		}
 		return count;
 	}

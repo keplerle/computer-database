@@ -10,26 +10,33 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.lang.Nullable;
+
 @Entity
 @Table(name = "computer")
 public class Computer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+	@Column(name = "id")
 	private Long id;
+
 	@Column(name = "name")
 	private String name;
+	@Nullable
 	@Column(name = "introduced")
 	private LocalDate introduced;
-	  @Column(name = "discontinued")
+	@Nullable
+	@Column(name = "discontinued")
 	private LocalDate discontinued;
-	  @ManyToOne
-	    @JoinColumn(name="company_id")
+	@Nullable
+	@ManyToOne
+	@JoinColumn(name = "company_id")
 	private Company company;
-	
+
 	public Computer() {
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -47,14 +54,7 @@ public class Computer {
 		this.id = id;
 		this.name = name;
 	}
-	
-	public Computer(long id, String name, LocalDate introduced, LocalDate discontinued, Company company) {
-		this.id = id;
-		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		this.company=company;
-	}
+
 	// Getter & setter
 	public String getName() {
 		return name;
