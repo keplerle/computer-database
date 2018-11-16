@@ -27,7 +27,7 @@ public interface ComputerDAOInterface<T> {
 	 * @throws IOException 
 	 * @throws DataBaseException 
 	 */
-	public abstract void delete(int id) throws IOException, DataBaseException;
+	public abstract void delete(long id) throws IOException, DataBaseException;
 	
 	/**
 	 * Méthode pour effacer par company_id
@@ -36,7 +36,7 @@ public interface ComputerDAOInterface<T> {
 	 * @throws IOException 
 	 * @throws DataBaseException 
 	 */
-	public abstract void deleteByCompany(int id) throws IOException, DataBaseException;
+	public abstract void deleteByCompany(long id) throws IOException, DataBaseException;
 
 	/**
 	 * Méthode de mise à jour

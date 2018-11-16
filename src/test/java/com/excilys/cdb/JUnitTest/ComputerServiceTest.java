@@ -173,7 +173,7 @@ public class ComputerServiceTest {
 	@Test
 	public void testDeleteOutOfBoundComputer() {
 		try {
-			computerService.delete(0);
+			computerService.delete(0L);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			fail("Exception inattendue");

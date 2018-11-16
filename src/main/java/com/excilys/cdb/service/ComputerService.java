@@ -54,7 +54,7 @@ public class ComputerService {
 		computerDao.update(computer);
 	}
 
-	public void delete(int id) {
+	public void delete(long id) {
 				computerDao.delete(id);
 	}
 	
@@ -66,7 +66,7 @@ public class ComputerService {
 				try {
 					for (int i = 0; i < idTab.length; i++) {
 						if (!("".equals(idTab[i])))
-							delete(Integer.parseInt(idTab[i]));
+							delete(Long.parseLong(idTab[i]));
 					}
 				} catch (NumberFormatException e) {
 					logger.error(e.getMessage());

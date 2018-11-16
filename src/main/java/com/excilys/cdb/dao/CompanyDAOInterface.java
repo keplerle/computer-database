@@ -23,6 +23,6 @@ public interface CompanyDAOInterface<T> {
 	 * @throws IOException 
 	 * @throws DataBaseException 
 	 */
-	public abstract void delete(int id) throws IOException, DataBaseException;
+	public abstract void delete(long id) throws IOException, DataBaseException;
 	
 }

@@ -36,7 +36,7 @@ public class CompanyService {
 		return list;
 	}
 
-	public void delete(int id) {
+	public void delete(long id) {
 		TransactionTemplate transactionTemplate = new TransactionTemplate(hibernateTransactionManager);
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			@Override

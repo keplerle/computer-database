@@ -33,7 +33,7 @@ public class CompanyDAO implements CompanyDAOInterface<Company> {
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(long id) {
 		try (Session session = sessionFactory.openSession()) {
 			   session.createQuery(HQL_DELETE).setParameter("id", id).executeUpdate();
 		}
