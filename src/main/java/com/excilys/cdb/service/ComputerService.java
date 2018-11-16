@@ -38,7 +38,7 @@ public class ComputerService {
 		this.transactionManager = transactionManager;
 	}
 
-	public Optional<Computer> find(int id) {
+	public Optional<Computer> find(long id) {
 		Optional<Computer> computer;
 		computer = computerDao.find(id);
 		return computer;

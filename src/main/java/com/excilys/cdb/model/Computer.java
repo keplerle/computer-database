@@ -47,10 +47,15 @@ public class Computer {
 		this.id = id;
 		this.name = name;
 	}
-
+	
+	public Computer(long id, String name, LocalDate introduced, LocalDate discontinued, Company company) {
+		this.id = id;
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.company=company;
+	}
 	// Getter & setter
-
-
 	public String getName() {
 		return name;
 	}

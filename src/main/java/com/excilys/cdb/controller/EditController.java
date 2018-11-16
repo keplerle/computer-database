@@ -45,7 +45,7 @@ public class EditController {
 	@GetMapping
 	public String getEditComputer(ModelMap model, @RequestParam String computerId) {
 		ComputerDTO computerDto = computerMapper
-				.fromOptionalComputer(computerService.find(Integer.parseInt(computerId)));
+				.fromOptionalComputer(computerService.find(Long.parseLong(computerId)));
 		model.addAttribute("computerDto", computerDto);
 
 		List<Company> companies = companyService.findAll();

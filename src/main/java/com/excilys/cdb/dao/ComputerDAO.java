@@ -11,6 +11,8 @@ import javax.sql.DataSource;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameterValue;
@@ -20,24 +22,23 @@ import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.service.ComputerService;
 
 @Repository
 public class ComputerDAO implements ComputerDAOInterface<Computer> {
-
+	Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	private final static String QUERY_INSERT = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 	private final static String QUERY_UPDATE = "UPDATE computer SET name = :name, introduced = :introduced, discontinued = :discontinued, company_id = :company_id WHERE id = :id";
 	private final static String QUERY_DELETE = "DELETE FROM computer WHERE id= :id";
 	private final static String QUERY_SELECT_BY_NAME = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE UPPER(cpu.name) LIKE UPPER(:name) OR UPPER(cpa.name) LIKE UPPER(:name) ORDER BY cpu.name LIMIT :limit OFFSET :offset";
 	private final static String QUERY_SELECT_BY_ID = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE cpu.id = :id";
-	private final static String QUERY_COUNT = "SELECT COUNT(cpu.id) FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE UPPER(cpu.name) LIKE UPPER(:name) OR UPPER(cpa.name) LIKE UPPER(:name) ";
-
 	
 	private final static String HQL_INSERT = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 	private final static String HQL_UPDATE = "UPDATE computer SET name = :name, introduced = :introduced, discontinued = :discontinued, company_id = :company_id WHERE id = :id";
 	private final static String HQL_DELETE = "DELETE FROM computer WHERE id= :id";
 	private final static String HQL_SELECT_BY_NAME = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE UPPER(cpu.name) LIKE UPPER(:name) OR UPPER(cpa.name) LIKE UPPER(:name) ORDER BY cpu.name LIMIT :limit OFFSET :offset";
-	private final static String HQL_SELECT_BY_ID = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE cpu.id = :id";
 
+	private final static String HQL_SELECT_BY_ID = "select new Computer(cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company) from Computer as cpu left join Company as cpa with cpu.company = cpa.id where cpu.id = :id";
 	private final static String HQL_COUNT = "select count(cpu.id) from Computer as cpu left join Company as cpa with cpu.company = cpa.id where upper(cpu.name) like upper(:name) or upper(cpa.name) like upper(:name) ";
 	private final static String HQL_DELETE_COMPANY = "delete Computer where company= :companyId";
 	
@@ -84,29 +85,13 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	}
 
 	@Override
-	public Optional<Computer> find(int id) {
-		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("id", id);
+	public Optional<Computer> find(long id) {
+		Computer computer;
+		try (Session session = sessionFactory.openSession()) {
+			computer = (Computer) session.createQuery(HQL_SELECT_BY_ID).setParameter("id", id).list().get(0);
+		}
+		return Optional.ofNullable(computer);
 
-		RowMapper<Computer> rowMapper = new RowMapper<Computer>() {
-			public Computer mapRow(ResultSet result, int pRowNum) throws SQLException {
-				Computer computer = new Computer(result.getInt("id"), result.getString("name"));
-				if (result.getDate("introduced") != null) {
-					computer.setIntroduced(result.getDate("introduced").toLocalDate());
-				}
-				if (result.getDate("discontinued") != null) {
-					computer.setDiscontinued(result.getDate("discontinued").toLocalDate());
-				}
-				computer.setCompany(new Company());
-				if (result.getInt("company_id") != 0) {
-					computer.getCompany().setId(result.getLong("company_id"));
-					computer.getCompany().setName(result.getString("cpa.name"));
-				}
-				return computer;
-			}
-		};
-		return Optional.ofNullable(jdbcTemplate.queryForObject(QUERY_SELECT_BY_ID, params, rowMapper));
 	}
 
 	@Override

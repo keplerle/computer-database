@@ -56,7 +56,7 @@ public interface ComputerDAOInterface<T> {
 	 * @throws IOException 
 	 * @throws DataBaseException 
 	 */
-	public abstract Optional<Computer> find(int id) throws IOException, DataBaseException;
+	public abstract Optional<Computer> find(long id) throws IOException, DataBaseException;
 
 	/**
 	 * Méthode de recherche des informations
