@@ -21,16 +21,11 @@ import com.excilys.cdb.model.Computer;
 @Repository
 public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
-	private final static String QUERY_INSERT = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
-	private final static String QUERY_UPDATE = "UPDATE computer SET name = :name, introduced = :introduced, discontinued = :discontinued, company_id = :company_id WHERE id = :id";
-	private final static String QUERY_DELETE = "DELETE FROM computer WHERE id= :id";
-	private final static String QUERY_SELECT_BY_NAME = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE UPPER(cpu.name) LIKE UPPER(:name) OR UPPER(cpa.name) LIKE UPPER(:name) ORDER BY cpu.name LIMIT :limit OFFSET :offset";
-	private final static String QUERY_SELECT_BY_ID = "SELECT cpu.id, cpu.name, cpu.introduced, cpu.discontinued, cpu.company_id,cpa.name FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE cpu.id = :id";
-	private final static String QUERY_COUNT = "SELECT COUNT(cpu.id) FROM computer AS cpu LEFT JOIN company AS cpa ON cpu.company_id = cpa.id WHERE UPPER(cpu.name) LIKE UPPER(:name) OR UPPER(cpa.name) LIKE UPPER(:name) ";
-	private final static String QUERY_DELETE_COMPANY = "DELETE FROM computer WHERE company_id= :company_id";
 
-	private final static String HQL_INSERT = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 
+	//private final static String HQL_INSERT = "INSERT INTO computer (name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
+	
+	
 	private final static String HQL_UPDATE = "update Computer set name = :name, introduced = :introduced, discontinued = :discontinued, company = :companyId where id = :id";
 	private final static String HQL_SELECT_BY_ID = "select cpu from Computer as cpu left join Company as cpa with cpu.company = cpa.id where cpu.id = :id";
 	private final static String HQL_SELECT_BY_NAME = "select cpu from Computer as cpu left join Company as cpa with cpu.company = cpa.id where upper(cpu.name) like upper(:name) or upper(cpa.name) like upper(:name) order by cpu.name ";
@@ -48,12 +43,12 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 
 	@Override
 	public void create(Computer computer) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		Object[] params = { new SqlParameterValue(Types.VARCHAR, computer.getName()),
-				new SqlParameterValue(Types.DATE, computer.getIntroduced()),
-				new SqlParameterValue(Types.DATE, computer.getDiscontinued()), new SqlParameterValue(Types.LONGNVARCHAR,
-						computer.getCompany().getId() == 0 ? null : computer.getCompany().getId()) };
-		jdbcTemplate.update(QUERY_INSERT, params);
+		try (Session session = sessionFactory.openSession()) {
+			if(computer.getCompany().getId()==0) {
+				computer.setCompany(null);
+			}
+			session.save(computer);
+		}
 	}
 
 	@Override
