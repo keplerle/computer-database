@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.excilys.cdb.ui</groupId>
-	<artifactId>Main</artifactId>
+	<artifactId>computer-database</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 

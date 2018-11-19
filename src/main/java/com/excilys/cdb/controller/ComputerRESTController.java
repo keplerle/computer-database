@@ -1,4 +1,4 @@
-package com.excilys.cdb.restController;
+package com.excilys.cdb.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +23,11 @@ import com.excilys.cdb.service.ComputerService;
 
 @Controller("computerController")
 @RequestMapping("/computer")
-public class ComputerController {
+public class ComputerRESTController {
 	
 	private final ComputerService computerService;
 	
-	public ComputerController(ComputerService computerService) {
+	public ComputerRESTController(ComputerService computerService) {
 		this.computerService = computerService;
 	}
 

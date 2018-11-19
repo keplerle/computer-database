@@ -1,4 +1,4 @@
-package com.excilys.cdb.restController;
+package com.excilys.cdb.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +14,12 @@ import com.excilys.cdb.service.CompanyService;
 
 @Controller("companyController")
 @RequestMapping("/company")
-public class CompanyController {
+public class CompanyRESTController {
 
 	
 	private final CompanyService companyService;
 	
-	public CompanyController(CompanyService companyService) {
+	public CompanyRESTController(CompanyService companyService) {
 		this.companyService = companyService;
 	}
 

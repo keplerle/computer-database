@@ -21,7 +21,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.cdb.config.RootConfig;
-import com.excilys.cdb.exception.DataBaseException;
 import com.excilys.cdb.exception.DataException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
@@ -151,7 +150,7 @@ public class ComputerServiceTest {
 	}
 
 	@Test
-	public void testUpdateComputerWithoutName() throws IOException, DataBaseException {
+	public void testUpdateComputerWithoutName() {
 
 		Computer computer = new Computer(600, "");
 		Company company = new Company(5);
