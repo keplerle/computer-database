@@ -33,8 +33,7 @@ public class DashboardController {
 	}
 
 	@GetMapping
-	public String getDashboard(ModelMap model,
-			@RequestParam(required = false, defaultValue = "") String search,
+	public String getDashboard(ModelMap model, @RequestParam(required = false, defaultValue = "") String search,
 			@RequestParam(required = false, defaultValue = "1") String page,
 			@RequestParam(required = false, defaultValue = "10") String size) {
 		List<Computer> computers;
@@ -42,7 +41,7 @@ public class DashboardController {
 		long counter = 0;
 		try {
 			Page.setPage(page, size);
-			
+
 			if (search == null) {
 				computers = computerService.findAll("");
 				counter = computerService.count("");
@@ -51,7 +50,7 @@ public class DashboardController {
 				computers = computerService.findAll(search);
 				counter = computerService.count(search);
 			}
-			subComputersDTO.clear();	
+			subComputersDTO.clear();
 			subComputersDTO = computers.stream().map(temp -> {
 				ComputerDTO obj = computerMapper.fromComputer(temp);
 				return obj;
@@ -62,21 +61,19 @@ public class DashboardController {
 		} catch (NoNextPageException nnpe) {
 			Page.decreasePage();
 		}
-			model.addAttribute("counter", counter);
-			model.addAttribute("pageIndex", Page.getPage());
-			model.addAttribute("pageSize", Page.getPageSize());
-			model.addAttribute("computers", subComputersDTO);
+		model.addAttribute("counter", counter);
+		model.addAttribute("pageIndex", Page.getPage());
+		model.addAttribute("pageSize", Page.getPageSize());
+		model.addAttribute("computers", subComputersDTO);
 		return "dashboard";
 	}
-	
-	@PostMapping
-	public String postDashboard(ModelMap model, 
-			@RequestParam String[] selection) {
-		
-		String[] idTab = selection[0].split(",");
-		computerService.deleteAll(idTab);	
 
-	return "redirect:dashboard";
+	@PostMapping
+	public String postDashboard(ModelMap model, @RequestParam String[] selection) {
+
+		computerService.deleteAll(selection);
+
+		return "redirect:dashboard";
 	}
 
 }

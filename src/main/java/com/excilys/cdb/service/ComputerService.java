@@ -29,7 +29,6 @@ public class ComputerService {
 	private final PageValidator pageValidator;
 	private final PlatformTransactionManager transactionManager;
 
-
 	public ComputerService(ComputerDAO computerDao, ComputerValidator computerValidator, PageValidator pageValidator,
 			PlatformTransactionManager transactionManager) {
 		this.computerDao = computerDao;
@@ -55,9 +54,9 @@ public class ComputerService {
 	}
 
 	public void delete(long id) {
-				computerDao.delete(id);
+		computerDao.delete(id);
 	}
-	
+
 	public void deleteAll(String[] idTab) {
 		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -65,7 +64,6 @@ public class ComputerService {
 			protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
 				try {
 					for (int i = 0; i < idTab.length; i++) {
-						if (!("".equals(idTab[i])))
 							delete(Long.parseLong(idTab[i]));
 					}
 				} catch (NumberFormatException e) {
