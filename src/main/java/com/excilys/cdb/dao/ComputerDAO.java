@@ -2,9 +2,6 @@ package com.excilys.cdb.dao;
 
 import java.util.List;
 import java.util.Optional;
-
-import javax.sql.DataSource;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
