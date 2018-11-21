@@ -18,28 +18,20 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<hikari.cp.version>2.7.8</hikari.cp.version>
+		<mysql.version>8.0.12</mysql.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<hibernate.version>5.3.7.Final</hibernate.version>
-		<mysql.version>8.0.12</mysql.version>
-		<hikari.cp.version>2.7.8</hikari.cp.version>
 		<spring.version>5.1.2.RELEASE</spring.version>
-		<spring.validation.version>0.8</spring.validation.version>
 		<servlet.version>3.0.1</servlet.version>
-		<junit.version>4.12</junit.version>
 	</properties>
 
 	<dependencies>
 
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>${slf4j.version}</version>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
 		</dependency>
 
 		<dependency>
@@ -50,9 +42,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql.version}</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4j.version}</version>
 		</dependency>
 
 		<dependency>
@@ -63,19 +55,7 @@
 
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 
@@ -91,13 +71,6 @@
 			<version>${servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-		</dependency>
-
 	</dependencies>
 
 	<reporting>
