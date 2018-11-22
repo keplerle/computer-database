@@ -7,11 +7,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.exception.DataException;
 import com.excilys.cdb.exception.NoNextPageException;
@@ -27,14 +23,11 @@ public class ComputerService {
 	private final ComputerDAO computerDao;
 	private final ComputerValidator computerValidator;
 	private final PageValidator pageValidator;
-	private final PlatformTransactionManager transactionManager;
 
-	public ComputerService(ComputerDAO computerDao, ComputerValidator computerValidator, PageValidator pageValidator,
-			PlatformTransactionManager transactionManager) {
+	public ComputerService(ComputerDAO computerDao, ComputerValidator computerValidator, PageValidator pageValidator) {
 		this.computerDao = computerDao;
 		this.computerValidator = computerValidator;
 		this.pageValidator = pageValidator;
-		this.transactionManager = transactionManager;
 	}
 
 	public Optional<Computer> find(long id) {
@@ -56,12 +49,9 @@ public class ComputerService {
 	public void delete(long id) {
 		computerDao.delete(id);
 	}
-
+	
+	@Transactional
 	public void deleteAll(String[] idTab) {
-		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
-		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-			@Override
-			protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
 				try {
 					for (int i = 0; i < idTab.length; i++) {
 							delete(Long.parseLong(idTab[i]));
@@ -69,8 +59,6 @@ public class ComputerService {
 				} catch (NumberFormatException e) {
 					logger.error(e.getMessage());
 				}
-			}
-		});
 	}
 
 	public <T> List<Computer> findAll(String name) throws NoPreviousPageException, NoNextPageException {
