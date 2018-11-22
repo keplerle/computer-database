@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
+import com.excilys.cdb.config.RootConfig;
 import com.excilys.cdb.exception.DataException;
 import com.excilys.cdb.exception.NoNextPageException;
 import com.excilys.cdb.exception.NoPreviousPageException;
@@ -20,17 +24,23 @@ import com.excilys.cdb.model.Page;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
+@Component
 public class Main {
-
+	static Logger logger = LoggerFactory.getLogger(Main.class);
 	@Autowired
-	static
 	CompanyService cpaService;
 	@Autowired
-	static
 	ComputerService cpuService;
+	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	public static void main(String[] args) {
-		Logger logger = LoggerFactory.getLogger(Main.class);
+		ApplicationContext context = new AnnotationConfigApplicationContext(RootConfig.class);
+		Main CLI = context.getBean(Main.class);
+		CLI.lauchMenu();
+	}
+
+
+	private void lauchMenu() {
 		int commande = 0;
 		int id = 0;
 		long companyId = 0;
@@ -100,8 +110,6 @@ public class Main {
 				}
 				case 2: { // Lister les entreprises
 
-			
-
 					logger.info("\n LISTE DES COMPANIES");
 
 					int j;
@@ -115,7 +123,6 @@ public class Main {
 					break;
 				}
 				case 3: { // Montrer les details d'un ordinateur par son id
-		
 
 					logger.info("Veuillez entrer l'id de l'ordinateur: ");
 					id = sc.nextInt();
@@ -127,7 +134,6 @@ public class Main {
 					break;
 				}
 				case 4: { // Montrer les details d'un ordinateur par son nom
-		
 
 					logger.info("Veuillez entrer le nom de l'ordinateur: ");
 					name = sc.nextLine();
@@ -248,7 +254,6 @@ public class Main {
 
 				}
 				case 7: { // Supprimer un PC
-	
 
 					logger.info("Veuillez entrer l'id de l'ordinateur à supprimer: ");
 					id = sc.nextInt();
@@ -260,7 +265,7 @@ public class Main {
 				}
 
 				case 8: { // Supprimer une company
-	
+
 					logger.info("Veuillez entrer la company de l'ordinateur à supprimer: ");
 					id = sc.nextInt();
 					cpaService.delete(id);
@@ -282,8 +287,9 @@ public class Main {
 
 			} catch (OutOfCommandeScopeException outEx) {
 				logger.error(outEx.getMessage());
-			} 
+			}
 		}
 
 	}
+
 }

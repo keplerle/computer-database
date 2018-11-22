@@ -5,7 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name = "user")
@@ -14,33 +18,29 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-	@Column(name = "username")
+	@Column(name = "username",nullable = false, unique = true)
 	private String username;
-	@Column(name = "salt")
-	private String salt;
-	@Column(name = "salted_password")
+	@Column(name = "salted_password",nullable = false)
 	private String saltedPassword;
-	@Column(name = "role")
+	@Nullable
+	@ManyToOne
+	@JoinColumn(name = "role")
 	private Role role;
-	
+
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getUsername() {
 		return username;
 	}
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getSalt() {
-		return salt;
-	}
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
+
 	public String getSaltedPassword() {
 		return saltedPassword;
 	}

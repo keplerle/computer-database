@@ -14,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.zaxxer.hikari.HikariConfig;
@@ -21,7 +22,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({ "com.excilys.cdb.model","com.excilys.cdb.dao", "com.excilys.cdb.service", "com.excilys.cdb.validator"})
+@ComponentScan({ "com.excilys.cdb.model","com.excilys.cdb.dao","com.excilys.cdb.console", "com.excilys.cdb.service", "com.excilys.cdb.validator"})
 public class RootConfig {
 	Logger logger = LoggerFactory.getLogger(RootConfig.class);
 
@@ -62,5 +63,6 @@ public class RootConfig {
 		sessionFactory.setHibernateProperties(hibernateProperties);
 		return sessionFactory;
 	}
+
 
 }
