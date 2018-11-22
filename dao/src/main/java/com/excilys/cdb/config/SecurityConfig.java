@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	 .and().formLogin().defaultSuccessUrl("/dashboard", true)
     	 .and().logout().logoutSuccessUrl("/login").permitAll()
     	 .and().csrf().disable();
-    	 ;
+    	 
     }
 	
 	@Bean

@@ -9,7 +9,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>webapp</artifactId>
+	<artifactId>computer-database</artifactId>
 	<packaging>war</packaging>
 	<name>webapp</name>
 

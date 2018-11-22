@@ -21,6 +21,7 @@
 			<div class="btn-group btn-group-sm pull-right" role="group">
 			<a href="?page=${pageIndex}&size=${pageSize}&search=${search}&lang=en"><button type="button" class="btn btn-default"><spring:message code="english" /></button></a>
 			<a href="?page=${pageIndex}&size=${pageSize}&search=${search}&lang=fr"><button type="button" class="btn btn-default"><spring:message code="french" /></button></a>
+			<a href="logout"><button type="button" class="btn btn-default"><i class="fa fa-sign-out" aria-hidden="true"></i></button></a>
 			</div>
 			
 		</div>
