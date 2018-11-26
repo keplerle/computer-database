@@ -20,7 +20,6 @@ public class Computer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-
 	@Column(name = "name")
 	private String name;
 	@Nullable
@@ -33,18 +32,6 @@ public class Computer {
 	@ManyToOne
 	@JoinColumn(name = "company_id")
 	private Company company;
-
-	public Computer() {
-	}
-
-	public Computer(String name) {
-		this.name = name;
-	}
-
-	public Computer(long id, String name) {
-		this.id = id;
-		this.name = name;
-	}
 
 	public String getName() {
 		return name;

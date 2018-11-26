@@ -91,9 +91,11 @@ public class ComputerServiceTest {
 	public void testUpdateOutOfBoundComputer() {
 		try {
 
-			Computer computer = new Computer(0, "UnitTestUpdate");
-			Company company = new Company(5);
-
+			Computer computer = new Computer();
+			computer.setId(0L);
+			computer.setName("UnitTestUpdate");
+			Company company = new Company();
+			company.setId(5L);
 			computer.setIntroduced(LocalDate.of(2000, 01, 01));
 			computer.setDiscontinued(LocalDate.of(2010, 01, 01));
 			computer.setCompany(company);
@@ -110,9 +112,11 @@ public class ComputerServiceTest {
 	
 	public void testUpdateComputerWithoutName() {
 
-		Computer computer = new Computer(600, "");
-		Company company = new Company(5);
-
+		Computer computer = new Computer();
+		computer.setId(600L);
+		computer.setName("");
+		Company company = new Company();
+		company.setId(5L);
 		computer.setIntroduced(LocalDate.of(2000, 01, 01));
 		computer.setDiscontinued(LocalDate.of(2010, 01, 01));
 		computer.setCompany(company);

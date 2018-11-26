@@ -42,7 +42,7 @@ public class Main {
 	}
 
 	private void updateComputer() {
-		int computerId = 0;
+		long computerId;
 		String computerName = "";
 		String dateIntroduced = "";
 		String dateDiscontinued = "";
@@ -51,7 +51,7 @@ public class Main {
 		long companyId = 0;
 		Computer updatedComputers;
 		logger.info("Veuillez entrer l'id de l'ordinateur à mettre à jour: ");
-		computerId = sc.nextInt();
+		computerId = sc.nextLong();
 		logger.info("Veuillez entrer le nouveau nom de l'ordinateur: ");
 		sc.nextLine();
 		computerName = sc.nextLine();
@@ -62,8 +62,9 @@ public class Main {
 		logger.info("Veuillez entrer le nouveau numéro du fabricant de l'ordinateur (0 pour passer cette étape): ");
 		companyId = sc.nextLong();
 
-		updatedComputers = new Computer(computerId, computerName);
-
+		updatedComputers = new Computer();
+		updatedComputers.setId(computerId);
+		updatedComputers.setName(computerName);
 		if (!dateIntroduced.equals("")) {
 			introduced = Date.valueOf(dateIntroduced);
 			updatedComputers.setIntroduced(introduced.toLocalDate());
@@ -105,9 +106,10 @@ public class Main {
 		logger.info("Veuillez entrer le numéro du fabricant de l'ordinateur (0 pour passer cette étape): ");
 		companyId = sc.nextInt();
 
-		Computer newComputer = new Computer(computerName);
-		Company newCompany = new Company(companyId);
-
+		Computer newComputer = new Computer();
+		newComputer.setName(computerName);
+		Company newCompany = new Company();
+		newCompany.setId(companyId);
 		if (!dateIntroduced.equals("")) {
 			introduced = Date.valueOf(dateIntroduced);
 			newComputer.setIntroduced(introduced.toLocalDate());

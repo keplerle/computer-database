@@ -20,7 +20,6 @@ import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exception.DataException;
 import com.excilys.cdb.exception.NoNextPageException;
 import com.excilys.cdb.exception.NoPreviousPageException;
-import com.excilys.cdb.mapper.MapperCompanyDTO;
 import com.excilys.cdb.mapper.MapperComputerDTO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;

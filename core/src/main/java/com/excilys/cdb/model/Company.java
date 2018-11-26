@@ -17,14 +17,6 @@ public class Company {
 	@Column(name = "name")
 	private String name;
 
-	public Company() {
-		super();
-	}
-
-	public Company(long id) {
-		this.id = id;
-	}
-
 	public Long getId() {
 		return id;
 	}
