@@ -24,9 +24,9 @@ import com.zaxxer.hikari.HikariDataSource;
 @ComponentScan({ "com.excilys.cdb.model","com.excilys.cdb.dao","com.excilys.cdb.console", "com.excilys.cdb.service", "com.excilys.cdb.validator"})
 public class RootConfig {
 	Logger logger = LoggerFactory.getLogger(RootConfig.class);
-
+	
 	@Bean
-	public DataSource dataSource() {
+	public Properties properties() {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		InputStream input = classLoader.getResourceAsStream("db.properties");
 		Properties prop = new Properties();
@@ -35,11 +35,15 @@ public class RootConfig {
 		} catch (IOException e) {
 			logger.error(e.getMessage());
 		}
+		return prop;
+	}
+	@Bean
+	public DataSource dataSource(Properties properties) {
 		HikariConfig config = new HikariConfig();
-		config.setDriverClassName(prop.getProperty("driverClassName"));
-		config.setJdbcUrl(prop.getProperty("jdbcUrl"));
-		config.setUsername(prop.getProperty("user"));
-		config.setPassword(prop.getProperty("password"));
+		config.setDriverClassName(properties.getProperty("driverClassName"));
+		config.setJdbcUrl(properties.getProperty("jdbcUrl"));
+		config.setUsername(properties.getProperty("user"));
+		config.setPassword(properties.getProperty("password"));
 		return new HikariDataSource(config);
 	}
 

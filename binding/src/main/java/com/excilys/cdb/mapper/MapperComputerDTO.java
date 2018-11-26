@@ -16,10 +16,10 @@ public class MapperComputerDTO {
 		Computer computer = new Computer();
 		Company company = new Company();
 
-		computer.setName(computerDto.name);
+		computer.setName(computerDto.getName());
 
-		if (computerDto.id != null) {
-			computer.setId(Long.parseLong(computerDto.id));
+		if (computerDto.getId() != null) {
+			computer.setId(Long.parseLong(computerDto.getId()));
 		}
 		if (!"".equals(computerDto.introduced)) {
 			computer.setIntroduced(Date.valueOf(computerDto.introduced).toLocalDate());
@@ -28,8 +28,8 @@ public class MapperComputerDTO {
 			computer.setDiscontinued(Date.valueOf(computerDto.discontinued).toLocalDate());
 		}
 
-		company.setId(Long.parseLong(computerDto.companyId));
-		company.setName(computerDto.companyName);
+		company.setId(Long.parseLong(computerDto.getCompanyId()));
+		company.setName(computerDto.getCompanyName());
 		computer.setCompany(company);
 		return computer;
 
@@ -39,8 +39,8 @@ public class MapperComputerDTO {
 
 		ComputerDTO computerDto = new ComputerDTO();
 		if (optional.isPresent()) {
-			computerDto.id = optional.get().getId() + "";
-			computerDto.name = optional.get().getName();
+			computerDto.setId(optional.get().getId() + "");
+			computerDto.setName(optional.get().getName());
 
 			if (optional.get().getIntroduced() != null) {
 				computerDto.introduced = optional.get().getIntroduced().toString();
@@ -49,8 +49,8 @@ public class MapperComputerDTO {
 				computerDto.discontinued = optional.get().getDiscontinued().toString();
 			}
 			if (optional.get().getCompany() != null) {
-				computerDto.companyId = optional.get().getCompany().getId() + "";
-				computerDto.companyName = optional.get().getCompany().getName();
+				computerDto.setCompanyId(optional.get().getCompany().getId() + "");
+				computerDto.setCompanyName(optional.get().getCompany().getName());
 			}
 		}
 
@@ -62,8 +62,8 @@ public class MapperComputerDTO {
 
 		ComputerDTO computerDto = new ComputerDTO();
 
-		computerDto.id = computer.getId() + "";
-		computerDto.name = computer.getName();
+		computerDto.setId(computer.getId() + "");
+		computerDto.setName(computer.getName());
 
 		if (computer.getIntroduced() != null) {
 			computerDto.introduced = computer.getIntroduced().toString();
@@ -72,8 +72,8 @@ public class MapperComputerDTO {
 			computerDto.discontinued = computer.getDiscontinued().toString();
 		}
 		if (computer.getCompany() != null) {
-			computerDto.companyId = computer.getCompany().getId() + "";
-			computerDto.companyName = computer.getCompany().getName();
+			computerDto.setCompanyId(computer.getCompany().getId() + "");
+			computerDto.setCompanyName(computer.getCompany().getName());
 		}
 
 		return computerDto;

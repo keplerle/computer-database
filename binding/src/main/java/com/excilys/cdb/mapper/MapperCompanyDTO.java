@@ -10,15 +10,15 @@ public class MapperCompanyDTO {
 
 	public Company toCompany(CompanyDTO companyDto) {
 		Company company = new Company();
-		company.setId(Long.parseLong(companyDto.id));
-		company.setName(companyDto.name);
+		company.setId(Long.parseLong(companyDto.getId()));
+		company.setName(companyDto.getName());
 		return company;
 	}
 
 	public CompanyDTO fromCompany(Company company) {
 		CompanyDTO companyDto = new CompanyDTO();
-		companyDto.id = company.getId() + "";
-		companyDto.name = company.getName();
+		companyDto.setId(company.getId() + "");
+		companyDto.setName(company.getName());
 		return companyDto;
 
 	}
