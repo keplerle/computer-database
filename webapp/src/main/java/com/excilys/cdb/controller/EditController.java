@@ -43,14 +43,14 @@ public class EditController {
 	}
 
 	@GetMapping
-	public String getEditComputer(ModelMap model, @RequestParam String computerId) {
+	public String getEditComputer(ModelMap model, @RequestParam Long computerId) {
 		ComputerDTO computerDto = computerMapper
-				.fromOptionalComputer(computerService.find(Long.parseLong(computerId)));
+				.fromOptionalComputer(computerService.find(computerId));
 		model.addAttribute("computerDto", computerDto);
 
 		List<Company> companies = companyService.findAll();
-		List<CompanyDTO> subCompaniesDTO = companies.stream().map(temp -> 
-			companyMapper.fromCompany(temp)
+		List<CompanyDTO> subCompaniesDTO = companies.stream().map(
+			companyMapper::fromCompany
 		).collect(Collectors.toList());	
 		model.addAttribute("companies", subCompaniesDTO);
 		return "editComputer";

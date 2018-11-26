@@ -49,7 +49,7 @@ public class DashboardController {
 				counter = computerService.count(search);
 			}
 			subComputersDTO.clear();
-			subComputersDTO = computers.stream().map(temp -> computerMapper.fromComputer(temp))
+			subComputersDTO = computers.stream().map(computerMapper::fromComputer)
 					.collect(Collectors.toList());
 
 		} catch (NoPreviousPageException nppe) {

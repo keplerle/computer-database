@@ -130,7 +130,6 @@ public class Main {
 	private void search() {
 		String name = "";
 		String subCommand = "";
-		Formatter fmt;
 		logger.info("Veuillez entrer le mot-clé de la recherche: ");
 		name = sc.nextLine();
 
@@ -141,11 +140,12 @@ public class Main {
 				List<Computer> subListComputer = cpuService.findAll(name);
 				i = 0;
 				while (i < subListComputer.size()) {
-					fmt = new Formatter();
-					if (logger.isInfoEnabled()) {
-						logger.info(fmt.format("\t %d \t |", subListComputer.get(i).getId()).toString());
-						logger.info(fmt.format("\t %s \t", subListComputer.get(i).getName()).toString());
-						logger.info(SEPARATOR);
+					try (Formatter fmt = new Formatter()) {
+						if (logger.isInfoEnabled()) {
+							logger.info(fmt.format("\t %d \t |", subListComputer.get(i).getId()).toString());
+							logger.info(fmt.format("\t %s \t", subListComputer.get(i).getName()).toString());
+							logger.info(SEPARATOR);
+						}
 					}
 
 					i++;
@@ -202,7 +202,7 @@ public class Main {
 
 	private void displayComputers() {
 		String subCommand = "";
-		Formatter fmt;
+
 		logger.info("\n LISTE DES COMPUTERS");
 		int i;
 		do {
@@ -211,11 +211,13 @@ public class Main {
 				i = 0;
 				while (i < subListComputer.size()) {
 					if (logger.isInfoEnabled()) {
-						fmt = new Formatter();
-						logger.info(fmt.format("\t %d \t |", subListComputer.get(i).getId()).toString());
-						logger.info(fmt.format("\t %s \t", subListComputer.get(i).getName()).toString());
-						logger.info(SEPARATOR);
+						try (Formatter fmt = new Formatter()) {
+							logger.info(fmt.format("\t %d \t |", subListComputer.get(i).getId()).toString());
+							logger.info(fmt.format("\t %s \t", subListComputer.get(i).getName()).toString());
+							logger.info(SEPARATOR);
+						}
 					}
+
 					i++;
 				}
 				logger.info("Previous page (p) 	Quit(q) 		Next page(n)");

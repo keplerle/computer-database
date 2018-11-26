@@ -44,7 +44,7 @@ public class AddController {
 	@GetMapping
 	public String getAddComputer(ModelMap model) {
 		List<Company> companies = companyService.findAll();
-		List<CompanyDTO> subCompaniesDTO = companies.stream().map(temp -> companyMapper.fromCompany(temp))
+		List<CompanyDTO> subCompaniesDTO = companies.stream().map(companyMapper::fromCompany)
 				.collect(Collectors.toList());
 		model.addAttribute("companies", subCompaniesDTO);
 		model.addAttribute("computerDto", new ComputerDTO());

@@ -1,13 +1,8 @@
 package com.excilys.cdb.dto;
 
-import org.springframework.lang.NonNull;
-
-
 public class CompanyDTO {
-	@NonNull
-	public String id;
-	@NonNull
-	public String name;
+	String id;
+	String name;
 	
 	public CompanyDTO() {
 		super();

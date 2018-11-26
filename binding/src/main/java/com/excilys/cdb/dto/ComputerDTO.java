@@ -1,22 +1,19 @@
 package com.excilys.cdb.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.NonNull;
-
 
 public class ComputerDTO {
 
-	public String id;
-	@NonNull
-	public String name;
+	String id;
+	String name;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	public String introduced;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	public String discontinued;
 
-	public String companyId;
+	String companyId;
 
-	public String companyName;
+	String companyName;
 
 	public ComputerDTO() {
 		super();

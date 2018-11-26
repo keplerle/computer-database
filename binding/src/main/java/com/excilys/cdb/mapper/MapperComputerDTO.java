@@ -38,19 +38,20 @@ public class MapperComputerDTO {
 	public ComputerDTO fromOptionalComputer(Optional<Computer> optional) {
 
 		ComputerDTO computerDto = new ComputerDTO();
+		if (optional.isPresent()) {
+			computerDto.id = optional.get().getId() + "";
+			computerDto.name = optional.get().getName();
 
-		computerDto.id = optional.get().getId() + "";
-		computerDto.name = optional.get().getName();
-
-		if (optional.get().getIntroduced() != null) {
-			computerDto.introduced = optional.get().getIntroduced().toString();
-		}
-		if (optional.get().getDiscontinued() != null) {
-			computerDto.discontinued = optional.get().getDiscontinued().toString();
-		}
-		if (optional.get().getCompany() != null) {
-			computerDto.companyId = optional.get().getCompany().getId() + "";
-			computerDto.companyName = optional.get().getCompany().getName();
+			if (optional.get().getIntroduced() != null) {
+				computerDto.introduced = optional.get().getIntroduced().toString();
+			}
+			if (optional.get().getDiscontinued() != null) {
+				computerDto.discontinued = optional.get().getDiscontinued().toString();
+			}
+			if (optional.get().getCompany() != null) {
+				computerDto.companyId = optional.get().getCompany().getId() + "";
+				computerDto.companyName = optional.get().getCompany().getName();
+			}
 		}
 
 		return computerDto;
