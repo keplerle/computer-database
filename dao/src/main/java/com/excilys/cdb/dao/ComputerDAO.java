@@ -16,12 +16,12 @@ import com.excilys.cdb.model.Computer;
 public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
-	private final static String HQL_UPDATE = "update Computer set name = :name, introduced = :introduced, discontinued = :discontinued, company = :companyId where id = :id";
-	private final static String HQL_SELECT_BY_ID = "select cpu from Computer as cpu left join Company as cpa with cpu.company = cpa.id where cpu.id = :id";
-	private final static String HQL_SELECT_BY_NAME = "select cpu from Computer as cpu left join Company as cpa with cpu.company = cpa.id where upper(cpu.name) like upper(:name) or upper(cpa.name) like upper(:name) order by cpu.name ";
-	private final static String HQL_COUNT = "select count(cpu.id) from Computer as cpu left join Company as cpa with cpu.company = cpa.id where upper(cpu.name) like upper(:name) or upper(cpa.name) like upper(:name) ";
-	private final static String HQL_DELETE_COMPANY = "delete Computer where company= :companyId";
-	private final static String HQL_DELETE = "delete Computer where id= :id";
+	private static final String HQL_UPDATE = "update Computer set name = :name, introduced = :introduced, discontinued = :discontinued, company = :companyId where id = :id";
+	private static final String HQL_SELECT_BY_ID = "select cpu from Computer as cpu left join Company as cpa with cpu.company = cpa.id where cpu.id = :id";
+	private static final String HQL_SELECT_BY_NAME = "select cpu from Computer as cpu left join Company as cpa with cpu.company = cpa.id where upper(cpu.name) like upper(:name) or upper(cpa.name) like upper(:name) order by cpu.name ";
+	private static final String HQL_COUNT = "select count(cpu.id) from Computer as cpu left join Company as cpa with cpu.company = cpa.id where upper(cpu.name) like upper(:name) or upper(cpa.name) like upper(:name) ";
+	private static final String HQL_DELETE_COMPANY = "delete Computer where company= :companyId";
+	private static final String HQL_DELETE = "delete Computer where id= :id";
 
 	private final SessionFactory sessionFactory;
 

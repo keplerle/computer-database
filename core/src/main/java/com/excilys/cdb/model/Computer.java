@@ -37,25 +37,15 @@ public class Computer {
 	public Computer() {
 	}
 
-	/**
-	 * 
-	 * @param name
-	 */
 	public Computer(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * 
-	 * @param id
-	 * @param name
-	 */
 	public Computer(long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
-	// Getter & setter
 	public String getName() {
 		return name;
 	}
@@ -126,25 +116,29 @@ public class Computer {
 		if (company == null) {
 			if (other.company != null)
 				return false;
-		} else if (!company.equals(other.company))
+		} else if (!company.equals(other.company)) {
 			return false;
+		}
 		if (discontinued == null) {
 			if (other.discontinued != null)
 				return false;
-		} else if (!discontinued.equals(other.discontinued))
+		} else if (!discontinued.equals(other.discontinued)) {
 			return false;
+		}
 		if (id != other.id)
 			return false;
 		if (introduced == null) {
 			if (other.introduced != null)
 				return false;
-		} else if (!introduced.equals(other.introduced))
+		} else if (!introduced.equals(other.introduced)) {
 			return false;
+		}
 		if (name == null) {
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		return true;
 	}
 

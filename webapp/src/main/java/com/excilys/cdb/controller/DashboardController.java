@@ -35,7 +35,7 @@ public class DashboardController {
 			@RequestParam(required = false, defaultValue = "1") String page,
 			@RequestParam(required = false, defaultValue = "10") String size) {
 		List<Computer> computers;
-		List<ComputerDTO> subComputersDTO = new ArrayList<ComputerDTO>();
+		List<ComputerDTO> subComputersDTO = new ArrayList<>();
 		long counter = 0;
 		try {
 			Page.setPage(page, size);
@@ -49,10 +49,8 @@ public class DashboardController {
 				counter = computerService.count(search);
 			}
 			subComputersDTO.clear();
-			subComputersDTO = computers.stream().map(temp -> {
-				ComputerDTO obj = computerMapper.fromComputer(temp);
-				return obj;
-			}).collect(Collectors.toList());
+			subComputersDTO = computers.stream().map(temp -> computerMapper.fromComputer(temp))
+					.collect(Collectors.toList());
 
 		} catch (NoPreviousPageException nppe) {
 			Page.increasePage();
@@ -60,7 +58,7 @@ public class DashboardController {
 			Page.decreasePage();
 		}
 		model.addAttribute("counter", counter);
-		model.addAttribute("pageIndex", Page.getPage());
+		model.addAttribute("pageIndex", Page.getPageNumber());
 		model.addAttribute("pageSize", Page.getPageSize());
 		model.addAttribute("computers", subComputersDTO);
 		return "dashboard";

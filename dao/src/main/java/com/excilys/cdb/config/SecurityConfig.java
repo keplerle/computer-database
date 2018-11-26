@@ -28,11 +28,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth)
 	  throws Exception {
-	    auth.authenticationProvider(authenticationProvider());
+	    auth.authenticationProvider(authenticationProvider(userDetailsService));
 	}
 	 
 	@Bean
-	public DaoAuthenticationProvider authenticationProvider() {
+	public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
 	    DaoAuthenticationProvider authProvider
 	      = new DaoAuthenticationProvider();
 	    authProvider.setUserDetailsService(userDetailsService);
@@ -56,6 +56,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public BCryptPasswordEncoder encoder() {
 		return new BCryptPasswordEncoder();
-	};
+	}
 
 }

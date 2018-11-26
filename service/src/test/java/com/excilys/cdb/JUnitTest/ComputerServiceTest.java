@@ -45,7 +45,7 @@ public class ComputerServiceTest {
 	}
 
 	@Test
-	@Ignore
+
 	public void testNotNullFindAllComputers() {
 		try {
 			assertNotNull(computerService.findAll(""));
@@ -56,7 +56,7 @@ public class ComputerServiceTest {
 	}
 
 	@Test
-	@Ignore
+
 	public void testEqualsComputerFindAllComputers() {
 		try {
 			List<Computer> result = computerService.findAll("");
@@ -71,52 +71,7 @@ public class ComputerServiceTest {
 	}
 
 	@Test
-	@Ignore
-	public void testCreateComputer() {
-		try {
-			Computer computer = new Computer("UnitTestCreate");
-			Company company = new Company();
-			computer.setCompany(company);
-			computerService.create(computer);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			fail("Exception inattendue");
-		}
-	}
 
-	@Test
-	@Ignore
-	public void testUpdateComputer() {
-		try {
-
-			Computer computer = new Computer(600, "UnitTestUpdate");
-			Company company = new Company(5);
-
-			computer.setIntroduced(LocalDate.of(2000, 01, 01));
-			computer.setDiscontinued(LocalDate.of(2010, 01, 01));
-			computer.setCompany(company);
-
-			computerService.update(computer);
-
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			fail("Exception inattendue");
-		}
-	}
-
-	@Test
-	@Ignore
-	public void testDeleteComputer() {
-		try {
-			computerService.delete(650);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			fail("Exception inattendue");
-		}
-	}
-
-	@Test
-	@Ignore
 	public void testFindByIdComputer() {
 		try {
 			Optional<Computer> computer = computerService.find(12);
@@ -132,7 +87,7 @@ public class ComputerServiceTest {
 	}
 
 	@Test
-	@Ignore
+
 	public void testUpdateOutOfBoundComputer() {
 		try {
 
@@ -152,7 +107,7 @@ public class ComputerServiceTest {
 	}
 
 	@Test
-	@Ignore
+	
 	public void testUpdateComputerWithoutName() {
 
 		Computer computer = new Computer(600, "");
@@ -173,7 +128,7 @@ public class ComputerServiceTest {
 	}
 
 	@Test
-	@Ignore
+
 	public void testDeleteOutOfBoundComputer() {
 		try {
 			computerService.delete(0L);

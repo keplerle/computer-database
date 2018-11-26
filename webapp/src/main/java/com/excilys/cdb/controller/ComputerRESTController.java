@@ -35,20 +35,20 @@ public class ComputerRESTController {
 	public ResponseEntity<Optional<Computer>> find(int id) {
 		Optional<Computer> computer = computerService.find(id);
 		if (computer == null) {
-			return new ResponseEntity<Optional<Computer>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Optional<Computer>>(computer, HttpStatus.OK);
+		return new ResponseEntity<>(computer, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/count")
 	public ResponseEntity<Long> count(String name) {
 		long count = computerService.count(name);
-		return new ResponseEntity<Long>(count, HttpStatus.OK);
+		return new ResponseEntity<>(count, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<Computer>> findAll(String name) {
-		List<Computer> computerList = new ArrayList<Computer>();
+		List<Computer> computerList = new ArrayList<>();
 		try {
 			computerList = computerService.findAll(name);
 		} catch (NoPreviousPageException e) {
@@ -57,9 +57,9 @@ public class ComputerRESTController {
 			Page.decreasePage();
 		}
 		if (computerList.isEmpty()) {
-			return new ResponseEntity<List<Computer>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<List<Computer>>(computerList, HttpStatus.OK);
+		return new ResponseEntity<>(computerList, HttpStatus.OK);
 
 	}
 	@PostMapping
@@ -69,8 +69,7 @@ public class ComputerRESTController {
 		} catch (DataException e) {
 			e.printStackTrace();
 		}
-		ResponseEntity<Computer> responseEntity = new ResponseEntity<Computer>(computer, HttpStatus.CREATED);
-		return responseEntity;
+		return new ResponseEntity<>(computer, HttpStatus.CREATED);
 		
 	}
 	@PutMapping
@@ -80,13 +79,13 @@ public class ComputerRESTController {
 		} catch (DataException e) {
 			e.printStackTrace();
 		}
-		ResponseEntity<Computer> responseEntity = new ResponseEntity<Computer>(computer, HttpStatus.OK);
-		return responseEntity;
+		return new ResponseEntity<>(computer, HttpStatus.OK);
+
 		
 	}
 	@DeleteMapping
 	public ResponseEntity<Void> delete(String[] idTab) {
 		computerService.deleteAll(idTab);
-		return new ResponseEntity<Void>(HttpStatus.GONE);
+		return new ResponseEntity<>(HttpStatus.GONE);
 	}
 }

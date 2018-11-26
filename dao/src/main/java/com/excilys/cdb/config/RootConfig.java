@@ -14,7 +14,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.zaxxer.hikari.HikariConfig;
@@ -41,8 +40,7 @@ public class RootConfig {
 		config.setJdbcUrl(prop.getProperty("jdbcUrl"));
 		config.setUsername(prop.getProperty("user"));
 		config.setPassword(prop.getProperty("password"));
-		HikariDataSource dataSource = new HikariDataSource(config);
-		return dataSource;
+		return new HikariDataSource(config);
 	}
 
 	@Bean
@@ -56,7 +54,7 @@ public class RootConfig {
 	public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource);
-		sessionFactory.setPackagesToScan(new String[] { "com.excilys.cdb.model" });
+		sessionFactory.setPackagesToScan("com.excilys.cdb.model");
 		Properties hibernateProperties = new Properties();
 		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
 		hibernateProperties.setProperty("hibernate.show_sql", "true");

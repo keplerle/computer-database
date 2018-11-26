@@ -12,30 +12,20 @@ import com.excilys.cdb.model.Computer;
 @Component
 public class ComputerValidator {
 
-	private boolean dateValidator(LocalDate introduced, LocalDate discontinued) throws DateException {
+	private void dateValidator(LocalDate introduced, LocalDate discontinued) throws DateException {
 		if (discontinued != null && introduced != null && discontinued.isBefore(introduced)) {
 			throw new DateException();
 		}
-		return true;
 	}
-	
-	private boolean nameValidator(String name) throws NameException {
-		if(name==null||name.equals("")) {
+
+	private void nameValidator(String name) throws NameException {
+		if (name == null || name.equals("")) {
 			throw new NameException();
 		}
-		return true;
 	}
-	
-	public boolean computerValidator(Computer computer) throws DataException  {
-		
-		boolean nameFlag = false;
-		boolean dateFlag = false;
-					nameFlag=nameValidator(computer.getName());
-					dateFlag= dateValidator(computer.getIntroduced(),computer.getDiscontinued());
-		if(nameFlag&&dateFlag) {
-			return true;
-		}
-		
-		return false;
+
+	public void computerValidator(Computer computer) throws DataException {
+		nameValidator(computer.getName());
+		dateValidator(computer.getIntroduced(), computer.getDiscontinued());
 	}
 }

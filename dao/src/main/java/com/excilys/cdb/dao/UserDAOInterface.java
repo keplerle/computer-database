@@ -1,7 +1,5 @@
 package com.excilys.cdb.dao;
 
-import java.util.Optional;
-
 import com.excilys.cdb.model.User;
 
 public interface UserDAOInterface {

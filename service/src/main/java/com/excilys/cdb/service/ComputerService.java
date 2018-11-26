@@ -1,6 +1,5 @@
 package com.excilys.cdb.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,10 +60,10 @@ public class ComputerService {
 				}
 	}
 
-	public <T> List<Computer> findAll(String name) throws NoPreviousPageException, NoNextPageException {
+	public List<Computer> findAll(String name) throws NoPreviousPageException, NoNextPageException {
 		pageValidator.previousPageValidator();
-		List<Computer> computerList = new ArrayList<Computer>();
-		computerList = computerDao.findAll(name, Page.getPage(), Page.getPageSize());
+		List<Computer> computerList ;
+		computerList = computerDao.findAll(name, Page.getPageNumber(), Page.getPageSize());
 		pageValidator.nextPageValidator(computerList);
 		return computerList;
 	}

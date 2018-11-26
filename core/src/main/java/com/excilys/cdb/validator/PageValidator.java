@@ -12,13 +12,13 @@ import com.excilys.cdb.model.Page;
 public class PageValidator {
 
 	public void previousPageValidator() throws NoPreviousPageException {
-		if (Page.getPageSize() <= 0 || Page.getPage() <= 0) {
+		if (Page.getPageSize() <= 0 || Page.getPageNumber() <= 0) {
 			throw new NoPreviousPageException();
 		}
 	}
 
 	public void nextPageValidator(List<Computer> sourceList) throws NoNextPageException{
-		if( Page.getPage()>1 && sourceList.size()==0 )
+		if( Page.getPageNumber()>1 && sourceList.isEmpty() )
 	{
 		throw new NoNextPageException();
 	}

@@ -1,6 +1,5 @@
 package com.excilys.cdb.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,14 +24,14 @@ public class CompanyRESTController {
 
 	@GetMapping(value = "")
 	public ResponseEntity<List<Company>> findAll() {
-		List<Company> companyList = new ArrayList<Company>();
+		List<Company> companyList;
 		companyList = companyService.findAll();
-		return new ResponseEntity<List<Company>>(companyList, HttpStatus.OK);
+		return new ResponseEntity<>(companyList, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "")
 	public ResponseEntity<Void> delete(int id) {
 		companyService.delete(id);
-		return new ResponseEntity<Void>(HttpStatus.GONE);
+		return new ResponseEntity<>(HttpStatus.GONE);
 	}
 }

@@ -22,16 +22,17 @@ import com.excilys.cdb.mapper.MapperComputerDTO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+
 @Controller
 @RequestMapping("add")
 public class AddController {
 	Logger logger = LoggerFactory.getLogger(AddController.class);
-	
+
 	private final CompanyService companyService;
 	private final ComputerService computerService;
 	private final MapperComputerDTO computerMapper;
 	private final MapperCompanyDTO companyMapper;
-	
+
 	public AddController(CompanyService companyService, ComputerService computerService,
 			MapperComputerDTO computerMapper, MapperCompanyDTO companyMapper) {
 		this.companyService = companyService;
@@ -43,27 +44,26 @@ public class AddController {
 	@GetMapping
 	public String getAddComputer(ModelMap model) {
 		List<Company> companies = companyService.findAll();
-		List<CompanyDTO> subCompaniesDTO = companies.stream().map(temp -> {
-			CompanyDTO obj = companyMapper.fromCompany(temp);
-			return obj;
-		}).collect(Collectors.toList());
+		List<CompanyDTO> subCompaniesDTO = companies.stream().map(temp -> companyMapper.fromCompany(temp))
+				.collect(Collectors.toList());
 		model.addAttribute("companies", subCompaniesDTO);
 		model.addAttribute("computerDto", new ComputerDTO());
-	return "addComputer";
+		return "addComputer";
 	}
-	
+
 	@PostMapping
-	public String postAddComputer(@Validated @ModelAttribute("computerDto") ComputerDTO computerDto, BindingResult result, ModelMap model) {
-        if (result.hasErrors()) {
-            return "500";
-        }
+	public String postAddComputer(@Validated @ModelAttribute("computerDto") ComputerDTO computerDto,
+			BindingResult result, ModelMap model) {
+		if (result.hasErrors()) {
+			return "500";
+		}
 		try {
-	        computerService.create(computerMapper.toComputer(computerDto));
+			computerService.create(computerMapper.toComputer(computerDto));
 			return "redirect:dashboard";
 		} catch (DataException de) {
 			model.addAttribute("internError", de.getMessage());
 			return "addComputer";
-		} 
+		}
 	}
 
 }

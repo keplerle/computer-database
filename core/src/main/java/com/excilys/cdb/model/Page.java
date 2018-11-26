@@ -2,12 +2,15 @@ package com.excilys.cdb.model;
 
 public class Page {
 
-	private static int page=1;
-	private static int pageSize=10;
+	private static int pageNumber = 1;
+	private static int pageSize = 10;
 
+	private Page() {
 
-	public static int getPage() {
-		return page;
+	}
+
+	public static int getPageNumber() {
+		return pageNumber;
 	}
 
 	public static int getPageSize() {
@@ -16,21 +19,21 @@ public class Page {
 
 	public static void setPage(String page, String size) {
 		if (page != null) {
-			Page.page=Integer.parseInt(page);
+			Page.pageNumber = Integer.parseInt(page);
 		} else {
-			Page.page=1;
+			Page.pageNumber = 1;
 		}
 		if (size != null) {
-			Page.pageSize=Integer.parseInt(size);
+			Page.pageSize = Integer.parseInt(size);
 		}
 	}
-	
+
 	public static void increasePage() {
-		Page.page += 1;
+		Page.pageNumber += 1;
 	}
-	
+
 	public static void decreasePage() {
-		Page.page -= 1;
+		Page.pageNumber -= 1;
 	}
 
 }

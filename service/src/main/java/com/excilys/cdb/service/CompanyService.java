@@ -1,8 +1,6 @@
 package com.excilys.cdb.service;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -10,7 +8,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Company;
@@ -30,8 +27,8 @@ public class CompanyService {
 		this.hibernateTransactionManager = hibernateTransactionManager;
 	}
 
-	public <T> List<Company> findAll() {
-		List<Company> list = new ArrayList<Company>();
+	public List<Company> findAll() {
+		List<Company> list;
 		list = companyDao.findAll();	
 		return list;
 	}

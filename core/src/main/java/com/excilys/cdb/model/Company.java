@@ -21,16 +21,6 @@ public class Company {
 		super();
 	}
 
-	/**
-	 * 
-	 * @param id
-	 * @param name
-	 */
-	public Company(long id, String name) {
-		this.id = id;
-		this.name = name;
-	}
-
 	public Company(long id) {
 		this.id = id;
 	}
@@ -79,9 +69,10 @@ public class Company {
 		if (name == null) {
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
+			
 		return true;
 	}
-
 }

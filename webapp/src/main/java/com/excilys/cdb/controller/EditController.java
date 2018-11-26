@@ -49,10 +49,9 @@ public class EditController {
 		model.addAttribute("computerDto", computerDto);
 
 		List<Company> companies = companyService.findAll();
-		List<CompanyDTO> subCompaniesDTO = companies.stream().map(temp -> {
-			CompanyDTO obj = companyMapper.fromCompany(temp);
-			return obj;
-		}).collect(Collectors.toList());	
+		List<CompanyDTO> subCompaniesDTO = companies.stream().map(temp -> 
+			companyMapper.fromCompany(temp)
+		).collect(Collectors.toList());	
 		model.addAttribute("companies", subCompaniesDTO);
 		return "editComputer";
 	}

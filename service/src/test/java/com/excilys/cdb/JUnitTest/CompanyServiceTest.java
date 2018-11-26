@@ -35,7 +35,7 @@ public class CompanyServiceTest {
 	}
 
 	@Test
-	@Ignore
+
 	public void testNotNullFindAllCompanies() {
 		try {
 			assertNotNull(companyService.findAll());	
@@ -45,7 +45,7 @@ public class CompanyServiceTest {
 	}
 
 	@Test
-	@Ignore
+
 	public void testEqualsCompanyFindAllCompanies() {
 		try {
 			List<Company> result = companyService.findAll();
@@ -58,13 +58,4 @@ public class CompanyServiceTest {
 		}		
 	}
 	
-	@Test
-	@Ignore
-	public void testDeleteCompany() {
-		try {
-			companyService.delete(58);
-		}catch(Exception e) {
-			fail("Exception inattendue");
-		}		
-	}
 }

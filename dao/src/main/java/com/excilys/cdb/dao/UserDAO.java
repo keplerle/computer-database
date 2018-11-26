@@ -8,11 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.User;
+
 @Repository
 public class UserDAO implements UserDAOInterface {
 	Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
-	private final static String HQL_SELECT = "select user from User as user where user.username = :username";
+	private static final String HQL_SELECT = "select user from User as user where user.username = :username";
 
 	private final SessionFactory sessionFactory;
 

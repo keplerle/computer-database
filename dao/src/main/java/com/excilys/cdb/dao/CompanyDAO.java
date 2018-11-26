@@ -14,9 +14,9 @@ import com.excilys.cdb.model.Company;
 @Repository
 public class CompanyDAO implements CompanyDAOInterface<Company> {
 	Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
-	private final static String HQL_SELECT_ALL = "from Company";
-	private final static String HQL_DELETE = "delete Company where id= :id";
-	
+	private static final String HQL_SELECT_ALL = "from Company";
+	private static final String HQL_DELETE = "delete Company where id= :id";
+
 	private final SessionFactory sessionFactory;
 
 	public CompanyDAO(SessionFactory sessionFactory) {
@@ -25,9 +25,9 @@ public class CompanyDAO implements CompanyDAOInterface<Company> {
 
 	@Override
 	public List<Company> findAll() {
-		List<Company> list = new ArrayList<Company>();
+		List<Company> list = new ArrayList<>();
 		try (Session session = sessionFactory.openSession()) {
-			   list = session.createQuery(HQL_SELECT_ALL).list();
+			list = session.createQuery(HQL_SELECT_ALL).list();
 		}
 		return list;
 	}
@@ -35,7 +35,7 @@ public class CompanyDAO implements CompanyDAOInterface<Company> {
 	@Override
 	public void delete(long id) {
 		try (Session session = sessionFactory.openSession()) {
-			   session.createQuery(HQL_DELETE).setParameter("id", id).executeUpdate();
+			session.createQuery(HQL_DELETE).setParameter("id", id).executeUpdate();
 		}
 	}
 
