@@ -1,20 +1,26 @@
-package com.excilys.cdb.controller;
+package com.excilys.cdb.rest;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exception.DataException;
@@ -25,7 +31,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.service.ComputerService;
 
-@Controller("computerController")
+@RestController("computerController")
 @RequestMapping("/computer")
 public class ComputerRESTController {
 
@@ -38,20 +44,28 @@ public class ComputerRESTController {
 		this.computerMapper = computerMapper;
 	}
 
-	@GetMapping
-	public ResponseEntity<Optional<Computer>> find(int id) {
+//	@GetMapping("/{id}")
+	@GET
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ResponseEntity<Optional<Computer>> find(@PathParam("id") int id) {
 		Optional<Computer> computer = computerService.find(id);
 		return new ResponseEntity<>(computer, HttpStatus.OK);
 	}
-
-	@GetMapping(value = "/count")
-	public ResponseEntity<Long> count(String name) {
+	   @GET
+	    @Path("/count/{name}")
+	    @Produces(MediaType.APPLICATION_JSON)
+	//@GetMapping("/count/{name}")
+	public ResponseEntity<Long> count(@PathParam("name") String name) {
 		long count = computerService.count(name);
 		return new ResponseEntity<>(count, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/all")
-	public ResponseEntity<List<Computer>> findAll(String name) {
+	   @GET
+	    @Path("/all/{name}")
+	    @Produces(MediaType.APPLICATION_JSON)
+	//@GetMapping("/all/{name}")
+	public ResponseEntity<List<Computer>> findAll(@PathParam("name") String name) {
 		List<Computer> computerList = new ArrayList<>();
 		try {
 			computerList = computerService.findAll(name);
