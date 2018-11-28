@@ -1,5 +1,6 @@
 package com.excilys.cdb.console;
 
+import java.util.Formatter;
 import java.util.Scanner;
 
 import javax.ws.rs.client.Entity;
@@ -28,6 +29,7 @@ public class MainRest {
 	static Logger logger = LoggerFactory.getLogger(MainRest.class);
 	public static final String SEPARATOR = "\n---------------------------------";
 	public static final String BASE_URL = "http://localhost:8080/computer-database/";
+	public static final String LABEL_LOG = "HTTP Response Code: %d";
 	ResteasyClient client = new ResteasyClientBuilder().build();
 	@Autowired
 	CompanyService cpaService;
@@ -59,11 +61,11 @@ public class MainRest {
 				sc.nextLine();
 
 				switch (commande) {
-				case 1: // Lister les PC
+				case 1:
 					displayComputersRest();
 					break;
 
-				case 2: // Lister les entreprises
+				case 2:
 					displayCompaniesRest();
 					break;
 
@@ -71,25 +73,25 @@ public class MainRest {
 					computerDetailsRest();
 					break;
 
-				case 4: // Recherche
+				case 4:
 					countRest();
 					break;
 
-				case 5: // Créer un PC
+				case 5:
 					createComputerRest();
 					break;
 
-				case 6: // Mettre à jour un PC
+				case 6:
 					updateComputerRest();
 					break;
 
-				case 7: // Supprimer un PC
+				case 7:
 					deleteComputerRest();
 					break;
-				case 8: // Supprimer une company
+				case 8:
 					deleteCompanyRest();
 					break;
-				case 9: // Quitter
+				case 9:
 					exit();
 					break;
 				default:
@@ -107,9 +109,13 @@ public class MainRest {
 		long id = 0;
 		logger.info("Veuillez entrer la company de l'ordinateur à supprimer: ");
 		id = sc.nextLong();
-		ResteasyWebTarget delete = client.target(BASE_URL +"company/"+id);
+		ResteasyWebTarget delete = client.target(BASE_URL + "company/" + id);
 		Response deleteResponse = delete.request().delete();
-		logger.info("HTTP Response Code:"+deleteResponse.getStatus());
+		if (logger.isInfoEnabled()) {
+			try (Formatter fmt = new Formatter()) {
+				logger.info(fmt.format(LABEL_LOG, deleteResponse.getStatus()).toString());
+			}
+		}
 		deleteResponse.close();
 	}
 
@@ -117,9 +123,13 @@ public class MainRest {
 		long id = 0;
 		logger.info("Veuillez entrer l'id de l'ordinateur à supprimer: ");
 		id = sc.nextLong();
-		ResteasyWebTarget delete = client.target(BASE_URL +"computer?idTab="+id);
+		ResteasyWebTarget delete = client.target(BASE_URL + "computer?idTab=" + id);
 		Response deleteResponse = delete.request().delete();
-		logger.info("HTTP Response Code:"+deleteResponse.getStatus());
+		if (logger.isInfoEnabled()) {
+			try (Formatter fmt = new Formatter()) {
+				logger.info(fmt.format(LABEL_LOG, deleteResponse.getStatus()).toString());
+			}
+		}
 		deleteResponse.close();
 	}
 
@@ -140,15 +150,20 @@ public class MainRest {
 		dateDiscontinued = sc.nextLine();
 		logger.info("Veuillez entrer le numéro du fabricant de l'ordinateur (0 pour passer cette étape): ");
 		companyId = sc.nextLong();
-		ResteasyWebTarget add = client.target(BASE_URL +"computer");
+		ResteasyWebTarget add = client.target(BASE_URL + "computer");
 		ComputerDTO computerDto = new ComputerDTO();
-		computerDto.setId(computerId+"");
+		computerDto.setId(computerId + "");
 		computerDto.setName(computerName);
 		computerDto.setIntroduced(dateIntroduced);
 		computerDto.setDiscontinued(dateDiscontinued);
-		computerDto.setCompanyId(companyId+"");
+		computerDto.setCompanyId(companyId + "");
 		Response addResponse = add.request().put(Entity.entity(computerDto, MediaType.APPLICATION_JSON));
-		logger.info(addResponse.getStatus()+"");
+		if (logger.isInfoEnabled()) {
+			try (Formatter fmt = new Formatter()) {
+				logger.info(fmt.format(LABEL_LOG, addResponse.getStatus()).toString());
+			}
+		}
+		
 		addResponse.close();
 	}
 
@@ -165,14 +180,19 @@ public class MainRest {
 		dateDiscontinued = sc.nextLine();
 		logger.info("Veuillez entrer le numéro du fabricant de l'ordinateur (0 pour passer cette étape): ");
 		companyId = sc.nextLong();
-		ResteasyWebTarget add = client.target(BASE_URL +"computer");
+		ResteasyWebTarget add = client.target(BASE_URL + "computer");
 		ComputerDTO computerDto = new ComputerDTO();
 		computerDto.setName(computerName);
 		computerDto.setIntroduced(dateIntroduced);
 		computerDto.setDiscontinued(dateDiscontinued);
-		computerDto.setCompanyId(companyId+"");
+		computerDto.setCompanyId(companyId + "");
 		Response addResponse = add.request().post(Entity.entity(computerDto, MediaType.APPLICATION_JSON));
-		logger.info(addResponse.getStatus()+"");
+		if (logger.isInfoEnabled()) {
+			try (Formatter fmt = new Formatter()) {
+				logger.info(fmt.format(LABEL_LOG, addResponse.getStatus()).toString());
+			}
+		}
+		
 		addResponse.close();
 	}
 
@@ -181,7 +201,7 @@ public class MainRest {
 		logger.info("Veuillez entrer le mot-clé de la recherche: ");
 		name += sc.nextLine();
 		logger.info("\n LISTE DES COMPUTERS");
-		ResteasyWebTarget getDummy = client.target(BASE_URL + "computer/count"+name);
+		ResteasyWebTarget getDummy = client.target(BASE_URL + "computer/count" + name);
 		Response getDummyResponse = getDummy.request().get();
 		String value = getDummyResponse.readEntity(String.class);
 		logger.info(value);
@@ -192,7 +212,7 @@ public class MainRest {
 		long id = 0;
 		logger.info("Veuillez entrer l'id de l'ordinateur: ");
 		id = sc.nextLong();
-		ResteasyWebTarget getDummy = client.target(BASE_URL + "computer/"+id);
+		ResteasyWebTarget getDummy = client.target(BASE_URL + "computer/" + id);
 		Response getDummyResponse = getDummy.request().get();
 		String value = getDummyResponse.readEntity(String.class);
 		logger.info(value);
