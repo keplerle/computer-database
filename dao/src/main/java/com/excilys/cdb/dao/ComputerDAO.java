@@ -20,7 +20,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	private static final String HQL_SELECT_BY_ID = "select cpu from Computer as cpu left join Company as cpa with cpu.company = cpa.id where cpu.id = :id";
 	private static final String HQL_SELECT_BY_NAME = "select cpu from Computer as cpu left join Company as cpa with cpu.company = cpa.id where upper(cpu.name) like upper(:name) or upper(cpa.name) like upper(:name) order by cpu.name ";
 	private static final String HQL_COUNT = "select count(cpu.id) from Computer as cpu left join Company as cpa with cpu.company = cpa.id where upper(cpu.name) like upper(:name) or upper(cpa.name) like upper(:name) ";
-	private static final String HQL_DELETE_COMPANY = "delete Computer where company= :companyId";
+	private static final String HQL_DELETE_COMPANY = "delete Computer where company_id = :companyId";
 	private static final String HQL_DELETE = "delete Computer where id= :id";
 
 	private final SessionFactory sessionFactory;
@@ -97,7 +97,9 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	@Override
 	public void deleteByCompany(long companyId) {
 		try (Session session = sessionFactory.openSession()) {
+			Transaction tx = session.beginTransaction();
 			session.createQuery(HQL_DELETE_COMPANY).setParameter("companyId", companyId).executeUpdate();
+			tx.commit();
 		}
 	}
 }

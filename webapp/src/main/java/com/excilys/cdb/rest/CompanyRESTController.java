@@ -1,16 +1,18 @@
 package com.excilys.cdb.rest;
 
 import java.util.List;
-
-import javax.ws.rs.PathParam;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.excilys.cdb.dto.CompanyDTO;
+import com.excilys.cdb.mapper.MapperCompanyDTO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.service.CompanyService;
 
@@ -18,22 +20,27 @@ import com.excilys.cdb.service.CompanyService;
 @RequestMapping("/company")
 public class CompanyRESTController {
 
-	
 	private final CompanyService companyService;
+	private final MapperCompanyDTO companyMapper;
 	
-	public CompanyRESTController(CompanyService companyService) {
+	public CompanyRESTController(CompanyService companyService, MapperCompanyDTO companyMapper) {
 		this.companyService = companyService;
-	}
-	@GetMapping
-	public ResponseEntity<List<Company>> findAll() {
-		List<Company> companyList;
-		companyList = companyService.findAll();
-		return new ResponseEntity<>(companyList, HttpStatus.OK);
+		this.companyMapper = companyMapper;
 	}
 
-	@DeleteMapping
-	public ResponseEntity<Void> delete(@PathParam("id") int id) {
+	@GetMapping("/all")
+	public ResponseEntity<List<CompanyDTO>> findAll() {
+		List<Company> companyList;	
+		companyList = companyService.findAll();
+		List<CompanyDTO> subCompaniesDTO = companyList.stream().map(
+				companyMapper::fromCompany
+			).collect(Collectors.toList());	
+		return new ResponseEntity<>(subCompaniesDTO, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
 		companyService.delete(id);
-		return new ResponseEntity<>(HttpStatus.GONE);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

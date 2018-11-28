@@ -3,12 +3,7 @@ package com.excilys.cdb.rest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.cdb.dto.ComputerDTO;
@@ -44,31 +41,39 @@ public class ComputerRESTController {
 		this.computerMapper = computerMapper;
 	}
 
-//	@GetMapping("/{id}")
-	@GET
-	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseEntity<Optional<Computer>> find(@PathParam("id") int id) {
-		Optional<Computer> computer = computerService.find(id);
-		return new ResponseEntity<>(computer, HttpStatus.OK);
+	@GetMapping("/{id}")
+	public ResponseEntity<ComputerDTO> find(@PathVariable("id") Long id) {
+		ComputerDTO computerDto = computerMapper.fromOptionalComputer(computerService.find(id));
+		return new ResponseEntity<>(computerDto, HttpStatus.OK);
 	}
-	   @GET
-	    @Path("/count/{name}")
-	    @Produces(MediaType.APPLICATION_JSON)
-	//@GetMapping("/count/{name}")
-	public ResponseEntity<Long> count(@PathParam("name") String name) {
-		long count = computerService.count(name);
+
+	@GetMapping({ "/count", "/count/{name}" })
+	public ResponseEntity<Long> count(@PathVariable("name") Optional<String> name) {
+		long count;
+		if (name.isPresent()) {
+			count = computerService.count(name.get());
+		} else {
+			count = computerService.count("");
+		}
+
 		return new ResponseEntity<>(count, HttpStatus.OK);
 	}
 
-	   @GET
-	    @Path("/all/{name}")
-	    @Produces(MediaType.APPLICATION_JSON)
-	//@GetMapping("/all/{name}")
-	public ResponseEntity<List<Computer>> findAll(@PathParam("name") String name) {
+	@GetMapping({ "/all", "/all/{name}" })
+	public ResponseEntity<List<ComputerDTO>> findAll(@PathVariable("name") Optional<String> name,
+			@RequestParam(required = false, defaultValue = "1") String page,
+			@RequestParam(required = false, defaultValue = "10") String size) {
 		List<Computer> computerList = new ArrayList<>();
+		List<ComputerDTO> subComputersDTO = new ArrayList<>();
 		try {
-			computerList = computerService.findAll(name);
+			Page.setPage(page, size);
+			if (name.isPresent()) {
+				computerList = computerService.findAll(name.get());
+			} else {
+				computerList = computerService.findAll("");
+			}
+
+			subComputersDTO = computerList.stream().map(computerMapper::fromComputer).collect(Collectors.toList());
 		} catch (NoPreviousPageException e) {
 			Page.increasePage();
 		} catch (NoNextPageException e) {
@@ -77,7 +82,7 @@ public class ComputerRESTController {
 		if (computerList.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(computerList, HttpStatus.OK);
+		return new ResponseEntity<>(subComputersDTO, HttpStatus.OK);
 
 	}
 
@@ -100,12 +105,11 @@ public class ComputerRESTController {
 			logger.error(e.getMessage());
 		}
 		return new ResponseEntity<>(computerDto, HttpStatus.OK);
-
 	}
 
 	@DeleteMapping
-	public ResponseEntity<Void> delete(String[] idTab) {
+	public ResponseEntity<Void> delete(@RequestParam String[] idTab) {
 		computerService.deleteAll(idTab);
-		return new ResponseEntity<>(HttpStatus.GONE);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

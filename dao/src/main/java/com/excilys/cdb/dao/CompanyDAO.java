@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -35,7 +36,9 @@ public class CompanyDAO implements CompanyDAOInterface<Company> {
 	@Override
 	public void delete(long id) {
 		try (Session session = sessionFactory.openSession()) {
+			Transaction tx = session.beginTransaction();
 			session.createQuery(HQL_DELETE).setParameter("id", id).executeUpdate();
+			tx.commit();
 		}
 	}
 

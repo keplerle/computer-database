@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import com.excilys.cdb.config.RootConfig;
 import com.excilys.cdb.exception.DataException;
@@ -32,8 +31,8 @@ public class Main {
 	CompanyService cpaService;
 	@Autowired
 	ComputerService cpuService;
-	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	Scanner sc = new Scanner(System.in);
+
 
 	public static void main(String[] args) {
 		ApplicationContext context = new AnnotationConfigApplicationContext(RootConfig.class);
@@ -322,7 +321,5 @@ public class Main {
 				logger.error(outEx.getMessage());
 			}
 		}
-
 	}
-
 }
