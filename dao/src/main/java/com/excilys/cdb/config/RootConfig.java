@@ -21,7 +21,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({ "com.excilys.cdb.model","com.excilys.cdb.dao","com.excilys.cdb.console","com.excilys.cdb.consoleRest", "com.excilys.cdb.service", "com.excilys.cdb.validator"})
+@ComponentScan({ "com.excilys.cdb.model","com.excilys.cdb.dao","com.excilys.cdb.console", "com.excilys.cdb.service", "com.excilys.cdb.validator"})
 public class RootConfig {
 	Logger logger = LoggerFactory.getLogger(RootConfig.class);
 	

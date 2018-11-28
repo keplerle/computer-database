@@ -1,4 +1,4 @@
-package com.excilys.cdb.consoleRest;
+package com.excilys.cdb.console;
 
 import java.util.Scanner;
 
@@ -21,7 +21,7 @@ import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exception.OutOfCommandeScopeException;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.service.CompanyService;
-import com.excilys.cdb.service.ComputerService;;
+import com.excilys.cdb.service.ComputerService;
 
 @Component
 public class MainRest {
@@ -109,7 +109,7 @@ public class MainRest {
 		id = sc.nextLong();
 		ResteasyWebTarget delete = client.target(BASE_URL +"company/"+id);
 		Response deleteResponse = delete.request().delete();
-		System.out.println("HTTP Response Code:"+deleteResponse.getStatus());
+		logger.info("HTTP Response Code:"+deleteResponse.getStatus());
 		deleteResponse.close();
 	}
 
@@ -119,7 +119,7 @@ public class MainRest {
 		id = sc.nextLong();
 		ResteasyWebTarget delete = client.target(BASE_URL +"computer?idTab="+id);
 		Response deleteResponse = delete.request().delete();
-		System.out.println("HTTP Response Code:"+deleteResponse.getStatus());
+		logger.info("HTTP Response Code:"+deleteResponse.getStatus());
 		deleteResponse.close();
 	}
 
@@ -184,7 +184,7 @@ public class MainRest {
 		ResteasyWebTarget getDummy = client.target(BASE_URL + "computer/count"+name);
 		Response getDummyResponse = getDummy.request().get();
 		String value = getDummyResponse.readEntity(String.class);
-		System.out.println(value);
+		logger.info(value);
 		getDummyResponse.close();
 	}
 
@@ -195,7 +195,7 @@ public class MainRest {
 		ResteasyWebTarget getDummy = client.target(BASE_URL + "computer/"+id);
 		Response getDummyResponse = getDummy.request().get();
 		String value = getDummyResponse.readEntity(String.class);
-		System.out.println(value);
+		logger.info(value);
 		getDummyResponse.close();
 	}
 
@@ -203,7 +203,7 @@ public class MainRest {
 		ResteasyWebTarget getDummy = client.target(BASE_URL + "company/all");
 		Response getDummyResponse = getDummy.request().get();
 		String value = getDummyResponse.readEntity(String.class);
-		System.out.println(value);
+		logger.info(value);
 		getDummyResponse.close();
 	}
 
@@ -218,7 +218,7 @@ public class MainRest {
 			ResteasyWebTarget getDummy = client.target(BASE_URL + "computer/all" + name);
 			Response getDummyResponse = getDummy.request().get();
 			String value = getDummyResponse.readEntity(String.class);
-			System.out.println(value);
+			logger.info(value);
 			getDummyResponse.close();
 			logger.info("Previous page (p) 	Quit(q) 		Next page(n)");
 			logger.info("Que voulez vous faire ? :");

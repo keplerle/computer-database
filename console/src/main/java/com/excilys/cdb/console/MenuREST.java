@@ -1,4 +1,4 @@
-package com.excilys.cdb.consoleRest;
+package com.excilys.cdb.console;
 
 public enum MenuREST {
 
