@@ -60,7 +60,7 @@ public class EditController {
 		model.addAttribute("companies", subCompaniesDTO);
 		return "editComputer";
 	}
-
+	
 	@PostMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String postEditComputer(@Validated @ModelAttribute("computerDto") ComputerDTO computerDto, BindingResult result, ModelMap model) {

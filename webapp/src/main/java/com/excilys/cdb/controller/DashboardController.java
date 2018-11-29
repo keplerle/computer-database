@@ -69,12 +69,11 @@ public class DashboardController {
 		return "dashboard";
 	}
 
+	
 	@PostMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String postDashboard(ModelMap model, @RequestParam String[] selection) {
-
 		computerService.deleteAll(selection);
-
 		return "redirect:dashboard";
 	}
 }
