@@ -5,14 +5,19 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Role;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.dto.ComputerDTO;
@@ -42,6 +47,7 @@ public class AddController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String getAddComputer(ModelMap model) {
 		List<Company> companies = companyService.findAll();
 		List<CompanyDTO> subCompaniesDTO = companies.stream().map(companyMapper::fromCompany)
@@ -52,6 +58,7 @@ public class AddController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String postAddComputer(@Validated @ModelAttribute("computerDto") ComputerDTO computerDto,
 			BindingResult result, ModelMap model) {
 		if (result.hasErrors()) {
@@ -65,5 +72,5 @@ public class AddController {
 			return "addComputer";
 		}
 	}
-
+	
 }

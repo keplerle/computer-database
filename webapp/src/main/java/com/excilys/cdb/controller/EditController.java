@@ -5,15 +5,19 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.dto.ComputerDTO;
@@ -43,6 +47,7 @@ public class EditController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String getEditComputer(ModelMap model, @RequestParam Long computerId) {
 		ComputerDTO computerDto = computerMapper
 				.fromOptionalComputer(computerService.find(computerId));
@@ -57,6 +62,7 @@ public class EditController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String postEditComputer(@Validated @ModelAttribute("computerDto") ComputerDTO computerDto, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             return "500";
@@ -71,4 +77,5 @@ public class EditController {
 			return "editComputer";
 		}
 	}
+	
 }

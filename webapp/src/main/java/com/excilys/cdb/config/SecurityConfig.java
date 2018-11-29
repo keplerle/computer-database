@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -46,12 +47,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
     	 http.authorizeRequests()
     	 .antMatchers("/login").permitAll()
-    	 .antMatchers("/edit","/add").hasRole("ADMIN")
-    	 .antMatchers("/dashboard").hasAnyRole("USER", "ADMIN")
-    	 .and().exceptionHandling().accessDeniedPage("/accessDenied")
     	 .and().formLogin().defaultSuccessUrl("/dashboard", true)
     	 .and().logout().logoutSuccessUrl("/login").permitAll()
     	 .and().csrf().disable();
+    
+    	 
+    	
     	 
     }
 
