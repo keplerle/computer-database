@@ -30,7 +30,7 @@ import com.excilys.cdb.model.Page;
 import com.excilys.cdb.service.ComputerService;
 
 @RestController("computerController")
-@RequestMapping("/computer")
+@RequestMapping("/api/computer")
 public class ComputerRESTController {
 
 	private final ComputerService computerService;
@@ -43,14 +43,12 @@ public class ComputerRESTController {
 	}
 
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	public ResponseEntity<ComputerDTO> find(@PathVariable("id") Long id) {
 		ComputerDTO computerDto = computerMapper.fromOptionalComputer(computerService.find(id));
 		return new ResponseEntity<>(computerDto, HttpStatus.OK);
 	}
 
 	@GetMapping({ "/count", "/count/{name}" })
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	public ResponseEntity<Long> count(@PathVariable("name") Optional<String> name) {
 		long count;
 		if (name.isPresent()) {
@@ -63,7 +61,6 @@ public class ComputerRESTController {
 	}
 
 	@GetMapping({ "/all", "/all/{name}" })
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	public ResponseEntity<List<ComputerDTO>> findAll(@PathVariable("name") Optional<String> name,
 			@RequestParam(required = false, defaultValue = "1") String page,
 			@RequestParam(required = false, defaultValue = "10") String size) {
@@ -91,7 +88,6 @@ public class ComputerRESTController {
 	}
 
 	@PostMapping
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<ComputerDTO> create(@RequestBody ComputerDTO computerDto) {
 		try {
 			computerService.create(computerMapper.toComputer(computerDto));
@@ -103,7 +99,6 @@ public class ComputerRESTController {
 	}
 
 	@PutMapping
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<ComputerDTO> update(@RequestBody ComputerDTO computerDto) {
 		try {
 			computerService.update(computerMapper.toComputer(computerDto));
@@ -114,7 +109,6 @@ public class ComputerRESTController {
 	}
 
 	@DeleteMapping
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> delete(@RequestParam String[] idTab) {
 		computerService.deleteAll(idTab);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

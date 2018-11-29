@@ -28,7 +28,7 @@ import com.excilys.cdb.service.ComputerService;
 public class MainRest {
 	static Logger logger = LoggerFactory.getLogger(MainRest.class);
 	public static final String SEPARATOR = "\n---------------------------------";
-	public static final String BASE_URL = "http://localhost:8080/computer-database/";
+	public static final String BASE_URL = "http://localhost:8080/computer-database/api/";
 	public static final String LABEL_LOG = "HTTP Response Code: %d";
 	ResteasyClient client = new ResteasyClientBuilder().build();
 	@Autowired

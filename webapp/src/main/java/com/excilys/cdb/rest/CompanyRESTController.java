@@ -18,7 +18,7 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.service.CompanyService;
 
 @RestController("companyController")
-@RequestMapping("/company")
+@RequestMapping("/api/company")
 public class CompanyRESTController {
 
 	private final CompanyService companyService;
@@ -30,7 +30,6 @@ public class CompanyRESTController {
 	}
 
 	@GetMapping("/all")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	public ResponseEntity<List<CompanyDTO>> findAll() {
 		List<Company> companyList;	
 		companyList = companyService.findAll();
@@ -41,7 +40,6 @@ public class CompanyRESTController {
 	}
 
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
 		companyService.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

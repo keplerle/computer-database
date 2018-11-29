@@ -50,14 +50,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
     	 http.authorizeRequests()
-    	 .antMatchers("/login").permitAll()
     	 .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler())
-    	 .and().formLogin().defaultSuccessUrl("/dashboard", true)
-    	 .and().logout().logoutSuccessUrl("/login").permitAll()
+    	 .and().formLogin()
+//    	 .loginPage("/user")
+//    	 .loginProcessingUrl("/user")
+    	 .defaultSuccessUrl("/dashboard", true)
+    	 .and().logout().logoutSuccessUrl("/user").permitAll()
     	 .and().csrf().disable();
     }
 
 	
+    
 	@Bean
 	public BCryptPasswordEncoder encoder() {
 		return new BCryptPasswordEncoder();
