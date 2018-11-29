@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
@@ -47,11 +48,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	 .antMatchers("/login").permitAll()
     	 .antMatchers("/edit","/add").hasRole("ADMIN")
     	 .antMatchers("/dashboard").hasAnyRole("USER", "ADMIN")
+    	 .and().exceptionHandling().accessDeniedPage("/accessDenied")
     	 .and().formLogin().defaultSuccessUrl("/dashboard", true)
     	 .and().logout().logoutSuccessUrl("/login").permitAll()
     	 .and().csrf().disable();
     	 
     }
+
 	
 	@Bean
 	public BCryptPasswordEncoder encoder() {
