@@ -18,6 +18,10 @@
 		<div class="container">
 			<a class="navbar-brand" href="dashboard"><spring:message
 					code="banner" /></a>
+					<div class="btn-group btn-group-sm pull-right" role="group">
+			<a href="?lang=en"><button type="button" class="btn btn-default"><spring:message code="english" /></button></a>
+			<a href="?lang=fr"><button type="button" class="btn btn-default"><spring:message code="french" /></button></a>
+			</div>
 		</div>
 	</header>
 
@@ -25,28 +29,36 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
-					<h1>Login Page</h1>
+					<h1><spring:message code="loginTitle" /></h1>
+					<c:if test="${param.error != null}">
+						<div>
+							<spring:message code="errorLoginMessage" />
+						</div>
+					</c:if>
+					<c:if test="${param.logout != null}">
+						<div><spring:message code="logoutMessage" /></div>
+					</c:if>
+
 					<form:form id="userForm" action="user" method="POST"
 						modelAttribute="userDto">
 						<fieldset>
 							<div class="form-group">
 								<form:label for="username" path="username">
-									Username
+									<spring:message code="usernameLabel" />
 								</form:label>
 								<form:input type="text" name="username" class="form-control"
 									id="username" path="username" />
 							</div>
 							<div class="form-group">
 								<form:label for="password" path="saltedPassword">
-									Password
+									<spring:message code="passwordLabel" />
 								</form:label>
 								<form:input type="password" name="password" class="form-control"
 									id="password" path="saltedPassword" />
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Submit"
-								class="btn btn-primary">
+							<input type="submit" value="Submit" class="btn btn-primary">
 						</div>
 					</form:form>
 				</div>

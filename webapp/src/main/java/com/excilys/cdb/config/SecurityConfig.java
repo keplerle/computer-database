@@ -52,10 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	 http.authorizeRequests()
     	 .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler())
     	 .and().formLogin()
-//    	 .loginPage("/user")
-//    	 .loginProcessingUrl("/user")
+    	 .loginPage("/user")
+    	 .usernameParameter("username")
+    	 .passwordParameter("saltedPassword")
     	 .defaultSuccessUrl("/dashboard", true)
-    	 .and().logout().logoutSuccessUrl("/user").permitAll()
+    	 .and().logout().logoutSuccessUrl("/user?logout").permitAll()
     	 .and().csrf().disable();
     }
 
