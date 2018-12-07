@@ -18,6 +18,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.config.RootConfig;
+import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exception.OutOfCommandeScopeException;
 import com.excilys.cdb.model.Page;
@@ -92,6 +93,12 @@ public class MainRest {
 					deleteCompanyRest();
 					break;
 				case 9:
+					createCompanyRest();
+					break;	
+				case 10:
+					updateCompanyRest();
+					break;
+				case 11:
 					exit();
 					break;
 				default:
@@ -166,6 +173,30 @@ public class MainRest {
 		
 		addResponse.close();
 	}
+	
+	private void updateCompanyRest() {
+		long companyId;
+		String companyName = "";
+		logger.info("Veuillez entrer l'id de la companie à mettre à jour: ");
+		companyId = sc.nextLong();
+		sc.nextLine();
+		logger.info("Veuillez entrer le nom de la companie: ");
+		companyName = sc.nextLine();
+		ResteasyWebTarget add = client.target(BASE_URL + "company");
+		CompanyDTO companyDto = new CompanyDTO();
+		companyDto.setId(companyId + "");
+		companyDto.setName(companyName);
+		
+		Response addResponse = add.request().put(Entity.entity(companyDto, MediaType.APPLICATION_JSON));
+		if (logger.isInfoEnabled()) {
+			try (Formatter fmt = new Formatter()) {
+				logger.info(fmt.format(LABEL_LOG, addResponse.getStatus()).toString());
+			}
+		}
+		
+		addResponse.close();
+	}
+	
 
 	private void createComputerRest() {
 		String computerName = "";
@@ -190,6 +221,24 @@ public class MainRest {
 		if (logger.isInfoEnabled()) {
 			try (Formatter fmt = new Formatter()) {
 				logger.info(fmt.format(LABEL_LOG, addResponse.getStatus()).toString());
+			}
+		}
+		
+		addResponse.close();
+	}
+	
+	private void createCompanyRest() {
+		String companyName = "";
+		logger.info("Veuillez entrer le nom de la company: ");
+		companyName = sc.nextLine();
+		ResteasyWebTarget add = client.target(BASE_URL + "company");
+		CompanyDTO companyDto = new CompanyDTO();
+		companyDto.setName(companyName);
+		Response addResponse = add.request().post(Entity.entity(companyDto, MediaType.APPLICATION_JSON));
+		if (logger.isInfoEnabled()) {
+			try (Formatter fmt = new Formatter()) {
+				logger.info(fmt.format(LABEL_LOG, addResponse.getStatus()).toString());
+				logger.info(addResponse.getStatusInfo().toString());
 			}
 		}
 		

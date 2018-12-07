@@ -36,4 +36,12 @@ public class CompanyService {
 		companyDao.delete(id);
 	}
 
+	public void create(Company company) {
+		companyDao.create(company);
+	}
+
+	public void update(Company company) {
+		companyDao.update(company);
+	}
+	
 }

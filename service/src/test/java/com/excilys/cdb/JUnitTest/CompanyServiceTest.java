@@ -45,7 +45,6 @@ public class CompanyServiceTest {
 	}
 
 	@Test
-
 	public void testEqualsCompanyFindAllCompanies() {
 		try {
 			List<Company> result = companyService.findAll();
@@ -58,4 +57,14 @@ public class CompanyServiceTest {
 		}		
 	}
 	
+	@Test
+	public void testCreateCompany() {
+		try {
+			Company company = new Company();
+			company.setName("1234test");
+			companyService.create(company);
+		}catch(Exception e) {
+			fail(e.getMessage());
+		}		
+	}
 }

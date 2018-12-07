@@ -17,4 +17,18 @@ public interface CompanyDAOInterface<T> {
 	 */
 	public abstract void delete(long id);
 	
+	
+	/**
+	 * Méthode de mise à jour
+	 * 
+	 * @param obj
+	 */
+	public abstract void update(T obj);
+	
+	/**
+	 * Méthode de création
+	 * 
+	 * @param obj
+	 */
+	public abstract void create(T obj);
 }
