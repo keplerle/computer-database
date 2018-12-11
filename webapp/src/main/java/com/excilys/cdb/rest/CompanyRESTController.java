@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.cdb.dto.CompanyDTO;
@@ -42,9 +43,9 @@ public class CompanyRESTController {
 		return new ResponseEntity<>(subCompaniesDTO, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
-		companyService.delete(id);
+	@DeleteMapping
+	public ResponseEntity<Void> delete(@RequestParam String[] idTab) {
+		companyService.deleteList(idTab);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	

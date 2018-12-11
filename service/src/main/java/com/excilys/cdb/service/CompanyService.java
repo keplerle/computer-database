@@ -36,6 +36,17 @@ public class CompanyService {
 		companyDao.delete(id);
 	}
 
+	@Transactional
+	public void deleteList(String[] idTab) {
+		try {
+			for (int i = 0; i < idTab.length; i++) {
+				delete(Long.parseLong(idTab[i]));
+			}
+		} catch (NumberFormatException e) {
+			logger.error(e.getMessage());
+		}
+	}
+
 	public void create(Company company) {
 		companyDao.create(company);
 	}
@@ -43,5 +54,5 @@ public class CompanyService {
 	public void update(Company company) {
 		companyDao.update(company);
 	}
-	
+
 }
