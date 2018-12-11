@@ -90,6 +90,8 @@ public class ComputerRESTController {
 	@PostMapping
 	public ResponseEntity<ComputerDTO> create(@RequestBody ComputerDTO computerDto) {
 		try {
+			logger.info(computerDto.getCompanyId());
+			logger.info(computerDto.getCompanyName());
 			computerService.create(computerMapper.toComputer(computerDto));
 		} catch (DataException e) {
 			logger.error(e.getMessage());

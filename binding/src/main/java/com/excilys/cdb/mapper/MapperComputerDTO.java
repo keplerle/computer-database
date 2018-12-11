@@ -21,15 +21,15 @@ public class MapperComputerDTO {
 		if (computerDto.getId() != null) {
 			computer.setId(Long.parseLong(computerDto.getId()));
 		}
-		if (!"".equals(computerDto.introduced)) {
+		if (computerDto.introduced != null && !("".equals(computerDto.introduced))) {
 			computer.setIntroduced(Date.valueOf(computerDto.introduced).toLocalDate());
 		}
-		if (!"".equals(computerDto.discontinued)) {
+		if (computerDto.discontinued != null && !("".equals(computerDto.discontinued))) {
 			computer.setDiscontinued(Date.valueOf(computerDto.discontinued).toLocalDate());
 		}
-
-		company.setId(Long.parseLong(computerDto.getCompanyId()));
-		company.setName(computerDto.getCompanyName());
+		if(computerDto.getCompanyId() != null) {
+			company.setId(Long.parseLong(computerDto.getCompanyId()));
+		}	
 		computer.setCompany(company);
 		return computer;
 

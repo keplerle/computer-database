@@ -32,7 +32,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 	@Override
 	public void create(Computer computer) {
 		try (Session session = sessionFactory.openSession()) {
-			if(computer.getCompany().getId()==0) {
+			if(computer.getCompany().getId()==null) {
 				computer.setCompany(null);
 			}
 			session.save(computer);
@@ -48,7 +48,7 @@ public class ComputerDAO implements ComputerDAOInterface<Computer> {
 			query.setParameter("name", computer.getName());
 			query.setParameter("introduced", computer.getIntroduced());
 			query.setParameter("discontinued", computer.getDiscontinued());			
-			query.setParameter("companyId", computer.getCompany().getId() == 0 ? null : computer.getCompany());		
+			query.setParameter("companyId", computer.getCompany().getId() == null ? null : computer.getCompany());		
 			query.executeUpdate();
 			tx.commit();
 		}

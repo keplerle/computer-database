@@ -58,7 +58,7 @@ public class CompanyRESTController {
 
 	@PutMapping
 	public ResponseEntity<CompanyDTO> update(@RequestBody CompanyDTO companyDto) {
-		
+			
 			companyService.update(companyMapper.toCompany(companyDto));
 		
 		return new ResponseEntity<>(companyDto, HttpStatus.OK);
