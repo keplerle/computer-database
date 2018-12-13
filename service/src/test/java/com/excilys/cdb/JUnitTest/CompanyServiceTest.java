@@ -35,7 +35,7 @@ public class CompanyServiceTest {
 	}
 
 	@Test
-
+	@Ignore
 	public void testNotNullFindAllCompanies() {
 		try {
 			assertNotNull(companyService.findAll());	
@@ -45,6 +45,7 @@ public class CompanyServiceTest {
 	}
 
 	@Test
+	@Ignore
 	public void testEqualsCompanyFindAllCompanies() {
 		try {
 			List<Company> result = companyService.findAll();
@@ -58,6 +59,7 @@ public class CompanyServiceTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testCreateCompany() {
 		try {
 			Company company = new Company();

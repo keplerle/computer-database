@@ -45,7 +45,7 @@ public class ComputerServiceTest {
 	}
 
 	@Test
-
+	@Ignore
 	public void testNotNullFindAllComputers() {
 		try {
 			assertNotNull(computerService.findAll(""));
@@ -56,7 +56,7 @@ public class ComputerServiceTest {
 	}
 
 	@Test
-
+	@Ignore
 	public void testEqualsComputerFindAllComputers() {
 		try {
 			List<Computer> result = computerService.findAll("");
@@ -71,7 +71,7 @@ public class ComputerServiceTest {
 	}
 
 	@Test
-
+	@Ignore
 	public void testFindByIdComputer() {
 		try {
 			Optional<Computer> computer = computerService.find(12);
@@ -87,7 +87,7 @@ public class ComputerServiceTest {
 	}
 
 	@Test
-
+	@Ignore
 	public void testUpdateOutOfBoundComputer() {
 		try {
 
@@ -109,7 +109,7 @@ public class ComputerServiceTest {
 	}
 
 	@Test
-	
+	@Ignore
 	public void testUpdateComputerWithoutName() {
 
 		Computer computer = new Computer();
@@ -132,7 +132,7 @@ public class ComputerServiceTest {
 	}
 
 	@Test
-
+	@Ignore
 	public void testDeleteOutOfBoundComputer() {
 		try {
 			computerService.delete(0L);
