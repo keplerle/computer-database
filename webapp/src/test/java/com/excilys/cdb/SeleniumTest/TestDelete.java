@@ -31,6 +31,7 @@ public class TestDelete {
   }
 
   @Test
+  @Ignore
   public void testDelete() throws Exception {
 		driver.findElement(By.id("username")).click();
 		driver.findElement(By.id("username")).clear();

@@ -34,6 +34,7 @@ public class TestPagination {
 	}
 
 	@Test
+	@Ignore
 	public void testPagination() throws Exception {
 		driver.findElement(By.id("username")).click();
 		driver.findElement(By.id("username")).clear();

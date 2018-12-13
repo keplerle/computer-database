@@ -30,6 +30,7 @@ public class TestAddWithoutName {
   }
 
   @Test
+  @Ignore
   public void testAddWithoutName() throws Exception {
 		driver.findElement(By.id("username")).click();
 		driver.findElement(By.id("username")).clear();

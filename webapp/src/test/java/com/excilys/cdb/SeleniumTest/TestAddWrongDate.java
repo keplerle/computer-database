@@ -30,6 +30,7 @@ public class TestAddWrongDate {
   }
 
   @Test
+  @Ignore
   public void testAddWrongDate() throws Exception {
 		driver.findElement(By.id("username")).click();
 		driver.findElement(By.id("username")).clear();

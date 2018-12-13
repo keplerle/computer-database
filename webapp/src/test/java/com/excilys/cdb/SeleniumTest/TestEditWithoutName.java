@@ -31,6 +31,7 @@ public class TestEditWithoutName {
 	}
 
 	@Test
+	@Ignore
 	public void testEditWithoutName() throws Exception {
 		driver.findElement(By.id("username")).click();
 		driver.findElement(By.id("username")).clear();

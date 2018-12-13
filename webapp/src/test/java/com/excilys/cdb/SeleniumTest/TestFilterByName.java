@@ -31,6 +31,7 @@ public class TestFilterByName {
 	}
 
 	@Test
+	@Ignore
 	public void testFilterByName() throws Exception {
 		driver.findElement(By.id("username")).click();
 		driver.findElement(By.id("username")).clear();

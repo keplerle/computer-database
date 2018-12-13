@@ -32,6 +32,7 @@ public class TestAdd {
 	}
 
 	@Test
+	@Ignore
 	public void testAdd() throws Exception {
 		driver.findElement(By.id("username")).click();
 		driver.findElement(By.id("username")).clear();

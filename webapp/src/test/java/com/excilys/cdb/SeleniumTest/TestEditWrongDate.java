@@ -29,6 +29,7 @@ public class TestEditWrongDate {
 	}
 
 	@Test
+	@Ignore
 	public void testEditWrongDate() throws Exception {
 		driver.findElement(By.id("username")).click();
 		driver.findElement(By.id("username")).clear();

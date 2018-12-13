@@ -29,6 +29,7 @@ public class TestEdit {
   }
 
   @Test
+  @Ignore
   public void testEdit() throws Exception {
 		driver.findElement(By.id("username")).click();
 		driver.findElement(By.id("username")).clear();

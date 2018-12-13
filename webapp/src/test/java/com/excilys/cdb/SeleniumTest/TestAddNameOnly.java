@@ -29,6 +29,7 @@ public class TestAddNameOnly {
   }
 
   @Test
+  @Ignore
   public void testAddNameOnly() throws Exception {
 		driver.findElement(By.id("username")).click();
 		driver.findElement(By.id("username")).clear();
