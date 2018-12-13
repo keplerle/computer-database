@@ -59,10 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.httpBasic()
 		.and()
 		.authorizeRequests()
-		.antMatchers("/login","/computer","/company").authenticated()
-	      .and().csrf()
-	        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-	     .and().cors().configurationSource(corsConfigurationSource())
+		.antMatchers("/login","/computer","/company").authenticated()	     
+	    .and().cors().configurationSource(corsConfigurationSource())
+	    .and().csrf().disable()
 	    ;
 	
 	}
