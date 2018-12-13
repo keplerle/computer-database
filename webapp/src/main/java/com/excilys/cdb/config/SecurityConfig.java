@@ -15,6 +15,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
 @Configuration
@@ -29,39 +33,47 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth)
-	  throws Exception {
-	    auth.authenticationProvider(authenticationProvider(userDetailsService));
+			throws Exception {
+		auth.authenticationProvider(authenticationProvider(userDetailsService));
 	}
-	 
+
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
-	    DaoAuthenticationProvider authProvider
-	      = new DaoAuthenticationProvider();
-	    authProvider.setUserDetailsService(userDetailsService);
-	    authProvider.setPasswordEncoder(encoder());
-	    return authProvider;
+		DaoAuthenticationProvider authProvider
+		= new DaoAuthenticationProvider();
+		authProvider.setUserDetailsService(userDetailsService);
+		authProvider.setPasswordEncoder(encoder());
+		return authProvider;
 	}
-	
+
 	@Bean
 	public AccessDeniedHandler accessDeniedHandler(){
-	    return new CustomAccessDeniedHandler();
+		return new CustomAccessDeniedHandler();
 	}
-	
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-    	 http.authorizeRequests()
-    	 .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler())
-    	 .and().formLogin()
-    	 .loginPage("/user")
-    	 .usernameParameter("username")
-    	 .passwordParameter("saltedPassword")
-    	 .defaultSuccessUrl("/dashboard", true)
-    	 .and().logout().logoutSuccessUrl("/user?logout").permitAll()
-    	 .and().csrf().disable();
-    }
 
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+		.httpBasic()
+		.and()
+		.authorizeRequests()
+		.antMatchers("/login","/computer","/company").permitAll()
+		.anyRequest().authenticated()
+	      .and().csrf()
+	        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+	     .and().cors().configurationSource(corsConfigurationSource())
+	    ;
 	
-    
+	}
+
+	@Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
+    }
+	
 	@Bean
 	public BCryptPasswordEncoder encoder() {
 		return new BCryptPasswordEncoder();

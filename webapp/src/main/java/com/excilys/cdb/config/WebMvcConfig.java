@@ -19,7 +19,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan({ "com.excilys.cdb.config", "com.excilys.cdb.mapper", "com.excilys.cdb.dto", "com.excilys.cdb.controller", "com.excilys.cdb.rest" })
+@ComponentScan({ "com.excilys.cdb.config", "com.excilys.cdb.mapper", "com.excilys.cdb.dto", "com.excilys.cdb.rest" })
 public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Override
@@ -33,7 +33,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/lib/css/");
 		registry.addResourceHandler("/fonts/**").addResourceLocations("/WEB-INF/lib/fonts/");
 	}
-
+	
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**")
+			.allowedOrigins("*")
+			.allowedMethods("*")
+			.allowedHeaders("*");
+	}
+	
 	@Bean
 	public InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();

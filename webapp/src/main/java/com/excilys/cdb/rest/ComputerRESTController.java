@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,7 @@ import com.excilys.cdb.mapper.MapperComputerDTO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.service.ComputerService;
-@CrossOrigin
+@CrossOrigin(origins="*")
 @RestController("computerController")
 @RequestMapping("/api/computer")
 public class ComputerRESTController {
@@ -43,12 +44,14 @@ public class ComputerRESTController {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	public ResponseEntity<ComputerDTO> find(@PathVariable("id") Long id) {
 		ComputerDTO computerDto = computerMapper.fromOptionalComputer(computerService.find(id));
 		return new ResponseEntity<>(computerDto, HttpStatus.OK);
 	}
 
 	@GetMapping({ "/count", "/count/{name}" })
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	public ResponseEntity<Long> count(@PathVariable("name") Optional<String> name) {
 		long count;
 		if (name.isPresent()) {
@@ -61,6 +64,7 @@ public class ComputerRESTController {
 	}
 
 	@GetMapping({ "/all", "/all/{name}" })
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	public ResponseEntity<List<ComputerDTO>> findAll(@PathVariable("name") Optional<String> name,
 			@RequestParam(required = false, defaultValue = "1") String page,
 			@RequestParam(required = false, defaultValue = "10") String size) {
@@ -88,6 +92,7 @@ public class ComputerRESTController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<ComputerDTO> create(@RequestBody ComputerDTO computerDto) {
 		try {
 			logger.info(computerDto.getCompanyId());
@@ -101,6 +106,7 @@ public class ComputerRESTController {
 	}
 
 	@PutMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<ComputerDTO> update(@RequestBody ComputerDTO computerDto) {
 		try {
 			computerService.update(computerMapper.toComputer(computerDto));
@@ -111,6 +117,7 @@ public class ComputerRESTController {
 	}
 
 	@DeleteMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Void> delete(@RequestParam String[] idTab) {
 		computerService.deleteAll(idTab);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
