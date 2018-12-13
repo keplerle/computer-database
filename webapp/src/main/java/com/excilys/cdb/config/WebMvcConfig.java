@@ -34,14 +34,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/fonts/**").addResourceLocations("/WEB-INF/lib/fonts/");
 	}
 	
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**")
-			.allowedOrigins("*")
-			.allowedMethods("*")
-			.allowedHeaders("*");
-	}
-	
 	@Bean
 	public InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
