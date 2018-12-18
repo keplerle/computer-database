@@ -85,9 +85,7 @@ public class ComputerRESTController {
 		} catch (NoNextPageException e) {
 			Page.decreasePage();
 		}
-		if (computerList.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+
 		return new ResponseEntity<>(subComputersDTO, HttpStatus.OK);
 
 	}
